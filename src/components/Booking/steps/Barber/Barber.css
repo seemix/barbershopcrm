@@ -1,0 +1,16 @@
+.barber_card {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    column-gap: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    position: relative;
+    max-width: 100%;
+}
+
+.card_select {
+    border: 2px solid rgb(158, 138, 120);
+}
+

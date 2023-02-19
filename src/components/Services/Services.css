@@ -1,0 +1,107 @@
+.services {
+    background-color: #fcf9f5;
+    border-bottom: 2px solid #eee;
+    padding: 40px 0;
+    width: 100%;
+}
+
+.cards_wrapper {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    width: 350px;
+    margin: 15px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
+    box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
+}
+
+.price_icon_wrap i {
+    font-size: 50px;
+    margin-bottom: 40px;
+    color: #9e8a78;
+    display: block;
+    text-align: center;
+}
+
+.bs-scissors-1::before {
+    content: "\e92b";
+}
+
+.bs-razor-2::before {
+    content: "\e928";
+}
+
+.bs-hairbrush-1::before {
+
+    content: "\e914";
+}
+
+.price {
+    font-family: "Prata", sans-serif;
+    font-size: 18px;
+    color: #9e8a78;
+    font-weight: 700;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+@font-face {
+    font-family: 'barber-icon';
+    src: url('../../fonts/barber-icon.eot?pkr5cj');
+    src: url('../../fonts/barber-icon.eot?pkr5cj#iefix') format('embedded-opentype'),
+    url('../../fonts/barber-icon.ttf?pkr5cj') format('truetype'),
+    url('../../fonts/barber-icon.woff?pkr5cj') format('woff'),
+    url('../../fonts/barber-icon.svg?pkr5cj#barber-icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.bs {
+    font-family: 'barber-icon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+}
+
+.price_item {
+    margin-bottom: 25px;
+}
+.price_item h4 {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.time_wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 7px;
+    margin-top: -5px;
+}
+
+.time_icon {
+    margin-top: 8px;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    .services {
+        padding: 15px 0;
+    }
+
+    .price {
+        font-size: 17px;
+    }
+}

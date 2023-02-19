@@ -1,0 +1,127 @@
+.navigation {
+    color: #ddd;
+    font-family: 'Inter', sans-serif;
+    display: inline-block;
+    padding: 0 20px;
+    letter-spacing: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    line-height: 70px;
+}
+
+.menu_wrapper {
+    display: flex;
+    justify-content: center;
+    column-gap: 30px;
+    list-style: none;
+    text-align: center;
+    transition: all 0.4s ease-in-out;
+}
+
+.navbar_items {
+    background-color: #1E1E1EFF;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0 10px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    transition: all 0.4s ease-in-out;
+    z-index: 2;
+}
+
+
+.menu_icon {
+    color: whitesmoke;
+    display: none;
+}
+
+.instagram_icon {
+    cursor: pointer;
+    color: whitesmoke;
+    display: block;
+    margin-left: 10px;
+}
+
+.nav_link {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 42px 20px;
+    text-align: center;
+}
+
+.nav_link:hover {
+    box-shadow: 0 -3px 0 whitesmoke inset,
+    500px 0 0 rgba(255, 255, 255, 0.03) inset;
+}
+
+
+.hide_element {
+    display: none !important;
+}
+
+.show_element {
+    display: block;
+}
+
+.main_logo {
+    margin-top: 5px;
+    width: 290px;
+}
+
+
+@media screen and (max-width: 767px) {
+    .menu_wrapper {
+        flex-direction: column;
+        justify-content: start;
+        position: fixed;
+        right: -800px;
+        width: 100%;
+        background: rgba(30, 30, 30, .9);
+        top: 85px;
+    }
+    .show_burger_menu {
+        right: 0;
+        top: 85px;
+    }
+
+    .navbar_items {
+        justify-content: space-between;
+    }
+
+    .nav_link {
+        padding: 5px;
+        width: 100%;
+        font-size: 15px;
+        display: block;
+    }
+
+    .nav_link:hover {
+        box-shadow: 0 0 0 whitesmoke inset,
+        700px 0 0 rgba(255, 255, 255, 0.05) inset;
+    }
+
+    .menu_icon {
+        display: block;
+    }
+
+    .show_menu {
+        display: block;
+    }
+
+    .main_logo {
+        max-width: 200px;
+        margin-left: 5px;
+    }
+
+    .navigation {
+        line-height: 50px;
+        padding: 10px;
+        top: 75px;
+    }
+}

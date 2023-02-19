@@ -1,0 +1,26 @@
+.service_card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 20px;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    position: relative;
+    width: 380px;
+}
+
+@media screen and (max-width: 767px) {
+    .service_card {
+        column-gap: 10px;
+        max-width: 90%;
+        box-sizing: border-box;
+    }
+    .service_card h4 {
+        font-size: 15px;
+    }
+
+    .service_card h3 {
+        font-size: 16px;
+    }
+}

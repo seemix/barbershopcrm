@@ -1,0 +1,33 @@
+.contact_form {
+    background-color: #fff;
+    padding: 10px 40px;
+    -webkit-box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
+    box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
+    border-radius: 3px;
+    min-height: 460px;
+    width: 400px;
+    margin-bottom: 20px;
+
+}
+
+.contact_form h3 {
+    color: #1E1E1EFF;
+    font-size: 19px;
+    text-align: left;
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.contact_form h4 {
+    margin-left: 10px;
+}
+
+.contact_form a {
+    text-decoration: none;
+    color: #1E1E1EFF;
+}
+.map {
+    height: inherit;
+    padding: 5px;
+    width: 420px;
+}
