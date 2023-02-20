@@ -30,11 +30,19 @@ const serviceSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
+            .addCase(getServicesByBarber.pending, (state, _) => {
+                state.status = 'loading';
+                state.error = null;
+            })
             .addCase(getServicesByBarber.fulfilled, (state, action:PayloadAction<IService[]>) => {
                 state.status = 'fulfilled';
                 state.error = null;
                 state.services = action.payload;
-            });
+            })
+            // .addCase(getServicesByBarber.rejected, (state, action) => {
+            //   //  state.error = action.payload;
+            // })
+
     }
 
 });

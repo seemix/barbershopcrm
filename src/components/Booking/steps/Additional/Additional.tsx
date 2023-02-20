@@ -23,13 +23,17 @@ const Additional = (item: IAdditional) => {
         <>
             <Card className={selected ? 'service_card card_select' : 'service_card'}
                   onClick={handleSelect}>
-                <h4> {item.additional.name} </h4>
-                <div className={'time_wrapper'}>
-                    <div><AccessTimeIcon fontSize={'small'}/>
+                <div className={'price_item'} style={{ marginTop: '15px', marginLeft: '10px' }}>
+                    <h4><i className="bs bs-hairbrush-1"></i> {item.additional.name} </h4>
+                    <div className={'time_wrapper section_caption'}>
+                        <div className={'time_icon'}><AccessTimeIcon fontSize={'small'}/>
+                        </div>
+                        <div>{item.duration} минут</div>
                     </div>
-                    <div><h4><small>{item.duration} минут</small></h4></div>
                 </div>
-                <h3><big>{item.price} </big> лей</h3>
+                <div>
+                    <h3><b><big>{item.price} </big> лей</b></h3>
+                </div>
             </Card>
         </>
     );

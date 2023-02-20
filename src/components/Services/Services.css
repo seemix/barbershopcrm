@@ -8,7 +8,7 @@
 .cards_wrapper {
     display: flex;
     justify-content: center;
-    column-gap: 10px;
+    column-gap: 20px;
     flex-wrap: wrap;
 }
 
@@ -18,8 +18,8 @@
     width: 350px;
     margin: 15px;
     cursor: pointer;
-    -webkit-box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
-    box-shadow: 0px 50px 100px 0px rgba(64, 1, 4, 0.1), 0px -6px 0px 0px rgba(248, 99, 107, 0.004);
+    -webkit-box-shadow: 0 50px 100px 0 rgba(64, 1, 4, 0.1), 0 -6px 0 0 rgba(248, 99, 107, 0.004);
+    box-shadow: 0 50px 100px 0 rgba(64, 1, 4, 0.1), 0 -6px 0 0 rgba(248, 99, 107, 0.004);
 }
 
 .price_icon_wrap i {

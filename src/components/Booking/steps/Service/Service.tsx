@@ -12,7 +12,6 @@ const Service = (item: IService) => {
     const handleSelect = () => {
         dispatch(setService({ serviceId: item.service._id, duration: item.duration, price: item.price }));
     };
-
     return (
         <>
             <Card className={item.service._id === order.serviceId ? 'service_card card_select' : 'service_card'}

@@ -8,28 +8,31 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import './Booking.css';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import { resetService } from '../../../store/order';
+import { CircularProgress } from '@mui/material';
 
 const ChoseService = () => {
     const dispatch = useAppDispatch();
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
-    const { services } = useAppSelector(state => state.serviceStore);
+    const { services, status } = useAppSelector(state => state.serviceStore);
     const handleBackButton = () => {
         dispatch(resetService());
         dispatch(handleBack());
-    }
+    };
     useEffect(() => {
         dispatch(getServicesByBarber(String(barberId)));
     }, [dispatch, barberId]);
     return (
         <div>
             <h3>Choose Service</h3>
+
             <div className={'selector_wrapper'}>
+                {status === 'loading' && <CircularProgress/>}
                 <div>
-                    {
-                        services.map(item => <Service _id={item._id}
-                                                         service={item.service}
-                                                         price={item.price}
-                                                         duration={item.duration}
+                    {services && services.map(item =>
+                        <Service _id={item._id}
+                                 service={item.service}
+                                 price={item.price}
+                                 duration={item.duration}
                         />)
                     }
                 </div>

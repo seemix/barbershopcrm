@@ -12,8 +12,7 @@ const Services: FC = () => {
                 <h2>Наши услуги</h2>
                 <div className={'heading_line'}></div>
                 <div className={'cards_wrapper'}>
-                    {/*<div className={'card'}>*/}
-                    <Card style={{width: '350px', padding: '20px', color: '#777'}}>
+                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-scissors-1"></i>
                         </div>
@@ -40,8 +39,9 @@ const Services: FC = () => {
                             </div>
                         </div>
                     </Card>
-                        {/*</div>*/}
-                    <div className={'card'}>
+                    {/*</div>*/}
+                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
+                        {/*<div className={'card'}>*/}
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-razor-2"></i>
                         </div>
@@ -62,8 +62,9 @@ const Services: FC = () => {
                         <div className={'price_item'}>
                             <h4>Запись вне рабочих часов <span className={'price'}>100 лей</span></h4>
                         </div>
-                    </div>
-                    <div className={'card'}>
+                        {/*</div>*/}
+                    </Card>
+                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-hairbrush-1"></i>
                         </div>
@@ -81,7 +82,7 @@ const Services: FC = () => {
                                 <div>25 минут</div>
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 </div>
             </div>
         </div>

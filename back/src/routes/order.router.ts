@@ -1,75 +1,61 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { orderController } from '../controllers/order.controller.js';
-import Order from '../models/order.js';
+
+import { busyArray } from '../services/createBusyArray.js';
+import ApiError from '../errors/api.error.js';
 import moment from 'moment';
 
 const orderRouter = Router();
 orderRouter.post('/', orderController.createOrder);
 orderRouter.get('/slots', async (req: Request, res: Response, next: NextFunction) => {
-    // const order = await Order.find();
-    // const duration = 12;
-    // let result = [];
-    // const diff = moment.duration(moment(order[0].endTime).diff(order[0].startTime)).asMinutes();
-    // const k = Math.floor(diff / duration);
-    // let time = order[0].endTime;
-    // result.push(time);
-    // for (let i = 1; i <= k; i++) {
-    //     result.push(moment(time).add(duration * i, 'minutes'));
-    //
-    // }
-    // res.json(result);
-
-    const startDay = '8:00';
-    const endDay = '18:00';
-    const lunchStart = '13:00';
-    const lunchEnd = '14:00';
-    const start = Date.now();
-    const end = moment(start).add(1, 'month').add(1, 'day');
-    const daysInMonth = moment.duration(end.diff(start)).asDays();
-    let result = [];
-    const order = await Order.find({ startTime: { $gte: start }, endTime: { $lte: end } })
-        .select('startTime')
-        .select('endTime');
-    //NEW
-
-    const duration = 30;
-
-
-    //OLD ARRAY
-    for (let i = 0; i < daysInMonth; i++) {
-        let startTime = moment(start).add(i, 'day')
-            .set('hours', +endDay.split(':', 2)[0])
-            .set('minutes', +endDay.split(':', 2)[1])
-            .set('seconds', 0)
-            .set('milliseconds', 0);
-        console.log(moment(startTime).day());
-
-        let endTime = moment(start).add(i + 1, 'day')
-            .set('hours', +startDay.split(':', 2)[0])
-            .set('minutes', +startDay.split(':', 2)[1])
-            .set('seconds', 0)
-            .set('milliseconds', 0);
-        result.push({ startTime: startTime, endTime: endTime });
-
-        startTime = moment(start).add(i, 'day')
-            .set('hours', +lunchStart.split(':', 2)[0])
-            .set('minutes', +lunchEnd.split(':', 2)[1])
-            .set('seconds', 0)
-            .set('milliseconds', 0);
-
-        endTime = moment(start).add(i , 'day')
-            .set('hours', +lunchEnd.split(':', 2)[0])
-            .set('minutes', +lunchEnd.split(':', 2)[1])
-            .set('seconds', 0)
-            .set('milliseconds', 0);
-        result.push({ startTime: startTime, endTime: endTime });
-
+    const { barberId, duration = 1 } = req.query;
+    if (!barberId || !duration) {
+        next(new ApiError('Bad request params', 400));
     }
-    const filteredOrder = order.map(item => ({
-        startTime: moment(item.startTime), endTime: moment(item.endTime)
-    }));
-    result = filteredOrder.concat(result).sort((a,b) => Number(a['startTime']) > Number(b['startTime']) ? 1 : -1)
-    res.json(result);
-});
 
+    const arr = await busyArray(String(barberId));
+    const nowMinutes = Math.ceil((moment().minutes() / 10)) * 10;
+    const start = moment(Date.now()).set('minutes', nowMinutes).set('seconds', 0).set('milliseconds', 0);
+
+    let slots = [];
+    let j;
+    if (start > arr[0].startTime) j = 1;
+    else j = 0;
+    const diff = moment.duration(moment(arr[j].startTime).diff(start)).asMinutes();
+    const k = Math.floor(diff / +duration);
+    for (let i = 0; i < k; i++) {
+        slots.push({
+                id: i,
+                startTime: moment(start).add(+duration * i, 'minutes'),
+                endTime: moment(start).add(+duration * i, 'minutes').add(+duration, 'minutes')
+            }
+        );
+    }
+
+    for (let i = 1; i < arr.length-1; i++) {
+        const diff = moment.duration(moment(arr[i+1].startTime).diff(moment(arr[i].endTime))).asMinutes();
+        const k = Math.floor(diff / +duration);
+        console.log(k);
+        for (let s = 0; s < k; s++) {
+            if (k > 0) {
+                slots.push({
+                    id: Math.random() * 100,
+                    startTime: moment(arr[i].endTime).add(+duration * s, 'minutes'),
+                    endTime: moment(arr[i].endTime).add(+duration * s, 'minutes').add(+duration, 'minutes')
+                });
+            }
+        }
+    }
+   //  const diff = moment.duration(moment(arr[j].endTime.diff(arr[j + 1].startTime)).asMinutes();
+    res.json(slots);
+//1. Make 5 min offset
+//2. Make slots from now+offset to first busy start
+//3. Make loop for every finish-start slot
+//4. Make slots from last end to end day;
+//5. Make timezone offset
+
+
+
+})
+;
 export default orderRouter;
