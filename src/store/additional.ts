@@ -23,14 +23,12 @@ export const getAdditionalsByBarberAndService = createAsyncThunk(
     'additionalSlice/getByBarberAndService',
     async (params: IParams, thunkAPI) => {
         try {
-            // console.log(params);
             const { barberId, serviceId } = params;
             return await additionalService.getAdditionalByBarberAndService(barberId, serviceId);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
-    }
-);
+    });
 
 const additionalSlice = createSlice({
     name: 'additionalSlice',

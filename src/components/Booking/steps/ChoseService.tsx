@@ -24,10 +24,8 @@ const ChoseService = () => {
     return (
         <div>
             <h3>Choose Service</h3>
-
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
-                <div>
                     {services && services.map(item =>
                         <Service _id={item._id}
                                  service={item.service}
@@ -35,7 +33,6 @@ const ChoseService = () => {
                                  duration={item.duration}
                         />)
                     }
-                </div>
                 <div className={'buttons_wrapper'}>
                     <div>
                         {

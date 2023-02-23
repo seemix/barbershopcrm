@@ -1,10 +1,6 @@
 import React, { FC, useEffect } from 'react';
 
 import './Barbers.css';
-import ben from '../../images/team-3.webp';
-import nic from '../../images/team-4.webp';
-import pet from '../../images/team-5.webp';
-import dan from '../../images/team-6.webp';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getAllBarbers } from '../../store/barbers';
 import BarberSingle from './BarberSingle';
@@ -13,7 +9,7 @@ const Barbers: FC = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllBarbers());
-    }, []);
+    }, [dispatch]);
     const { barbers } = useAppSelector(state => state.barberStore);
     return (
         <div className={'barbers'}>

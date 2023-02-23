@@ -7,19 +7,21 @@ import { handleNext } from '../../../store/stepper';
 import { getAllBarbers } from '../../../store/barbers';
 import Barber from './Barber/Barber';
 import './Booking.css';
+import { CircularProgress } from '@mui/material';
 
 const ChoseBarber = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllBarbers());
     }, [dispatch]);
-    const { barbers } = useAppSelector(state => state.barberStore);
+    const { barbers, status } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
     const { barberId } = useAppSelector(state => state.orderStore);
     return (
         <>
             <h3>Choose the Barber first</h3>
             <div className={'selector_wrapper'}>
+                {status === 'loading' && <CircularProgress/>}
                 <div>
                     {
                         activeBarbers.map(barber => <Barber

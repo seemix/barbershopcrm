@@ -6,18 +6,20 @@ import Button from '@mui/material/Button';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import { handleBack, handleNext } from '../../../store/stepper';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import { CircularProgress } from '@mui/material';
 
 const ChoseAdditional = () => {
     const dispatch = useAppDispatch();
-    const { additionals } = useAppSelector(state => state.additionalStore);
+    const { additionals, status } = useAppSelector(state => state.additionalStore);
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
     useEffect(() => {
         dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
-    }, []);
+    }, [barberId, dispatch, serviceId]);
     return (
         <div>
             <h3>Chose additional service</h3>
             <div className={'selector_wrapper'}>
+                {status === 'loading' && <CircularProgress/>}
                 {
                     additionals.map(item => <Additional
                         _id={item._id}

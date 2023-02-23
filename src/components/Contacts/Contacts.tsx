@@ -5,6 +5,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 import './Contacts.css';
+import { Card } from '@mui/material';
 
 const Contacts: FC = () => {
     return (
@@ -14,34 +15,41 @@ const Contacts: FC = () => {
                 <h2>Контакты</h2>
                 <div className={'heading_line'}></div>
                 <div className={'cards_wrapper'}>
-                    <div className={'contact_form'}>
-                        <h3>
-                            <LocationOnOutlinedIcon/> Адрес
-                        </h3>
+                    <Card className={'contact_form'}>
+                        {/*<div className={'contact_form'}>*/}
+                        <div className={'time_wrapper'}>
+                            <div><h3><LocationOnOutlinedIcon/></h3></div>
+                            <div><h3>Адрес</h3></div>
+                        </div>
                         <h4>
                             г. Бельцы, ул. Дечебал 142
                         </h4>
-                        <h3>
-                            <PhoneIphoneOutlinedIcon/> Телефон
-                        </h3>
+                        <div className={'time_wrapper'}>
+                            <div><h3><PhoneIphoneOutlinedIcon/></h3></div>
+                            <div><h3> Телефон </h3></div>
+                        </div>
                         <h4>
                             +37360233555
                         </h4>
-                        <h3>
-                            <InstagramIcon/> Instagram
-                        </h3>
+                        <div className={'time_wrapper'}>
+                            <div><h3><InstagramIcon/></h3></div>
+                            <div><h3>Instagram</h3></div>
+                        </div>
                         <h4>
                             <a target="_blank" rel="noreferrer"
                                href="https://www.instagram.com/lvlup_barbershop">@lvlup_barbershop</a>
                         </h4>
-                        <h3>
-                            <EventAvailableOutlinedIcon/> График работы
-                        </h3>
+                        <div className={'time_wrapper'}>
+                            <div><h3><EventAvailableOutlinedIcon/></h3></div>
+                            <div><h3> График работы </h3></div>
+
+                        </div>
                         <h4>
                             Пн-Сб: 8:00 - 18:00 </h4>
                         <h4> Вс: выходной
                         </h4>
-                    </div>
+                        {/*</div>*/}
+                    </Card>
                     <div className={'map'}>
                         {/*<iframe*/}
                         {/*    title="map"*/}
