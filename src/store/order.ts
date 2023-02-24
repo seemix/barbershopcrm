@@ -1,5 +1,6 @@
 import { IOrder } from '../models/order.model';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { customerService } from '../services/customer.service';
 
 const initialState: IOrder = {
     barberId: null,
@@ -20,6 +21,17 @@ interface IAdditional {
     price: number;
     duration: number;
 }
+
+export const getCustomerByPhone = createAsyncThunk(
+    'formSlice/getCustomerByPhone',
+    async (phone: string | null, thunkAPI) => {
+        try {
+            return await customerService.getCustomerByPhone(phone);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 
 export const orderSlice = createSlice({
     name: 'orderSlice',
@@ -56,6 +68,18 @@ export const orderSlice = createSlice({
             state.startTime = null;
             state.endTime = null;
         }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(getCustomerByPhone.fulfilled, (state, action) => {
+                state.customerEmail = action.payload.email;
+                state.customerName = action.payload.name;
+                state.customerPhone = action.payload.phone;
+                state.customerId = action.payload._id;
+            })
+            .addCase(getCustomerByPhone.rejected, state => {
+
+            })
     }
 });
 

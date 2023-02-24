@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Grid, InputAdornment, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -6,11 +6,27 @@ import { AccountCircle } from '@mui/icons-material';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { getCustomerByPhone } from '../../../store/order';
+
 const CustomerForm = () => {
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
-   if(watch('customerPhone').length === 7) {
-       console.log('7777777777777')
-   }
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const dispatch = useAppDispatch();
+    const order = useAppSelector(state => state.orderStore);
+    const [phone, setPhone] = useState(null);
+    const [disabled, setDisabled] = useState(true);
+    const handleChange = (e: any) => {
+        e.preventDefault();
+        setDisabled(false);
+        let phoneLength = e.target.value;
+        if (phoneLength.length === 10) setPhone(e.target.value);
+    };
+
+    useEffect(() => {
+        dispatch(getCustomerByPhone(phone));
+        setValue('customerName', order.customerName);
+        setValue('customerEmail', order.customerEmail);
+    }, [dispatch, phone, order, setValue]);
     return (
         <div>
             <h3>Fill the Form</h3>
@@ -18,6 +34,7 @@ const CustomerForm = () => {
                 <form onSubmit={handleSubmit((data) => console.log(data))}>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
+                            onInput={(event) => handleChange(event)}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -43,6 +60,7 @@ const CustomerForm = () => {
                     </Grid>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
+                            disabled={disabled}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -69,7 +87,7 @@ const CustomerForm = () => {
                     </Grid>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
-                            disabled={true}
+                            disabled={disabled}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
