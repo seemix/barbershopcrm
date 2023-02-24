@@ -107,7 +107,12 @@ h4 {
   color: whitesmoke;
   font-size: 20px;
 }
-
+.show_item {
+  display: block;
+}
+.hide_item {
+  display: none;
+}
 @media screen and (max-width: 767px) {
   h1 {
     font-size: 36px;

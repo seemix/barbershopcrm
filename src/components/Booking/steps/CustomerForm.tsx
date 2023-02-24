@@ -2,15 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Grid, InputAdornment, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { AccountCircle } from '@mui/icons-material';
+import { AccountCircle, KeyboardArrowLeft } from '@mui/icons-material';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import { joiResolver } from '@hookform/resolvers/joi';
 
+import userValidator from '../../../validators/user.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { getCustomerByPhone } from '../../../store/order';
+import { getCustomerByPhone, setCustomer } from '../../../store/order';
+import { handleBack, handleNext } from '../../../store/stepper';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 const CustomerForm = () => {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const {
+        register,
+        getValues,
+        handleSubmit,
+        setValue,
+        formState: { errors }
+    } = useForm({ resolver: joiResolver(userValidator) });
     const dispatch = useAppDispatch();
     const order = useAppSelector(state => state.orderStore);
     const [phone, setPhone] = useState(null);
@@ -21,11 +31,15 @@ const CustomerForm = () => {
         let phoneLength = e.target.value;
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
-
+    const handleNextButton = () => {
+        dispatch(setCustomer(getValues()))
+        dispatch(handleNext());
+    };
     useEffect(() => {
         dispatch(getCustomerByPhone(phone));
         setValue('customerName', order.customerName);
         setValue('customerEmail', order.customerEmail);
+        setValue('customerPhone', order.customerPhone);
     }, [dispatch, phone, order, setValue]);
     return (
         <div>
@@ -47,13 +61,7 @@ const CustomerForm = () => {
                             variant={'outlined'}
                             size={'medium'}
                             autoComplete="Номер телефона"
-                            {...register('customerPhone', {
-                                required: 'This field is required',
-                                // pattern: {
-                                //     value: '',
-                                //     message: 'Неверный формат'
-                                // }
-                            })}
+                            {...register('customerPhone')}
                             error={!!errors.customerPhone}
                             helperText={errors?.customerPhone ? String(errors.customerPhone.message) : ''}
                         />
@@ -74,15 +82,9 @@ const CustomerForm = () => {
                             variant={'outlined'}
                             size={'medium'}
                             autoComplete="name"
-                            {...register('customerName', {
-                                required: 'This field is required',
-                                // pattern: {
-                                //     value: '',
-                                //     message: 'Неверный формат'
-                                // }
-                            })}
+                            {...register('customerName')}
                             error={!!errors.customerName}
-                            helperText={errors?.phone ? String(errors.phone.message) : null}
+                            helperText={errors?.customerName ? String(errors.customerName.message) : null}
                         />
                     </Grid>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
@@ -100,22 +102,32 @@ const CustomerForm = () => {
                             variant={'outlined'}
                             size={'medium'}
                             autoComplete="e-mail"
-                            {...register('customerEmail', {
-                                required: 'This field is required',
-                                // pattern: {
-                                //     value: '',
-                                //     message: 'Неверный формат'
-                                // }
-                            })}
+                            {...register('customerEmail')}
                             error={!!errors.customerEmail}
-                            helperText={errors?.phone ? String(errors.phone.message) : null}
+                            helperText={errors?.customerEmail ? String(errors.customerEmail.message) : null}
                         />
                     </Grid>
-                    <Grid item xs={1} sm={1}>
-                        <Button fullWidth style={{ marginTop: '20px' }}
-                                color={'primary'} type={'submit'} variant={'contained'}>Отправить</Button>
-                    </Grid>
+
                 </form>
+                <div className={'buttons_wrapper'}>
+                    <div>
+                        {
+                            <Button variant={'contained'}
+                                    onClick={() => dispatch(handleBack())}
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
+                            </Button>
+                        }
+                    </div>
+                    <div>
+                        {
+                            <Button variant={'contained'}
+                                    type={'submit'}
+                                    onClick={handleNextButton}
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
+                            </Button>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );

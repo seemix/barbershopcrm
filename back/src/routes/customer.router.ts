@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Customer from '../models/customer.js';
+import ApiError from '../errors/api.error.js';
 
 const customerRouter = Router();
 customerRouter.post('/', async (req, res, next) => {
@@ -8,9 +9,13 @@ customerRouter.post('/', async (req, res, next) => {
 });
 customerRouter.get('/:customerPhone', async (req, res, next) => {
     const { customerPhone } = req.params;
-    console.log(customerPhone);
-    const customer = await Customer.findOne({ phone: customerPhone });
-    res.json(customer);
+    try {
+        const customer = await Customer.findOne({ phone: customerPhone });
+        res.json(customer);
+    } catch (e) {
+        next(new ApiError('Error retrieving customer', 400));
+    }
+
 });
 
 export default customerRouter;

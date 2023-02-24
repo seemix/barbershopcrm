@@ -1,4 +1,5 @@
 export interface IOrder {
+    showBooking: boolean;
     customerId: string | null;
     customerName: string | null;
     customerPhone: string  | null;
@@ -10,4 +11,5 @@ export interface IOrder {
     endTime: string | null;
     duration: number | 0;
     price: number | 0;
+    orderId: string | null;
 }

@@ -16,10 +16,10 @@ const App: FC = () => {
         <ThemeProvider theme={theme}>
         <div id={'top'}>
             <Header/>
+            <Booking/>
             <Slider/>
             <Services/>
             <Barbers/>
-            <Booking/>
             <Contacts/>
             <Footer/>
             <ScrollToTop className={'top_scroll'} component={'↑'} smooth style={{backgroundColor: '#9e8a78', borderRadius: 3}}/>

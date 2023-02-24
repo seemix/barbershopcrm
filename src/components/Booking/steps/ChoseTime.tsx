@@ -50,7 +50,7 @@ const ChoseTime = () => {
                         backgroundColor="white"
                     />
                 }
-                <div className={'buttons_wrapper'}>
+                <div className={'buttons_wrapper'} style={{width: '400px'}}>
                     <div>
                         {
                             <Button variant={'contained'}

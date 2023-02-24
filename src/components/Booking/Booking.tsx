@@ -8,6 +8,7 @@ import ChoseBarber from './steps/ChoseBarber';
 import { useAppSelector } from '../../hooks/redux';
 import ChoseAdditional from './steps/ChoseAdditional';
 import CustomerForm from './steps/CustomerForm';
+import FinalStep from './steps/FinalStep';
 
 const Booking: FC = () => {
     const steps = [
@@ -15,7 +16,8 @@ const Booking: FC = () => {
         <ChoseService/>,
         <ChoseAdditional/>,
         <ChoseTime/>,
-        <CustomerForm/>
+        <CustomerForm/>,
+        <FinalStep/>
     ];
     const order = useAppSelector(state => state.orderStore);
     console.log(order);
@@ -23,7 +25,7 @@ const Booking: FC = () => {
     const maxSteps = steps.length;
 
     return (
-        <div id={'booking'}>
+        <div id={'booking'} style={{backgroundColor: '#fcf9f5', height: 'calc(100vh - 100px)'}} className={order.showBooking ? 'show_item' : 'hide_item'}>
             <h2>Booking</h2>
             <div style={{
                 width: '100%',
@@ -33,20 +35,20 @@ const Booking: FC = () => {
                 backgroundColor: '#fcf9f5'
             }}>
                 <div>
-                    <Box sx={{ minWidth: 400, maxWidth: 1100, flexGrow: 1 }}>
-                        <Paper
-                            square
-                            elevation={0}
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                // height: 50,
-                                pl: 2,
-                                bgcolor: 'background.default',
-                            }}
-                        >
-                        </Paper>
-                        <Box sx={{ height: 'auto', p: 2 }}>
+                    <div style={{ minWidth: 400, maxWidth: 1100 }}>
+                        {/*<Paper*/}
+                        {/*    square*/}
+                        {/*    elevation={0}*/}
+                        {/*    sx={{*/}
+                        {/*        display: 'flex',*/}
+                        {/*        alignItems: 'center',*/}
+                        {/*        // height: 50,*/}
+                        {/*        pl: 2,*/}
+                        {/*      //  bgcolor: 'background.default',*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*</Paper>*/}
+                        <Box sx={{ height: 'auto', p: 0 }}>
                             {steps[activeStep]}
                         </Box>
                         <MobileStepper
@@ -58,7 +60,7 @@ const Booking: FC = () => {
                             nextButton={null}
                             backButton={null}
                         />
-                    </Box>
+                    </div>
                 </div>
             </div>
         </div>

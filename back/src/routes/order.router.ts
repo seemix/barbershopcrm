@@ -4,6 +4,7 @@ import { orderController } from '../controllers/order.controller.js';
 const orderRouter = Router();
 orderRouter.post('/', orderController.createOrder);
 orderRouter.get('/slots', orderController.generateSlots);
+orderRouter.get('/:orderId',orderController.getOrderById);
 
 
 //1. Make 5 min offset

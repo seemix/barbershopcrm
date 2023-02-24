@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 
 const orderSchema = new Schema({
-    barber: { type: Schema.Types.ObjectId },
-    customer: { type: Schema.Types.ObjectId, required: false },
-    service: { type: Schema.Types.ObjectId },
-    additional: [{ type: Schema.Types.ObjectId }],
+    barber: { type: Schema.Types.ObjectId, ref: 'Barber' },
+    customer: { type: Schema.Types.ObjectId, required: true, ref: 'Customer' },
+    service: { type: Schema.Types.ObjectId, ref: 'Service' },
+    additional: [{ type: Schema.Types.ObjectId, ref: 'Additional' }],
     startTime: { type: Date },
     endTime: { type: Date },
     status: { type: String, default: 'new' },

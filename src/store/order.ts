@@ -1,8 +1,10 @@
 import { IOrder } from '../models/order.model';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { customerService } from '../services/customer.service';
+import { orderService } from '../services/order.service';
 
 const initialState: IOrder = {
+    showBooking: false,
     barberId: null,
     customerId: null,
     customerName: null,
@@ -13,7 +15,8 @@ const initialState: IOrder = {
     startTime: null,
     endTime: null,
     price: 0,
-    duration: 0
+    duration: 0,
+    orderId: null
 };
 
 interface IAdditional {
@@ -23,10 +26,20 @@ interface IAdditional {
 }
 
 export const getCustomerByPhone = createAsyncThunk(
-    'formSlice/getCustomerByPhone',
+    'orderSlice/getCustomerByPhone',
     async (phone: string | null, thunkAPI) => {
         try {
             return await customerService.getCustomerByPhone(phone);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    });
+
+export const createOrder = createAsyncThunk(
+    'orderSlice/createOrder',
+    async (order: IOrder, thunkAPI) => {
+        try {
+            return await orderService.createOrder(order);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -67,6 +80,14 @@ export const orderSlice = createSlice({
         removeDateTime(state) {
             state.startTime = null;
             state.endTime = null;
+        },
+        setCustomer(state, action) {
+            state.customerEmail = action.payload.customerEmail;
+            state.customerName = action.payload.customerName;
+            state.customerPhone = action.payload.customerPhone;
+        },
+        openBooking(state) {
+            state.showBooking = true;
         }
     },
     extraReducers: builder => {
@@ -80,6 +101,12 @@ export const orderSlice = createSlice({
             .addCase(getCustomerByPhone.rejected, state => {
 
             })
+            .addCase(createOrder.pending, state => {
+
+            })
+            .addCase(createOrder.fulfilled, (state, action) => {
+                state.orderId = action.payload._id;
+            } )
     }
 });
 
@@ -90,7 +117,9 @@ export const {
     addAdditional,
     removeAdditional,
     setDateTime,
-    removeDateTime
+    removeDateTime,
+    setCustomer,
+    openBooking
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;
 export default orderStore;
