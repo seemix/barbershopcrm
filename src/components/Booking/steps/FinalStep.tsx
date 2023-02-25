@@ -10,10 +10,10 @@ const FinalStep = () => {
         dispatch(getRecordById(String(orderId)));
     }, [dispatch, orderId]);
     const { customer, barber, startTime, additional, service } = useAppSelector(state => state.recordStore);
-    const options = { weekday: 'short',  month: 'long', day: 'numeric' };
     const date = new Date(String(startTime));
-    // @ts-ignore
-    const dateOut = date.toLocaleDateString('ru-RU', options);
+    const dateOut = date.toLocaleDateString('ru-RU', {
+        weekday: 'short',  month: 'long', day: 'numeric'
+    });
     const time = startTime?.split('T')[1].slice(0,5)    ;
     return (
         <div>
