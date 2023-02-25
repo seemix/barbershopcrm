@@ -1,47 +1,30 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { createOrder } from '../../../store/order';
-import Button from '@mui/material/Button';
-import { handleBack } from '../../../store/stepper';
-import { KeyboardArrowLeft } from '@mui/icons-material';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { Card } from '@mui/material';
+import { getRecordById } from '../../../store/record';
 
 const FinalStep = () => {
-    const order = useAppSelector(state => state.orderStore);
+    const { orderId } = useAppSelector(state => state.orderStore);
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(createOrder(order));
-    }, [dispatch]);
-    // useEffect(() => {
-    //     dispatch()
-    // }, []);
+        dispatch(getRecordById(String(orderId)));
+    }, [dispatch, orderId]);
+    const { customer, barber, startTime, additional, service } = useAppSelector(state => state.recordStore);
+    const options = { weekday: 'short',  month: 'long', day: 'numeric' };
+    const date = new Date(String(startTime));
+    // @ts-ignore
+    const dateOut = date.toLocaleDateString('ru-RU', options);
+    const time = startTime?.split('T')[1].slice(0,5)    ;
     return (
         <div>
             <h3>Final step</h3>
-            <h2>
-                {order.orderId && <Card>
-                    NAME
-                </Card>}
-            </h2>
-            <div className={'buttons_wrapper'}>
-                <div>
-                    {
-                        <Button variant={'contained'}
-                                onClick={() => dispatch(handleBack())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
-                        </Button>
-                    }
-                </div>
-                <div>
-                    {
-                        <Button variant={'contained'}
-                            // onClick={ha}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
-                        </Button>
-                    }
-                </div>
-            </div>
+            <Card style={{ padding: '25px' }}>
+                <h2>Dear {customer.name} !</h2>
+                <big><p>{barber.name} will wait for you at {dateOut} в {time}</p></big>
+                <p>Your order:</p>
+                <li><p>{service.name}</p></li>
+                {additional.map(item => <li><p>{item.name}</p></li>)}
+            </Card>
         </div>
     );
 };

@@ -5,9 +5,10 @@ import stepperStore from './stepper';
 import serviceStore from './services';
 import additionalStore from './additional';
 import freeSlotsStore from './slots';
+import recordStore from './record';
 
 export const store = configureStore({
-    reducer: { barberStore, orderStore, stepperStore, serviceStore, additionalStore, freeSlotsStore }
+    reducer: { barberStore, orderStore, stepperStore, serviceStore, additionalStore, freeSlotsStore, recordStore }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

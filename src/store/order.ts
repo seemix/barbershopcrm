@@ -88,7 +88,8 @@ export const orderSlice = createSlice({
         },
         openBooking(state) {
             state.showBooking = true;
-        }
+        },
+
     },
     extraReducers: builder => {
         builder

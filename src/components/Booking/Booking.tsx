@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
 import ChoseTime from './steps/ChoseTime';
 import ChoseService from './steps/ChoseService';
 import ChoseBarber from './steps/ChoseBarber';
@@ -25,7 +24,9 @@ const Booking: FC = () => {
     const maxSteps = steps.length;
 
     return (
-        <div id={'booking'} style={{backgroundColor: '#fcf9f5', height: 'calc(100vh - 100px)'}} className={order.showBooking ? 'show_item' : 'hide_item'}>
+        <div id={'booking'} style={{ height: 'calc(100vh - 150px)' }}
+             className={order.showBooking ? 'services show_item' : 'services hide_item'}>
+
             <h2>Booking</h2>
             <div style={{
                 width: '100%',
@@ -36,18 +37,6 @@ const Booking: FC = () => {
             }}>
                 <div>
                     <div style={{ minWidth: 400, maxWidth: 1100 }}>
-                        {/*<Paper*/}
-                        {/*    square*/}
-                        {/*    elevation={0}*/}
-                        {/*    sx={{*/}
-                        {/*        display: 'flex',*/}
-                        {/*        alignItems: 'center',*/}
-                        {/*        // height: 50,*/}
-                        {/*        pl: 2,*/}
-                        {/*      //  bgcolor: 'background.default',*/}
-                        {/*    }}*/}
-                        {/*>*/}
-                        {/*</Paper>*/}
                         <Box sx={{ height: 'auto', p: 0 }}>
                             {steps[activeStep]}
                         </Box>

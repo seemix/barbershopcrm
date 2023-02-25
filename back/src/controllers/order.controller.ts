@@ -8,6 +8,7 @@ import Customer from '../models/customer.js';
 export const orderController = {
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
+           // console.log(req.body);
             const {
                 customerName,
                 customerPhone,
@@ -43,8 +44,13 @@ export const orderController = {
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { orderId } = req.params;
-            const order = await Order.find({ _id: orderId })
-                .select(['startTime', 'endTime'])
+            const order = await Order.findOne({ _id: orderId })
+                .select(['startTime'])
+                .populate({
+                    path: 'customer',
+                    select: ['name'],
+                    strictPopulate: false
+                })
                 .populate({
                     path: 'barber',
                     select: ['name'],
@@ -57,11 +63,12 @@ export const orderController = {
                 })
                 .populate({
                     path: 'additional',
+                    select: ['name'],
                     strictPopulate: false
                 });
             res.json(order);
         } catch (e) {
-
+            next(new ApiError('Error getting order', 500));
         }
     },
     generateSlots: async (req: Request, res: Response, next: NextFunction) => {

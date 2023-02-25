@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Grid, InputAdornment, TextField } from '@mui/material';
-import Button from '@mui/material/Button';
-import { AccountCircle, KeyboardArrowLeft } from '@mui/icons-material';
+import { FieldValues, useForm } from 'react-hook-form';
+import { Grid, InputAdornment, TextField, Button } from '@mui/material';
+import { AccountCircle, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import userValidator from '../../../validators/user.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { getCustomerByPhone, setCustomer } from '../../../store/order';
+import { createOrder, getCustomerByPhone, setCustomer } from '../../../store/order';
 import { handleBack, handleNext } from '../../../store/stepper';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 const CustomerForm = () => {
     const {
         register,
-        getValues,
         handleSubmit,
         setValue,
         formState: { errors }
@@ -31,8 +28,10 @@ const CustomerForm = () => {
         let phoneLength = e.target.value;
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
-    const handleNextButton = () => {
-        dispatch(setCustomer(getValues()))
+    const handleNextButton = (data: FieldValues) => {
+        console.log(data);
+        dispatch(setCustomer(data));
+        dispatch(createOrder(order));
         dispatch(handleNext());
     };
     useEffect(() => {
@@ -45,9 +44,10 @@ const CustomerForm = () => {
         <div>
             <h3>Fill the Form</h3>
             <div className={'selector_wrapper'}>
-                <form onSubmit={handleSubmit((data) => console.log(data))}>
+                <form onSubmit={handleSubmit((data) => handleNextButton(data))}>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
+                            inputProps={{ maxLength: 11 }}
                             onInput={(event) => handleChange(event)}
                             InputProps={{
                                 startAdornment: (
@@ -108,26 +108,32 @@ const CustomerForm = () => {
                         />
                     </Grid>
 
+                    <div className={'buttons_wrapper'}>
+                        <div>
+                            {
+                                <Button variant={'contained'}
+                                        onClick={() => dispatch(handleBack())}
+                                        style={{ marginBottom: '20px', padding: '10px 15px' }}>
+                                    <KeyboardArrowLeft/> Назад
+                                </Button>
+                            }
+                        </div>
+                        <div>
+                            {
+                                <Button variant={'contained'}
+                                        type={'submit'}
+                                    //onClick={handleNextButton}
+                                        style={{
+                                            marginBottom: '20px',
+                                            padding: '10px 15px'
+                                        }}> Далее <KeyboardArrowRight/>
+                                </Button>
+                            }
+                        </div>
+
+                    </div>
                 </form>
-                <div className={'buttons_wrapper'}>
-                    <div>
-                        {
-                            <Button variant={'contained'}
-                                    onClick={() => dispatch(handleBack())}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
-                            </Button>
-                        }
-                    </div>
-                    <div>
-                        {
-                            <Button variant={'contained'}
-                                    type={'submit'}
-                                    onClick={handleNextButton}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
-                            </Button>
-                        }
-                    </div>
-                </div>
+
             </div>
         </div>
     );
