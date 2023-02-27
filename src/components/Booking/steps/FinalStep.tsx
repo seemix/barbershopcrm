@@ -24,7 +24,7 @@ const FinalStep = () => {
         <div>
             <h3>Final step</h3>
             <Card style={{ padding: '25px', maxWidth: '500px' }}>
-                <p style={{fontSize: '22px', textAlign: 'center'}}>Dear {customer.name} !</p>
+                <p style={{ fontSize: '22px', textAlign: 'center' }}>Dear {customer.name} !</p>
                 <big><p style={{ textAlign: 'center' }}>{barber.name} будет ждать вас <u> {dateOut} в {time} </u>
                 </p></big>
                 <p>Ваш заказ:</p>
