@@ -8,7 +8,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import userValidator from '../../../validators/user.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { createOrder, getCustomerByPhone, setCustomer } from '../../../store/order';
+import { getCustomerByPhone, setCustomer } from '../../../store/order';
 import { handleBack, handleNext } from '../../../store/stepper';
 
 const CustomerForm = () => {
@@ -30,21 +30,19 @@ const CustomerForm = () => {
     };
     const handleNextButton = (data: FieldValues) => {
         dispatch(setCustomer(data));
-        console.log(order.customerEmail);
-        dispatch(createOrder(order));
-      //  dispatch(handleNext());
+        if (String(order.customerEmail).length >= 9) dispatch(handleNext());
     };
     useEffect(() => {
         if (phone) dispatch(getCustomerByPhone(phone));
         if (order.customerName) setValue('customerName', order.customerName);
         if (order.customerEmail) setValue('customerEmail', order.customerEmail);
         if (order.customerPhone) setValue('customerPhone', order.customerPhone);
-    }, [dispatch, phone, order]);
+    }, [phone]);
     return (
         <div>
             <h3>Fill the Form</h3>
             <div className={'selector_wrapper'}>
-                <form onSubmit={handleSubmit((data) => handleNextButton(data))}>
+                <form onSubmit={handleSubmit(handleNextButton)}>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
                             inputProps={{ maxLength: 11 }}
