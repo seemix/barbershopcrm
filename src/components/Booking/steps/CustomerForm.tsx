@@ -29,17 +29,17 @@ const CustomerForm = () => {
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
     const handleNextButton = (data: FieldValues) => {
-        console.log(data);
         dispatch(setCustomer(data));
+        console.log(order.customerEmail);
         dispatch(createOrder(order));
-        dispatch(handleNext());
+      //  dispatch(handleNext());
     };
     useEffect(() => {
-        dispatch(getCustomerByPhone(phone));
-        setValue('customerName', order.customerName);
-        setValue('customerEmail', order.customerEmail);
-        setValue('customerPhone', order.customerPhone);
-    }, [dispatch, phone, order, setValue]);
+        if (phone) dispatch(getCustomerByPhone(phone));
+        if (order.customerName) setValue('customerName', order.customerName);
+        if (order.customerEmail) setValue('customerEmail', order.customerEmail);
+        if (order.customerPhone) setValue('customerPhone', order.customerPhone);
+    }, [dispatch, phone, order]);
     return (
         <div>
             <h3>Fill the Form</h3>
@@ -122,7 +122,7 @@ const CustomerForm = () => {
                             {
                                 <Button variant={'contained'}
                                         type={'submit'}
-                                    //onClick={handleNextButton}
+                                        onClick={handleNextButton}
                                         style={{
                                             marginBottom: '20px',
                                             padding: '10px 15px'

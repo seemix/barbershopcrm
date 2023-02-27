@@ -7,7 +7,7 @@ const FinalStep = () => {
     const { orderId } = useAppSelector(state => state.orderStore);
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(getRecordById(String(orderId)));
+        if(orderId) dispatch(getRecordById(String(orderId)));
     }, [dispatch, orderId]);
     const { customer, barber, startTime, additional, service } = useAppSelector(state => state.recordStore);
     const date = new Date(String(startTime));

@@ -40,8 +40,7 @@ export const barbersSlice = createSlice({
             })
             .addCase(getAllBarbers.rejected, (state, action) => {
                 state.status = 'error';
-               // console.log(payload);
-               //  state.error = action.payload.message || 'Something went wrong';
+                 state.error = action.payload as string;
             });
     }
 });

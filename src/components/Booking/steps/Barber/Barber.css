@@ -7,10 +7,10 @@
     margin-bottom: 20px;
     cursor: pointer;
     position: relative;
-    max-width: 100%;
+    width: 350px;
+    box-sizing: border-box;
 }
 
 .card_select {
-    border: 2px solid rgb(158, 138, 120);
+    border-left: 5px solid rgb(158, 138, 120);
 }
-

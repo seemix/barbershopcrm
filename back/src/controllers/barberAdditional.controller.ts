@@ -14,7 +14,7 @@ export const barberAdditionalController = {
     },
     getAdditionalForBooking: async (req: Request, res: Response, next: NextFunction) => {
         const { serviceId, barberId } = req.query;
-        const byServiceBarber = await BarberAdditional.find({ barberId, services: serviceId })
+        const byServiceBarber = await BarberAdditional.find({ barber: barberId, services: serviceId })
             .select(['barber', 'additional', 'price', 'duration'])
             .populate({
                 path: 'barber',
