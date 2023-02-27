@@ -17,7 +17,8 @@ const initialState: IRecord = {
         { name: null }
     ],
     startTime: null,
-    price: null
+    price: null,
+    status: null
 };
 
 export const getRecordById = createAsyncThunk(
@@ -45,7 +46,11 @@ export const recordSlice = createSlice({
                 state.service.name = action.payload.service.name;
                 state.additional = action.payload.additional;
                 state.startTime = action.payload.startTime;
-            });
+                state.status = 'fulfilled';
+            })
+            .addCase(getRecordById.pending, state => {
+                state.status = 'loading';
+        })
     }
 });
 const recordStore = recordSlice.reducer;

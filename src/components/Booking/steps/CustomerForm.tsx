@@ -37,7 +37,7 @@ const CustomerForm = () => {
         if (order.customerName) setValue('customerName', order.customerName);
         if (order.customerEmail) setValue('customerEmail', order.customerEmail);
         if (order.customerPhone) setValue('customerPhone', order.customerPhone);
-    }, [phone, dispatch]);
+    }, [phone, dispatch, setValue, order.customerPhone, order.customerEmail, order.customerName]);
     return (
         <div>
             <h3>Fill the Form</h3>

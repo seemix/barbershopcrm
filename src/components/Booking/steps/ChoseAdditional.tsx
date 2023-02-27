@@ -15,6 +15,7 @@ const ChoseAdditional = () => {
     useEffect(() => {
         dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, dispatch, serviceId]);
+    if(status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     return (
         <div>
             <h3>Chose additional service</h3>

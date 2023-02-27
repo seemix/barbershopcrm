@@ -23,6 +23,7 @@ app.use((err: ApiError, req: Request, res: Response) => {
     });
 });
 
+
 app.listen(config.PORT, () => {
     mongoose.connect(config.MONGO_URL).then(() => console.log('db connected')).catch((e) => console.log(e));
 });

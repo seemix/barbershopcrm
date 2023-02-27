@@ -14,4 +14,5 @@ export interface IRecord {
     }]
     startTime: string | null;
     price: number | null;
+    status: string | null;
 }
