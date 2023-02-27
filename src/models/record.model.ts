@@ -4,6 +4,7 @@ export interface IRecord {
     },
     customer: {
         name: string | null;
+        email: string | null;
     }
     service: {
         name: string | null;
@@ -12,4 +13,5 @@ export interface IRecord {
         name: string | null;
     }]
     startTime: string | null;
+    price: number | null;
 }

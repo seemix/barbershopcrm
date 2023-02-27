@@ -7,7 +7,8 @@ const initialState: IRecord = {
         name: null
     },
     customer: {
-        name: null
+        name: null,
+        email: null
     },
     service: {
         name: null
@@ -15,8 +16,8 @@ const initialState: IRecord = {
     additional: [
         { name: null }
     ],
-
-    startTime: null
+    startTime: null,
+    price: null
 };
 
 export const getRecordById = createAsyncThunk(
@@ -39,6 +40,8 @@ export const recordSlice = createSlice({
             .addCase(getRecordById.fulfilled, (state, action:PayloadAction<IRecord>) => {
                 state.barber.name = action.payload.barber.name;
                 state.customer.name = action.payload.customer.name;
+                state.customer.email = action.payload.customer.email;
+                state.price = action.payload.price;
                 state.service.name = action.payload.service.name;
                 state.additional = action.payload.additional;
                 state.startTime = action.payload.startTime;

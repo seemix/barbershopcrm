@@ -8,7 +8,7 @@ const orderSchema = new Schema({
     startTime: { type: Date },
     endTime: { type: Date },
     status: { type: String, default: 'new' },
-    purchased: { type: Number, default: 0 }
+    price: { type: Number, default: 0 }
 }, { timestamps: true });
 
 export default model('Order', orderSchema);

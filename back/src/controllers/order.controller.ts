@@ -17,7 +17,8 @@ export const orderController = {
                 serviceId,
                 additionalServices,
                 startTime,
-                endTime
+                endTime,
+                price
             } = req.body;
             let { customerId } = req.body;
             if (!customerId) {
@@ -34,7 +35,8 @@ export const orderController = {
                 service: serviceId,
                 additional: additionalServices,
                 startTime: startTime,
-                endTime: endTime
+                endTime: endTime,
+                price: price
             });
             res.json(newOrder);
         } catch (e) {
@@ -45,10 +47,10 @@ export const orderController = {
         try {
             const { orderId } = req.params;
             const order = await Order.findOne({ _id: orderId })
-                .select(['startTime'])
+                .select(['startTime','price'])
                 .populate({
                     path: 'customer',
-                    select: ['name'],
+                    select: ['name','email'],
                     strictPopulate: false
                 })
                 .populate({

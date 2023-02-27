@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { Card } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
 import { getRecordById } from '../../../store/record';
 import { createOrder } from '../../../store/order';
 
@@ -13,7 +14,7 @@ const FinalStep = () => {
     useEffect(() => {
         if (order.orderId) dispatch(getRecordById(String(order.orderId)));
     }, [dispatch, order.orderId]);
-    const { customer, barber, startTime, additional, service } = useAppSelector(state => state.recordStore);
+    const { customer, barber, startTime, price, additional, service } = useAppSelector(state => state.recordStore);
     const date = new Date(String(startTime));
     const dateOut = date.toLocaleDateString('ru-RU', {
         weekday: 'short', month: 'long', day: 'numeric'
@@ -22,12 +23,18 @@ const FinalStep = () => {
     return (
         <div>
             <h3>Final step</h3>
-            <Card style={{ padding: '25px' }}>
-                <h2>Dear {customer.name} !</h2>
-                <big><p>{barber.name} will wait for you at {dateOut} в {time}</p></big>
-                <p>Your order:</p>
-                <li><p>{service.name}</p></li>
-                {additional.map(item => <li><p>{item.name}</p></li>)}
+            <Card style={{ padding: '25px', maxWidth: '500px' }}>
+                <p style={{fontSize: '22px', textAlign: 'center'}}>Dear {customer.name} !</p>
+                <big><p style={{ textAlign: 'center' }}>{barber.name} будет ждать вас <u> {dateOut} в {time} </u>
+                </p></big>
+                <p>Ваш заказ:</p>
+                <div style={{ marginLeft: '15px' }}>
+                    <p><i className={'bs bs-scissors-1'}/> {service.name}</p>
+                    {additional.map(item => <><p><i className="bs bs-hairbrush-1"></i> {item.name}</p></>)}
+                </div>
+                <hr/>
+                <p style={{ textAlign: 'right' }}>Общая сумма {price} MDL</p>
+                <p>Для отмены или изменения записи воспользуйтесь ссылкой на почте {customer.email}</p>
             </Card>
         </div>
     );
