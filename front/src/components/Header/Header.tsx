@@ -21,7 +21,7 @@ const Header: FC = () => {
             </h1>
 
             <div className={'instagram_icon'}>
-                <a target="_blank" rel="noreferrer" href="https://www.instagram.com/lvlup_barbershop/"
+                <a target="_blank" rel="noreferrer" href="front/src/components/Header/Header"
                    style={{ color: 'whitesmoke', textDecoration: 'none' }}>
                     <InstagramIcon fontSize={'large'}/>
                 </a>
