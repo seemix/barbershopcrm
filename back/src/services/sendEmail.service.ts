@@ -19,7 +19,7 @@ export const sendMail = async (email: string) => {
         }
 
     });
-    const HTML = await templateParser.render('11',{});
+    const HTML = await templateParser.render('order',{});
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
