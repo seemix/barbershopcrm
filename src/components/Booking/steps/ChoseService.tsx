@@ -5,7 +5,7 @@ import Service from './Service/Service';
 import Button from '@mui/material/Button';
 import { handleBack, handleNext } from '../../../store/stepper';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import './Booking.css';
+import '../Booking.css';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import { resetService } from '../../../store/order';
 import { CircularProgress } from '@mui/material';

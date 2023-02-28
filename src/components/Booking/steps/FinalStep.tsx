@@ -26,7 +26,7 @@ const FinalStep = () => {
     const dateOut = date.toLocaleDateString('ru-RU', {
         weekday: 'short', month: 'long', day: 'numeric'
     });
-    const time = startTime?.split('T')[1].slice(0, 5);
+    const time = date.toLocaleTimeString('ru-RU',{hour: '2-digit', minute:'2-digit'});
     return (
         <div>
             <h3>Final step</h3>

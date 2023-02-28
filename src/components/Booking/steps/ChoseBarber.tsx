@@ -6,7 +6,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { handleNext } from '../../../store/stepper';
 import { getAllBarbers } from '../../../store/barbers';
 import Barber from './Barber/Barber';
-import './Booking.css';
+import '../Booking.css';
 import { CircularProgress } from '@mui/material';
 
 const ChoseBarber = () => {
