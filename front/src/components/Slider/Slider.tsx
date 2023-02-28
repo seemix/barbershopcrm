@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Link } from 'react-scroll';
 import './Slider.css';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppDispatch } from '../../hooks/redux';
 import { openBooking } from '../../store/order';
 
 const Slider: FC = () => {
-    const isShowBooking = useAppSelector(state => state.orderStore.showBooking);
+   // const isShowBooking = useAppSelector(state => state.orderStore.showBooking);
     const dispatch = useAppDispatch();
     const handleBooking = () => {
         dispatch(openBooking());
