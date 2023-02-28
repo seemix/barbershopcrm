@@ -6,9 +6,19 @@ body {
 .card {
     background-color: #fff;
     padding: 20px;
-    width: 350px;
+    width: 450px;
     margin: 15px;
     cursor: pointer;
     -webkit-box-shadow: 0 50px 100px 0 rgba(64, 1, 4, 0.1), 0 -6px 0 0 rgba(248, 99, 107, 0.004);
     box-shadow: 0 50px 100px 0 rgba(64, 1, 4, 0.1), 0 -6px 0 0 rgba(248, 99, 107, 0.004);
+}
+p {
+    font-size: 18px;
+}
+h3 {
+    font-size: 25px;
+}
+
+div {
+    background-color: rgb(252, 249, 245);
 }

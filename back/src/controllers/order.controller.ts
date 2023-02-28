@@ -4,15 +4,15 @@ import Order from '../models/order.js';
 import { freeSlots } from '../services/generateFreeSlots.js';
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
+import { sendMail } from '../services/sendEmail.service.js';
+import customer from '../models/customer.js';
 
 export const orderController = {
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
-           // console.log(req.body);
             const {
                 customerName,
                 customerPhone,
-                customerEmail,
                 barberId,
                 serviceId,
                 additionalServices,
@@ -20,7 +20,7 @@ export const orderController = {
                 endTime,
                 price
             } = req.body;
-            let { customerId } = req.body;
+            let { customerId, customerEmail } = req.body;
             if (!customerId) {
                 const newCustomer = await Customer.create({
                     name: customerName,
@@ -38,6 +38,7 @@ export const orderController = {
                 endTime: endTime,
                 price: price
             });
+            await sendMail(customerEmail, {customerName, startTime, orderId:  newOrder._id})
             res.json(newOrder);
         } catch (e) {
             next(new ApiError('Error creating order', 500));
