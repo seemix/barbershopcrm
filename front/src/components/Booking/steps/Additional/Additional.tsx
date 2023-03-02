@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-import { IAdditional } from '../../../../models/additional.model';
+import { IAdditional } from '../../../../interfaces/additional.model';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { addAdditional, removeAdditional } from '../../../../store/order';
 

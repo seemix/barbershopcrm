@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { additionalService } from '../services/additional.service';
-import { IAdditional } from '../models/additional.model';
+import { IAdditional } from '../interfaces/additional.model';
 
 interface IInitState {
     additionals: IAdditional[] | [],

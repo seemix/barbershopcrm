@@ -1,5 +1,5 @@
 import React from 'react';
-import { IService } from '../../../../models/service.model';
+import { IService } from '../../../../interfaces/service.model';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { Card } from '@mui/material';
 import './Service.css';

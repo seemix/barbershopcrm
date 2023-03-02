@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { serviceService } from '../services/service.service';
-import { IService } from '../models/service.model';
+import { IService } from '../interfaces/service.model';
 interface Iinitstate {
     services: IService[] | [],
     status: string;

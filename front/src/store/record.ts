@@ -1,5 +1,5 @@
 import { orderService } from '../services/order.service';
-import { IRecord } from '../models/record.model';
+import { IRecord } from '../interfaces/record.model';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IRecord = {

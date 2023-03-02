@@ -22,7 +22,8 @@ const ChoseBarber = () => {
             <h3>Choose the Barber first</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
-                <div>
+                {status === 'fulfilled' &&
+                    <div>
                     {
                         activeBarbers.map(barber => <Barber
                             key={barber._id}
@@ -35,6 +36,7 @@ const ChoseBarber = () => {
                         />)
                     }
                 </div>
+                }
                 <div className={'buttons_wrapper'}>
                     <div></div>
                     <div>

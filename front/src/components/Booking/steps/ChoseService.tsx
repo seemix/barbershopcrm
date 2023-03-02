@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import { CircularProgress } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getServicesByBarber } from '../../../store/services';
 import Service from './Service/Service';
-import Button from '@mui/material/Button';
 import { handleBack, handleNext } from '../../../store/stepper';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import '../Booking.css';
-import { KeyboardArrowLeft } from '@mui/icons-material';
 import { resetService } from '../../../store/order';
-import { CircularProgress } from '@mui/material';
 
 const ChoseService = () => {
     const dispatch = useAppDispatch();
@@ -26,13 +26,13 @@ const ChoseService = () => {
             <h3>Choose Service</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
-                    {services && services.map(item =>
-                        <Service _id={item._id}
-                                 service={item.service}
-                                 price={item.price}
-                                 duration={item.duration}
-                        />)
-                    }
+                {status === 'fulfilled' && services && services.map(item =>
+                    <Service _id={item._id}
+                             service={item.service}
+                             price={item.price}
+                             duration={item.duration}
+                    />)
+                }
                 <div className={'buttons_wrapper'}>
                     <div>
                         {

@@ -1,4 +1,4 @@
-import { IOrder } from '../models/order.model';
+import { IOrder } from '../interfaces/order.model';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { customerService } from '../services/customer.service';
 import { orderService } from '../services/order.service';

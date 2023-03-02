@@ -1,13 +1,13 @@
-import React from 'react';
-import { IBarber } from '../../models/barber.model';
 import { Card, CardMedia } from '@mui/material';
+import React from 'react';
 
+import { IBarber } from '../../interfaces/barber.model';
 import './Barbers.css';
 
 const BarberSingle = (barber: IBarber) => {
     return (
         <div className={'team_overlay'}>
-            <Card style={{width: '350px'}}>
+            <Card style={{ width: '350px' }}>
                 <CardMedia
                     component={'img'}
                     alt={barber.name}

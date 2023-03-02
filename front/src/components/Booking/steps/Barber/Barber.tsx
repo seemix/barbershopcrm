@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBarber } from '../../../../models/barber.model';
+import { IBarber } from '../../../../interfaces/barber.model';
 import { Avatar, Card, Rating } from '@mui/material';
 
 import './Barber.css';

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
+
 import ChoseTime from './steps/ChoseTime';
 import ChoseService from './steps/ChoseService';
 import ChoseBarber from './steps/ChoseBarber';
@@ -57,4 +58,3 @@ const Booking: FC = () => {
 };
 
 export default Booking;
-

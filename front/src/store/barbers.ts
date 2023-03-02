@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IBarber } from '../models/barber.model';
+import { IBarber } from '../interfaces/barber.model';
 import { barbersService } from '../services/barbers.service';
 
 interface IInitState {

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import { ScheduleMeeting, StartTimeEventEmit } from 'react-schedule-meeting';
+import Button from '@mui/material/Button';
+
 import { useAppSelector, useAppDispatch } from '../../../hooks/redux';
 import { getFreeSlots } from '../../../store/slots';
-import Button from '@mui/material/Button';
-import { KeyboardArrowLeft } from '@mui/icons-material';
 import { handleBack, handleNext } from '../../../store/stepper';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { removeDateTime, setDateTime } from '../../../store/order';
-import { CircularProgress } from '@mui/material';
 
 
 const ChoseTime = () => {
@@ -38,7 +38,7 @@ const ChoseTime = () => {
             <h3>Choose date & time</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
-                {availableTimeslots &&
+                {status === 'fulfilled' && availableTimeslots &&
                     <ScheduleMeeting
                         lang_emptyListText={'Время для записи недоступно'}
                         lang_goToNextAvailableDayText={'Возможная дата для записи'}
@@ -50,7 +50,7 @@ const ChoseTime = () => {
                         backgroundColor="white"
                     />
                 }
-                <div className={'buttons_wrapper'} style={{width: '400px'}}>
+                <div className={'buttons_wrapper'} style={{ width: '400px' }}>
                     <div>
                         {
                             <Button variant={'contained'}

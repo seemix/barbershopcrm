@@ -5,7 +5,8 @@ import { freeSlots } from '../services/generateFreeSlots.js';
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
 import { sendMail } from '../services/sendEmail.service.js';
-import customer from '../models/customer.js';
+import { IOrderRecord } from '../interfaces/order-record.js';
+import barber from '../models/barber.js';
 
 export const orderController = {
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +39,6 @@ export const orderController = {
                 endTime: endTime,
                 price: price
             });
-            await sendMail(customerEmail, {customerName, startTime, orderId:  newOrder._id})
             res.json(newOrder);
         } catch (e) {
             next(new ApiError('Error creating order', 500));
@@ -47,11 +47,11 @@ export const orderController = {
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { orderId } = req.params;
-            const order = await Order.findOne({ _id: orderId })
-                .select(['startTime','price'])
+            const order: IOrderRecord | null = await Order.findOne({ _id: orderId })
+                .select(['startTime', 'price'])
                 .populate({
                     path: 'customer',
-                    select: ['name','email'],
+                    select: ['name', 'email'],
                     strictPopulate: false
                 })
                 .populate({
@@ -69,6 +69,14 @@ export const orderController = {
                     select: ['name'],
                     strictPopulate: false
                 });
+            if (order)
+                await sendMail(order.customer.email, {
+                    customerName: order.customer.name,
+                    orderId: order._id,
+                    startTime: order.startTime,
+                    barberName: order.barber.name
+                });
+
             res.json(order);
         } catch (e) {
             next(new ApiError('Error getting order', 500));

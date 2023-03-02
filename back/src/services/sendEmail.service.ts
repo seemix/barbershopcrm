@@ -19,7 +19,6 @@ export const sendMail = async (email: string, locals = {}) => {
         }
     });
 
- // const templateInfo = emailTemplates[emailAction];
     const mailOptions = {
         from: 'No-reply LevelUP Barbershop',
         to: email,
@@ -28,13 +27,11 @@ export const sendMail = async (email: string, locals = {}) => {
         html
     };
 
-// send mail with defined transport object
     transporter.sendMail(mailOptions, (error) => {
         if (error) {
             console.log('Error occurred:', error.message);
             return process.exit(1);
         }
         console.log('Message sent successfully!');
-        // console.log('Server responded with "%s"', error.info.response);
     });
 };

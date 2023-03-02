@@ -10,7 +10,7 @@ const Barbers: FC = () => {
     useEffect(() => {
         dispatch(getAllBarbers());
     }, [dispatch]);
-    const { barbers } = useAppSelector(state => state.barberStore);
+    const { barbers, status } = useAppSelector(state => state.barberStore);
     return (
         <div className={'barbers'}>
             <div className={'section_caption'}>
@@ -19,7 +19,8 @@ const Barbers: FC = () => {
                 <div className={'heading_line'}></div>
                 <div className={'cards_wrapper'}>
                     {
-                        barbers && barbers.map(barber =>  <BarberSingle
+                        status === 'fulfilled' &&
+                        barbers && barbers.map(barber => <BarberSingle
                             key={barber._id}
                             description={barber.description}
                             name={barber.name}
@@ -29,36 +30,6 @@ const Barbers: FC = () => {
                             _id={barber._id}
                         />)
                     }
-
-                    {/*<div>*/}
-                    {/*    <img className={'gray_scale'} width={'350px'} src={ben} alt="ben"/>*/}
-                    {/*    <div className={'team_overlay'}>*/}
-                    {/*        <h3>Benjamin</h3>*/}
-                    {/*        <h4>owner</h4>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div>*/}
-                    {/*    <img className={'gray_scale'} width={'350px'} src={nic} alt="ben"/>*/}
-                    {/*    <div className={'team_overlay'}>*/}
-                    {/*        <h3>Nicolae</h3>*/}
-                    {/*        <h4>junior barber</h4>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div>*/}
-                    {/*    <img className={'gray_scale'} width={'350px'} src={pet} alt="ben"/>*/}
-                    {/*    <div className={'team_overlay'}>*/}
-                    {/*        <h3>Petru</h3>*/}
-                    {/*        <h4>student barber</h4>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div>*/}
-                    {/*    <img className={'gray_scale'} width={'350px'} src={dan} alt="ben"/>*/}
-                    {/*    <div className={'team_overlay'}>*/}
-                    {/*        <h3>Daniel</h3>*/}
-                    {/*        <h4>assistant</h4>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
                 </div>
             </div>
         </div>

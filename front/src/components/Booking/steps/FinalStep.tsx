@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { Card, CircularProgress } from '@mui/material';
+
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getRecordById } from '../../../store/record';
 import { createOrder } from '../../../store/order';
 
@@ -26,7 +27,7 @@ const FinalStep = () => {
     const dateOut = date.toLocaleDateString('ru-RU', {
         weekday: 'short', month: 'long', day: 'numeric'
     });
-    const time = date.toLocaleTimeString('ru-RU',{hour: '2-digit', minute:'2-digit'});
+    const time = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     return (
         <div>
             <h3>Final step</h3>
@@ -46,7 +47,7 @@ const FinalStep = () => {
                     <hr/>
                     <p style={{ textAlign: 'right' }}>Общая сумма {price} MDL</p>
                     <p>Для отмены или изменения записи воспользуйтесь ссылкой на почте <big>{customer.email} </big>
-                    или перезвоните по номеру <big> 555-555-555 </big></p>
+                        или перезвоните по номеру <big> 555-555-555 </big></p>
                 </div>
                 }
             </Card>
