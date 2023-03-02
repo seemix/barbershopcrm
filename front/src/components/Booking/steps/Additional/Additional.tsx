@@ -23,6 +23,7 @@ const Additional = (item: IAdditional) => {
         <>
             <Card className={selected ? 'service_card card_select' : 'service_card'}
                   onClick={handleSelect}>
+                {!selected && <div className={'unselected_hover'}></div>}
                 <div className={'price_item'} style={{ marginTop: '15px', marginLeft: '10px' }}>
                     <h4><i className="bs bs-hairbrush-1"></i> {item.additional.name} </h4>
                     <div className={'time_wrapper section_caption'}>

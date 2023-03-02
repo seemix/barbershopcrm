@@ -18,7 +18,7 @@ const ChoseAdditional = () => {
     if(status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     return (
         <div>
-            <h3>Chose additional service</h3>
+            <h3>Chose additional service (multi-choice)</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {
