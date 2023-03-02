@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { getAdditionalsByBarberAndService } from '../../../store/additional';
+import { KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material';
 import Additional from './Additional/Additional';
-import Button from '@mui/material/Button';
-import { KeyboardArrowLeft } from '@mui/icons-material';
-import { handleBack, handleNext } from '../../../store/stepper';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
+
+import { handleBack, handleNext } from '../../../store/stepper';
+import { getAdditionalsByBarberAndService } from '../../../store/additional';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 const ChoseAdditional = () => {
     const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ const ChoseAdditional = () => {
     useEffect(() => {
         dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, dispatch, serviceId]);
-    if(status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
+    if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     return (
         <div>
             <h3>Chose additional service (multi-choice)</h3>
@@ -51,6 +51,7 @@ const ChoseAdditional = () => {
 
             </div>
         </div>
-    )}
+    );
+};
 
 export default ChoseAdditional;
