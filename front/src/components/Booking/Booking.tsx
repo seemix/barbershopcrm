@@ -25,7 +25,7 @@ const Booking: FC = () => {
     const maxSteps = steps.length;
 
     return (
-        <div id={'booking'} style={{ height: 'calc(100vh - 150px)' }}
+        <div id={'booking'} style={{ minHeight: 'calc(100vh - 150px)' }}
              className={order.showBooking ? 'services show_item' : 'services hide_item'}>
 
             <h2>Booking</h2>
