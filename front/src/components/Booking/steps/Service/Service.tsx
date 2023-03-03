@@ -1,9 +1,10 @@
 import React from 'react';
-import { IService } from '../../../../interfaces/service.model';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { Card } from '@mui/material';
-import './Service.css';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Card } from '@mui/material';
+
+import './Service.css';
+import { IService } from '../../../../interfaces/service.model';
 import { setService } from '../../../../store/order';
 
 const Service = (item: IService) => {
