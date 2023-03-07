@@ -1,4 +1,4 @@
-import { busyArray } from './createBusyArray.js';
+import { busyArray } from './create-busy-array.service.js';
 import moment from 'moment/moment.js';
 
 export const freeSlots = async (barberId: string, duration: string) => {

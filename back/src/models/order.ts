@@ -7,7 +7,7 @@ const orderSchema = new Schema({
     additional: [{ type: Schema.Types.ObjectId, ref: 'Additional' }],
     startTime: { type: Date },
     endTime: { type: Date },
-    status: { type: String, default: 'new' },
+    status: { type: String, enum: ['new','completed','canceled'] },
     price: { type: Number, default: 0 }
 }, { timestamps: true });
 

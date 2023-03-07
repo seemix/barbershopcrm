@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Barber from '../models/barber.js';
 import ApiError from '../errors/api.error.js';
-import { sendMail } from '../services/sendEmail.service.js';
 
 export const barbersController = {
     getAllBarbers: async (req: Request, res: Response, next: NextFunction) => {

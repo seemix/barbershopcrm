@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 import Order from '../models/order.js';
-import { freeSlots } from '../services/generateFreeSlots.js';
+import { freeSlots } from '../services/generate-free-slots.service.js';
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
-import { sendMail } from '../services/sendEmail.service.js';
+import { sendMail } from '../services/send-email.service.js';
 import { IOrderRecord } from '../interfaces/order-record.js';
 import barber from '../models/barber.js';
 

@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-
+import cookieParser from 'cookie-parser';
 dotenv.config();
 import mongoose from 'mongoose';
 
@@ -11,12 +11,13 @@ import ApiError from './errors/api.error.js';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(apiRouter);
 
-app.use((err: ApiError, req: Request, res: Response) => {
+app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500).json({
         message: err.message || 'Unknown error',
         status: err.status || 500
