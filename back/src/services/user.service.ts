@@ -17,7 +17,7 @@ export const userService = {
         const userData = await User.create({ email, password: hashedPassword, barber, role: 'user' });
         const payload: IUserPayload = { id: String(userData._id), email: userData.email, role: String(userData.role) };
         const tokens = tokenService.generateTokens(payload);
-        await tokenService.saveToken(payload.id, tokens.refreshToken);
+        await tokenService.saveToken(payload.id as string, tokens.refreshToken);
         return { ...tokens, user: payload };
     },
     login: async (email: string, password: string) => {
@@ -31,7 +31,22 @@ export const userService = {
         }
         const userData: IUserPayload = { email: user.email, id: String(user._id), role: String(user.role) };
         const tokens = tokenService.generateTokens(userData);
-        await tokenService.saveToken(userData.id, tokens.refreshToken);
+        await tokenService.saveToken(userData.id as string, tokens.refreshToken);
         return { ...tokens, user: userData };
+    },
+    logout: async (refreshToken: string) => {
+        return await tokenService.removeToken(refreshToken);
+    },
+    refresh: async (refreshToken: string) => {
+        if (!refreshToken) throw new ApiError('Authorization error', 401);
+        const userData = await tokenService.validateRefreshToken(refreshToken);
+        const tokenFromDb = await tokenService.findToken(refreshToken);
+        if (!userData || !tokenFromDb) {
+            throw new ApiError('Unauthorized', 401);
+        }
+        const tokens = tokenService.generateTokens(userData as IUserPayload);
+        await tokenService.saveToken(String((userData as IUserPayload).id), tokens.refreshToken);
+        return { ...tokens, user: userData };
+
     }
 };

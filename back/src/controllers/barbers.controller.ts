@@ -13,7 +13,6 @@ export const barbersController = {
                 .select('rating')
                 .select('isActive')
                 .sort({ order: 'asc' });
-           // await sendMail();
             res.json(allBarbers).status(200);
         } catch (e) {
             next(new ApiError('Error getting barbers', 400));

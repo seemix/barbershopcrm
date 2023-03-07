@@ -33,6 +33,10 @@ export const authController = {
     },
     logout: async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const { refreshToken } = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie('refreshToken');
+            res.json(token);
 
         } catch (e) {
             next(new ApiError('Error while logout', 500));
@@ -40,6 +44,8 @@ export const authController = {
     },
     refresh: async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const { refreshToken } = req.cookies;
+         //   const userData = userService.
 
         } catch (e) {
             next(new ApiError('Error refresh', 500));

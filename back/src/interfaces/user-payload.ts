@@ -1,5 +1,5 @@
 export interface IUserPayload {
-    id: string;
-    role: string;
-    email: string;
+    id: string | null;
+    role: string | null;
+    email: string | null;
 }

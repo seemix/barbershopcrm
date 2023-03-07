@@ -17,5 +17,25 @@ export const tokenService = {
         }
         return await Token.create({ user: userId, refreshToken });
     },
+    removeToken: async (refreshToken: string) => {
+        return Token.deleteOne({ refreshToken });
+    },
+    validateAccessToken: async (accessToken: string) => {
+        try {
+            return jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET as string);
+        } catch (e) {
+            return null;
+        }
+    },
+    validateRefreshToken: async (refreshToken: string) => {
+        try {
+            return jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string);
+        } catch (e) {
+            return null;
+        }
+    },
+    findToken: async (refreshToken: string) => {
+        return Token.findOne({ refreshToken });
+    }
 
 };
