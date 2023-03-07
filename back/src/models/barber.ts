@@ -7,10 +7,10 @@ const barberSchema = new Schema({
     picture: { type: String },
     email: { type: String, trim: true, required: true, lowercase: true, unique: true },
     phone: { type: String, trim: true, required: true, unique: true },
-    password: { type: String },
+   // password: { type: String },
     order: { type: Number },
     isActive: { type: Boolean, default: false },
-    role: { type: String, enum: ['admin', 'user'] }
+    //role: { type: String, enum: ['admin', 'user'] }
 });
 
 export default model('Barber', barberSchema);

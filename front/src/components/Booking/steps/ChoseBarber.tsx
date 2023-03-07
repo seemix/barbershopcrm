@@ -24,19 +24,20 @@ const ChoseBarber = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' &&
                     <div>
-                    {
-                        activeBarbers.map(barber => <Barber
-                            key={barber._id}
-                            description={barber.description}
-                            name={barber.name}
-                            picture={barber.picture}
-                            rating={barber.rating}
-                            isActive={barber.isActive}
-                            _id={barber._id}
-                        />)
-                    }
-                </div>
+                        {
+                            activeBarbers.map(barber => <Barber
+                                key={barber._id}
+                                description={barber.description}
+                                name={barber.name}
+                                picture={barber.picture}
+                                rating={barber.rating}
+                                isActive={barber.isActive}
+                                _id={barber._id}
+                            />)
+                        }
+                    </div>
                 }
+                <div> </div>
                 <div className={'buttons_wrapper'}>
                     <div></div>
                     <div>

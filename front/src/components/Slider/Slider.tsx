@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../hooks/redux';
 import { openBooking } from '../../store/order';
 
 const Slider: FC = () => {
-   // const isShowBooking = useAppSelector(state => state.orderStore.showBooking);
+    // const isShowBooking = useAppSelector(state => state.orderStore.showBooking);
     const dispatch = useAppDispatch();
     const handleBooking = () => {
         dispatch(openBooking());
@@ -22,7 +22,7 @@ const Slider: FC = () => {
                         <h1>Welcome to LevelUP Barbershop</h1>
                         <div>
                             <Link to={'booking'} smooth={true} spy={false}
-                                  duration={800}>
+                                  duration={800} offset={-80}>
                                 <button className={'button-5 booking'} onClick={handleBooking}>ЗАПИСАТЬСЯ</button>
                             </Link>
                         </div>

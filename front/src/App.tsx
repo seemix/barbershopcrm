@@ -16,8 +16,8 @@ const App: FC = () => {
         <ThemeProvider theme={theme}>
         <div id={'top'}>
             <Header/>
-            <Booking/>
             <Slider/>
+            <Booking/>
             <Services/>
             <Barbers/>
             <Contacts/>
