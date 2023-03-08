@@ -14,7 +14,7 @@ export const userService = {
         const barber = await Barber.findOne({ email });
         if (!barber) throw new ApiError('No such barber in base', 400);
         const hashedPassword = await bcrypt.hash(password, 4);
-        const userData = await User.create({ email, password: hashedPassword, barber, role: 'user' });
+        const userData = await User.create({ email, password: hashedPassword, barber, role: process.env.USER_ROLE });
         const payload: IUserPayload = { id: String(userData._id), email: userData.email, role: String(userData.role) };
         const tokens = tokenService.generateTokens(payload);
         await tokenService.saveToken(payload.id as string, tokens.refreshToken);
@@ -44,9 +44,9 @@ export const userService = {
         if (!userData || !tokenFromDb) {
             throw new ApiError('Unauthorized', 401);
         }
+        const { id } = userData as IUserPayload;
         const tokens = tokenService.generateTokens(userData as IUserPayload);
         await tokenService.saveToken(String((userData as IUserPayload).id), tokens.refreshToken);
         return { ...tokens, user: userData };
-
     }
 };

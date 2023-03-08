@@ -1,29 +1,28 @@
 import React, { FC } from 'react';
-import Header from './components/Header/Header';
-import Services from './components/Services/Services';
-import Slider from './components/Slider/Slider';
-import Barbers from './components/Barbers/Barbers';
-import Contacts from './components/Contacts/Contacts';
-import Footer from './components/Footer/Footer';
-import ScrollToTop from "react-scroll-to-top";
-import Booking from './components/Booking/Booking';
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
+
 import theme from './themes/theme';
 import './App.css';
+import Login from './components/Admin/Login/Login';
+import MainAdmin from './components/Admin/MainAdmin';
+const Layout = React.lazy(() => import('./components/Layout/Layout'));
+const AdminLayout = React.lazy(() => import('./components/Admin/AdminLayout'));
 
 const App: FC = () => {
     return (
         <ThemeProvider theme={theme}>
-        <div id={'top'}>
-            <Header/>
-            <Slider/>
-            <Booking/>
-            <Services/>
-            <Barbers/>
-            <Contacts/>
-            <Footer/>
-            <ScrollToTop className={'top_scroll'} component={'↑'} smooth style={{backgroundColor: '#9e8a78', borderRadius: 3}}/>
-        </div>
+            <Routes>
+                <Route index element={<React.Suspense fallback={<>....fuck</>}>
+                    <Layout/>
+                </React.Suspense>}/>
+                <Route path={'admin'} element={<React.Suspense fallback={<>...fuck</>}>
+                    <AdminLayout/>
+                </React.Suspense>}>
+                    <Route path={''} element={<MainAdmin/>}/>
+                </Route>
+                <Route path={'admin/login'} element={<Login/>}/>
+            </Routes>
         </ThemeProvider>
     );
 };
