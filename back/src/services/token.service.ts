@@ -4,9 +4,9 @@ import { IUserPayload } from '../interfaces/user-payload.js';
 
 
 export const tokenService = {
-    generateTokens: (payload: IUserPayload) => {
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
-        const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
+    generateTokens: (payload:IUserPayload) => {
+        const accessToken = jwt.sign({payload}, process.env.JWT_ACCESS_SECRET as string, { expiresIn: '10m' });
+        const refreshToken = jwt.sign({payload}, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '30d' });
         return { accessToken, refreshToken };
     },
     saveToken: async (userId: string, refreshToken: string) => {
@@ -37,5 +37,4 @@ export const tokenService = {
     findToken: async (refreshToken: string) => {
         return Token.findOne({ refreshToken });
     }
-
 };

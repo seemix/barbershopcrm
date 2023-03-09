@@ -37,13 +37,14 @@ export const userService = {
     },
     refresh: async (refreshToken: string) => {
         if (!refreshToken) throw new ApiError('Authorization error', 401);
-        const userData = await tokenService.validateRefreshToken(refreshToken);
+        const userData: any = await tokenService.validateRefreshToken(refreshToken);
         const tokenFromDb = await tokenService.findToken(refreshToken);
         if (!userData || !tokenFromDb) {
             throw new ApiError('Unauthorized', 401);
         }
-        const tokens = tokenService.generateTokens(userData as IUserPayload);
-        await tokenService.saveToken(String((userData as IUserPayload).id), tokens.refreshToken);
-        return { ...tokens, user: userData };
+        const { payload } = userData;
+        const tokens = tokenService.generateTokens(payload);
+        await tokenService.saveToken(String(payload.id), tokens.refreshToken);
+        return { ...tokens, user: userData.payload };
     }
 };

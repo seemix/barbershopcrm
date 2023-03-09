@@ -16,5 +16,5 @@ export const authService = {
         }).then(value => value.data),
     logout: () => axiosService.post('/auth/logout').then(value => value.data),
     checkAuth: () => axiosService.get('/auth/refresh',
-        { withCredentials: true }).then(value => value.data)
+        { withCredentials: true })
 };

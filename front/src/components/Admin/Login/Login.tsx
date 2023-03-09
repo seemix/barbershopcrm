@@ -6,10 +6,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import { Alert } from '@mui/material';
 import Container from '@mui/material/Container';
 
 import { login } from '../../../store/auth';
-import { Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -17,14 +17,12 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 const Login = () => {
     const sendForm = (data: any) => {
         dispatch(login(data));
-       // console.log(data);
-    }
+    };
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useAppDispatch();
     const response = useAppSelector(state => state.authStore);
-    console.log(response);
     return (
-        <div>
+        <div style={{ backgroundColor: '#fcf9f5' }}>
             <div>
                 <Container maxWidth="xs">
                     <Box
@@ -50,9 +48,10 @@ const Login = () => {
                                     fullWidth
                                     autoComplete="email"
                                     {...register('email', {
-                                        required: 'This field is required'})}
+                                        required: 'This field is required'
+                                    })}
                                     error={!!errors.email}
-                                  //  helperText={errors?.email ? errors.email.message : null}
+                                    //  helperText={errors?.email ? errors.email.message : null}
                                 />
                                 <TextField
                                     margin={'normal'}
@@ -62,18 +61,17 @@ const Login = () => {
                                     type={'password'}
                                     autoComplete="password"
                                     {...register('password', {
-                                        required: 'This field is required'})}
+                                        required: 'This field is required'
+                                    })}
                                     error={!!errors.password}
-                                  //  helperText={errors?.password ? errors.password.message : null}
+                                    //  helperText={errors?.password ? errors.password.message : null}
                                 />
-
                                 <Button
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                >
-                                    Sign In
+                                >Войти
                                 </Button>
                             </form>
                             <Grid container>
@@ -83,10 +81,7 @@ const Login = () => {
                                     {/*</Link>*/}
                                 </Grid>
                                 <Grid item>
-                                    Don't have an account? Sign Up
-
-                                    <Link to={'/register'}> <Button variant={'text'}>Sign up</Button> </Link>
-
+                                    <Link to={'/register'}> <Button variant={'text'}>регистрация</Button> </Link>
                                 </Grid>
                             </Grid>
                         </Box>
@@ -98,5 +93,5 @@ const Login = () => {
             </div>
         </div>
     );
-}
+};
 export default Login;

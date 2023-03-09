@@ -10,16 +10,13 @@ import { IMenuItem } from './models/IMenuItem';
 import logo from '../../images/logo.png';
 
 const Header: FC = () => {
-
     const [openMenu, setOpenMenu] = useState(false);
     const handleMenuButton = () => setOpenMenu(!openMenu);
-
     return (
         <nav className={'navbar_items'} id={'menu'}>
             <h1>
                 <img className={'main_logo'} src={logo} alt="logo"/>
             </h1>
-
             <div className={'instagram_icon'}>
                 <a target="_blank" rel="noreferrer" href="front/src/components/Header/Header"
                    style={{ color: 'whitesmoke', textDecoration: 'none' }}>

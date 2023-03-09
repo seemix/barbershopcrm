@@ -1,8 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService } from '../services/auth.service';
 import { IAuthUser } from '../interfaces/auth-user';
-import axiosService from '../services/axios.service';
-import { IAuthResponse } from '../interfaces/auth-response';
 
 interface IInitialState {
     status: string;
@@ -42,7 +40,6 @@ export const login = createAsyncThunk(
     async (params: IParams, thunkAPI) => {
         try {
             const { email, password } = params;
-            console.log(password);
             return await authService.login(email, password);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
@@ -63,10 +60,9 @@ export const logout = createAsyncThunk(
 
 export const checkAuth = createAsyncThunk(
     'authSlice/checkAuth',
-    async (params: IParams, thunkAPI) => {
+    async (_, thunkAPI) => {
         try {
-            const response = await authService.checkAuth();
-            localStorage.setItem('token', response.data.accessToken);
+            return  await authService.checkAuth();
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -124,7 +120,11 @@ const authSlice = createSlice({
             })
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.error = null;
-               // state.user = action.payload.data.user as IAuthUser;
+                state.status = 'fulfilled';
+                state.error = null;
+                localStorage.setItem('token', action.payload.data.accessToken);
+                state.user = action.payload.data.user;
+                state.auth = true;
 
             })
 

@@ -19,7 +19,7 @@ export const getAllBarbers = createAsyncThunk(
         try {
             return await barbersService.getAll;
         } catch (e) {
-           return  thunkAPI.rejectWithValue(e);
+            return thunkAPI.rejectWithValue(e);
         }
 
     });
@@ -40,7 +40,7 @@ export const barbersSlice = createSlice({
             })
             .addCase(getAllBarbers.rejected, (state, action) => {
                 state.status = 'error';
-                 state.error = action.payload as string;
+                state.error = action.payload as string;
             });
     }
 });
