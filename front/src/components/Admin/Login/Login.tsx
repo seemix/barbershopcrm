@@ -8,20 +8,21 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { useDispatch, useSelector } from 'react-redux';
-//import { login } from '../../store/auth.slice';
+import { login } from '../../../store/auth';
 import { Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 const Login = () => {
     const sendForm = (data: any) => {
-     //   dispatch(login(data));
+        dispatch(login(data));
+       // console.log(data);
     }
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
-  //  const response = useSelector(state => state.authStore);
-
+    const dispatch = useAppDispatch();
+    const response = useAppSelector(state => state.authStore);
+    console.log(response);
     return (
         <div>
             <div>
@@ -37,7 +38,7 @@ const Login = () => {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon/>
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component="h2" variant="h5">
                             Sign in
                         </Typography>
                         <Box sx={{ mt: 1 }}>
@@ -91,9 +92,9 @@ const Login = () => {
                         </Box>
                     </Box>
                 </Container>
-                {/*{response.status === 'rejected' || response.error ?*/}
-                {/*    <Alert severity="error">Bad login or password! {response.error}</Alert> : ''}*/}
-                {/*{response.auth ? <Navigate to={'/'}/> : ''}*/}
+                {response.status === 'error' || response.error ?
+                    <Alert severity="error">Bad login or password! {response.error}</Alert> : ''}
+                {response.auth ? <Navigate to={'/admin'}/> : ''}
             </div>
         </div>
     );

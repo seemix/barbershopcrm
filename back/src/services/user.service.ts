@@ -16,9 +16,7 @@ export const userService = {
         const hashedPassword = await bcrypt.hash(password, 4);
         const userData = await User.create({ email, password: hashedPassword, barber, role: process.env.USER_ROLE });
         const payload: IUserPayload = { id: String(userData._id), email: userData.email, role: String(userData.role) };
-        const tokens = tokenService.generateTokens(payload);
-        await tokenService.saveToken(payload.id as string, tokens.refreshToken);
-        return { ...tokens, user: payload };
+        return { ...payload };
     },
     login: async (email: string, password: string) => {
         const user = await User.findOne({ email });
@@ -44,7 +42,6 @@ export const userService = {
         if (!userData || !tokenFromDb) {
             throw new ApiError('Unauthorized', 401);
         }
-        const { id } = userData as IUserPayload;
         const tokens = tokenService.generateTokens(userData as IUserPayload);
         await tokenService.saveToken(String((userData as IUserPayload).id), tokens.refreshToken);
         return { ...tokens, user: userData };

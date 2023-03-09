@@ -13,8 +13,7 @@ export const authController = {
             }
             const { email, password } = req.body;
             const userData = await userService.register(email, password);
-            res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 3600000, httpOnly: true })
-                .status(201)
+            res.status(201)
                 .json(userData);
         } catch (e) {
             next(e);
@@ -45,8 +44,9 @@ export const authController = {
     refresh: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { refreshToken } = req.cookies;
-         //   const userData = userService.
-
+            const userData = await userService.refresh(refreshToken);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(userData);
         } catch (e) {
             next(new ApiError('Error refresh', 500));
         }

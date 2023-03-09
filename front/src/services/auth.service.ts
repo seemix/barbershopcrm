@@ -8,11 +8,13 @@ export const authService = {
         axiosService.post('/auth/login', {
             email,
             password
-        }).then(value => value.data),
-    register: (email: string, password: string): Promise<AxiosResponse<IAuthResponse>> =>
+        }),
+    register: (email: string, password: string) =>
         axiosService.post('/auth/register', {
             email,
             password
         }).then(value => value.data),
-    logout: () => axiosService.post('/auth/logout').then(value => value.data)
+    logout: () => axiosService.post('/auth/logout').then(value => value.data),
+    checkAuth: () => axiosService.get('/auth/refresh',
+        { withCredentials: true }).then(value => value.data)
 };
