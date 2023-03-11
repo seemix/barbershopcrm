@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { barberScheduleController } from '../controllers/barberSchedule.js';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { roles } from '../config/roles.config.js';

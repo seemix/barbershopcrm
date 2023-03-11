@@ -128,10 +128,8 @@ const CustomerForm = () => {
                                 </Button>
                             }
                         </div>
-
                     </div>
                 </form>
-
             </div>
         </div>
     );

@@ -7,6 +7,7 @@ import additionalStore from './additional';
 import freeSlotsStore from './slots';
 import recordStore from './record';
 import authStore from './auth';
+import scheduleStore from './schedule';
 
 export const store = configureStore({
     reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
         additionalStore,
         freeSlotsStore,
         recordStore,
-        authStore
+        authStore,
+        scheduleStore
     }
 });
 

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService } from '../services/auth.service';
 import { IAuthUser } from '../interfaces/auth-user';
+import { ILoginParams } from '../interfaces/login-params';
 
 interface IInitialState {
     status: string;
@@ -10,22 +11,18 @@ interface IInitialState {
     accessToken: string | null;
 }
 
-interface IParams {
-    email: string;
-    password: string;
-}
 
 const initialState: IInitialState = {
     status: '',
     error: null,
     accessToken: '',
     auth: false,
-    user: { email: '', role: '', id: '' }
+    user: { name: '', role: '', id: '' }
 };
 
 export const register = createAsyncThunk(
     'authSlice/register',
-    async (params: IParams, thunkAPI) => {
+    async (params: ILoginParams, thunkAPI) => {
         try {
             const { email, password } = params;
             return await authService.register(email, password);
@@ -37,7 +34,7 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
     'authSlice/login',
-    async (params: IParams, thunkAPI) => {
+    async (params: ILoginParams, thunkAPI) => {
         try {
             const { email, password } = params;
             return await authService.login(email, password);
@@ -99,7 +96,7 @@ const authSlice = createSlice({
                 state.user = action.payload.data.user;
                 state.auth = true;
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(login.rejected, state => {
                 state.status = 'error';
                 state.error = 'ERROR';
             })
@@ -125,7 +122,6 @@ const authSlice = createSlice({
                 localStorage.setItem('token', action.payload.data.accessToken);
                 state.user = action.payload.data.user;
                 state.auth = true;
-
             })
 
     }

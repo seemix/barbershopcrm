@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
@@ -29,5 +29,6 @@ app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
 
 
 app.listen(config.PORT, () => {
-    mongoose.connect(process.env.MONGO_URL as string).then(() => console.log('db connected')).catch((e) => console.log(e));
+    mongoose.set('strictQuery', true)
+        .connect(process.env.MONGO_URL as string).then(() => console.log('db connected')).catch((e) => console.log(e));
 });

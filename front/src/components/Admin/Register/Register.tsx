@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Alert } from '@mui/material';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
 
@@ -36,13 +36,13 @@ const Login = () => {
                     <Avatar sx={{ m: 1, width: 56, height: 56 }} src={logo}>
                     </Avatar>
                     <Typography component="h4" variant="h6">
-                        Вход в админ-панель
+                        Регистрация в админ-панели
                     </Typography>
                     <Box sx={{ mt: 1 }}>
                         <form onSubmit={handleSubmit((data) => sendForm(data))}>
                             <TextField
                                 margin={'normal'}
-                                label={'Email Address'}
+                                label={'email'}
                                 variant={'outlined'}
                                 fullWidth
                                 autoComplete="email"
@@ -54,7 +54,7 @@ const Login = () => {
                             />
                             <TextField
                                 margin={'normal'}
-                                label={'Password'}
+                                label={'пароль'}
                                 variant={'outlined'}
                                 fullWidth
                                 type={'password'}
@@ -65,12 +65,25 @@ const Login = () => {
                                 error={!!errors.password}
                                 //  helperText={errors?.password ? errors.password.message : null}
                             />
+                            <TextField
+                                margin={'normal'}
+                                label={'повторите пароль'}
+                                variant={'outlined'}
+                                fullWidth
+                                type={'password'}
+                                autoComplete="password"
+                                {...register('confirmPassword', {
+                                    required: 'This field is required'
+                                })}
+                                error={!!errors.password}
+                                //  helperText={errors?.password ? errors.password.message : null}
+                            />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
-                            >Войти
+                            >Зарегистрироваться
                             </Button>
                         </form>
                         <Grid container>
@@ -79,9 +92,9 @@ const Login = () => {
                                 {/*    Forgot password?*/}
                                 {/*</Link>*/}
                             </Grid>
-                            <Grid item>
-                                <Link to={'/admin/register'}> <Button variant={'text'}>регистрация</Button> </Link>
-                            </Grid>
+                            {/*<Grid item>*/}
+                            {/*    <Link to={'/register'}> <Button variant={'text'}>регистрация</Button> </Link>*/}
+                            {/*</Grid>*/}
                         </Grid>
                     </Box>
                 </Box>
