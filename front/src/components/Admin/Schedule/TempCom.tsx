@@ -3,11 +3,10 @@ import { ProcessedEvent, SchedulerHelpers } from '@aldabil/react-scheduler/types
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { DateTimeField, TimePicker } from '@mui/x-date-pickers';
+import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { createSchedule } from '../../../store/schedule';
-import { PickerChangeHandler } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
