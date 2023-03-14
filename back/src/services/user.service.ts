@@ -15,7 +15,12 @@ export const userService = {
         if (!barber) throw new ApiError('No such barber in base', 400);
         const hashedPassword = await bcrypt.hash(password, 4);
         const userData = await User.create({ email, password: hashedPassword, barber, role: process.env.USER_ROLE });
-        const payload: IUserPayload = { id: String(userData._id), name: barber.name, role: String(userData.role) };
+        const payload: IUserPayload = {
+            id: String(userData._id),
+            name: barber.name,
+            role: String(userData.role),
+            barber: String(barber._id)
+        };
         return { ...payload };
     },
     login: async (email: string, password: string) => {
@@ -27,11 +32,16 @@ export const userService = {
         if (!equalPassword) {
             throw new ApiError('Bad email or password', 401);
         }
-        const barber = await Barber.findOne({email});
-        if(!barber) {
+        const barber = await Barber.findOne({ email });
+        if (!barber) {
             throw new ApiError('Bad email or password', 401);
         }
-        const userData: IUserPayload = { name: barber.name, id: String(user._id), role: String(user.role) };
+        const userData: IUserPayload = {
+            name: barber.name,
+            id: String(user._id),
+            role: String(user.role),
+            barber: String(barber._id)
+        };
         const tokens = tokenService.generateTokens(userData);
         await tokenService.saveToken(userData.id as string, tokens.refreshToken);
         return { ...tokens, user: userData };

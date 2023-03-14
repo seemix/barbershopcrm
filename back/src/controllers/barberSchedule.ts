@@ -5,8 +5,17 @@ import ApiError from '../errors/api.error.js';
 export const barberScheduleController = {
     createBarberScheduler: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const newSchedule = await Schedule.create(req.body);
-            res.json(newSchedule).status(200);
+            const { data } = req.body;
+            const { schedule } = data;
+            const params = {
+                startTime: schedule[0].start,
+                endTime: schedule[0].end,
+                barber: schedule[0].barber
+            }
+           // console.log(params);
+            const newSchedule = await Schedule.create(params);
+            console.log(newSchedule);
+            res.json(newSchedule).status(201);
         } catch (e) {
             //next(e);
             next(new ApiError('Error creating schedule', 500));
@@ -18,7 +27,7 @@ export const barberScheduleController = {
             const result = schedule.map(item => {
                 return {
                     event_id: item._id,
-                    title: 'xxx',
+                 //   title: '',
                     start: item.startTime,
                     end: item.endTime
                 };
@@ -95,7 +104,7 @@ export const barberScheduleController = {
                     admin_id: 2
                 }
             ];
-            res.json(arr);
+            res.json(result);
 
         } catch (e) {
             next(new ApiError('Error getting schedule', 500));

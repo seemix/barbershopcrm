@@ -10,6 +10,10 @@ import authStore from './auth';
 import scheduleStore from './schedule';
 
 export const store = configureStore({
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
     reducer: {
         barberStore,
         orderStore,

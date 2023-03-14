@@ -7,13 +7,15 @@ interface IInitialState {
     error: null | string;
     status: string | null;
     loading: boolean;
+    newId: string | null;
 }
 
 const initialState: IInitialState = {
     schedule: [],
     error: null,
     status: null,
-    loading: false
+    loading: false,
+    newId: null
 };
 
 export const getScheduleByBarber = createAsyncThunk(
@@ -63,9 +65,11 @@ const scheduleSlice = createSlice({
                 state.status = 'loading';
                 state.error = null;
             })
-            .addCase(createSchedule.fulfilled, state => {
+            .addCase(createSchedule.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
+                state.newId = action.payload;
+                state.schedule.push(action.payload);
             })
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';

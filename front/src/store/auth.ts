@@ -17,7 +17,7 @@ const initialState: IInitialState = {
     error: null,
     accessToken: '',
     auth: false,
-    user: { name: '', role: '', id: '' }
+    user: { name: '', role: '', id: '', barber: '' }
 };
 
 export const register = createAsyncThunk(

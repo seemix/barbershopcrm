@@ -24,7 +24,11 @@ export const authController = {
         try {
             const { email, password } = req.body;
             const userData = await userService.login(email, password);
-            res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 3600000, httpOnly: true })
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 3600000,
+                httpOnly: true,
+                sameSite: true
+            })
                 .status(201)
                 .json(userData);
         } catch (e) {
@@ -46,7 +50,11 @@ export const authController = {
         try {
             const { refreshToken } = req.cookies;
             const userData = await userService.refresh(refreshToken);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                sameSite: true
+            });
             return res.json(userData);
         } catch (e) {
             console.log(e);
