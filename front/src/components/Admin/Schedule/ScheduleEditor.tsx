@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ProcessedEvent, SchedulerHelpers } from '@aldabil/react-scheduler/types';
+import { SchedulerHelpers } from '@aldabil/react-scheduler/types';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
@@ -7,13 +7,12 @@ import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { createSchedule, getScheduleByBarber } from '../../../store/schedule';
-import barber from '../../Booking/steps/Barber/Barber';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
 }
 
-const TempCom = ({ scheduler }: CustomEditorProps) => {
+const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
     const event = scheduler.edited;
     const { user } = useAppSelector(state => state.authStore);
     const dispatch = useAppDispatch();
@@ -31,14 +30,6 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
             count: state.count
         }));
         dispatch(getScheduleByBarber(user.barber));
-        const added_updated_event: ProcessedEvent =
-            {
-                event_id: scheduler?.state.event_id.value || Math.random(),
-                title: '',
-                start: new Date(state.start),
-                end: new Date(state.end)
-            };
-        //scheduler.onConfirm(added_updated_event, event ? 'edit' : 'create');
         scheduler.close();
     };
     const start = String(scheduler.state.start.value);
@@ -105,7 +96,7 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
                 </div>
                 <div style={{ margin: '0 auto' }}>
                     <DialogActions>
-                        <Button onClick={handleSubmit}>Добавить</Button>
+                        <Button onClick={handleSubmit}>ОК</Button>
                         <Button onClick={scheduler.close}>Отмена</Button>
                     </DialogActions>
                 </div>
@@ -114,4 +105,4 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
     );
 };
 
-export default TempCom;
+export default ScheduleEditor;

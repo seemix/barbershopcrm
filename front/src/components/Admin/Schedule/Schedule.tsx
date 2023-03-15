@@ -1,75 +1,28 @@
 import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import React, { useEffect } from 'react';
-import { ProcessedEvent, SchedulerProps } from '@aldabil/react-scheduler/types';
 
-import TempCom from './TempCom';
+import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getScheduleByBarber } from '../../../store/schedule';
 
 
 const Schedule = () => {
-    const { setEvents, events } = useScheduler();
+    const { setEvents } = useScheduler();
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.authStore);
     const { result, status, trigger } = useAppSelector(state => state.scheduleStore);
-    // setEvents(result);
 
     useEffect(() => {
         setEvents(result);
         dispatch(getScheduleByBarber(user.barber));
     }, [dispatch, trigger]);
 
-
-    const deleteF = async (): Promise<string | number | void> => {
-        return new Promise((resolve, reject) => {
-            resolve('ok');
-        });
-    };
-
-    const remote = async (): Promise<ProcessedEvent[]> => {
-        if (status === 'fulfilled') return result as ProcessedEvent[];
-        return [];
-    };
-
-
-    const fetchRemote = async (): Promise<ProcessedEvent[]> => {
-        // console.log({ query });
-        /**Simulate fetchin remote data */
-        return new Promise((res, rej) => {
-            fetch('http://localhost:6000/schedule/63e7cfcf5f71d58ec927d84e').then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    rej(`HTTP error! status: ${response.status}`);
-                }
-            })
-                .then(data => {
-                    // @ts-ignore
-                    const result = data.map(item => {
-                        return {
-                            event_id: item.event_id,
-                            title: item.title,
-                            start: new Date(item.start),
-                            end: new Date(item.end),
-                            color: item.color
-                        };
-                    });
-                    res(result);
-                })
-                .catch(error => {
-                    rej(`Fetch error: ${error}`);
-                });
-        });
-    };
-
     return (
         <div>
-            <h4>РАСПИСАНИЕ</h4>
-            {status === null || status === 'fulfilled' &&
+            <h2>РАСПИСАНИЕ</h2>
+            {(status === null || status === 'fulfilled') &&
                 <Scheduler
-                    customEditor={(scheduler) => <TempCom scheduler={scheduler}/>}
-                    //
-                    //
+                    customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
                     events={result}
                     // getRemoteEvents={remote}
                     //onDelete={handleDelete}
@@ -90,7 +43,6 @@ const Schedule = () => {
                                     flexDirection: 'column',
                                     justifyContent: 'space-between',
                                     height: '100%',
-                                    //   background: "#757575"
                                 }}
                             >
                                 <div
