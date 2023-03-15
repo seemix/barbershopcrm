@@ -1,28 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ISchedule, IScheduleCreate } from '../interfaces/schedule-create';
 import { scheduleService } from '../services/schedule.service';
+import { ProcessedEvent } from '@aldabil/react-scheduler/types';
 
 interface IInitialState {
     schedule: ISchedule[] | any;
+    result: ProcessedEvent[];
     error: null | string;
     status: string | null;
-    loading: boolean;
-    newId: string | null;
+    trigger: number;
 }
 
 const initialState: IInitialState = {
     schedule: [],
+    result: [],
     error: null,
     status: null,
-    loading: false,
-    newId: null
+    trigger: 0,
 };
 
 export const getScheduleByBarber = createAsyncThunk(
     'scheduleSlice/getByBarber',
     async (barberId: string, thunkAPI) => {
         try {
-           return scheduleService.getScheduleByBarber(barberId);
+            return scheduleService.getScheduleByBarber(barberId);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -48,18 +49,25 @@ const scheduleSlice = createSlice({
             .addCase(getScheduleByBarber.pending, state => {
                 state.status = 'loading';
                 state.error = null;
-                state.loading = true;
             })
             .addCase(getScheduleByBarber.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
                 state.schedule = action.payload;
-                state.loading = false;
+                // @ts-ignore
+                state.result = action.payload.map(item => {
+                    return {
+                        event_id: item.event_id,
+                        title: item.title,
+                        start: new Date(item.start),
+                        end: new Date(item.end),
+                        color: item.color || ''
+                    };
+                });
             })
             .addCase(getScheduleByBarber.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
-                state.loading = false;
             })
             .addCase(createSchedule.pending, state => {
                 state.status = 'loading';
@@ -68,8 +76,10 @@ const scheduleSlice = createSlice({
             .addCase(createSchedule.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                state.newId = action.payload;
-                state.schedule.push(action.payload);
+                state.trigger = state.trigger +1;
+                state.schedule = action.payload;
+                // @ts-ignore
+               // state.result = [];
             })
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';

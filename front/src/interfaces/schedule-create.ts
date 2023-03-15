@@ -4,8 +4,7 @@ export interface ISchedule {
     barber: string | null;
 }
 
-export interface IScheduleCreate {
-    schedule: ISchedule[];
+export interface IScheduleCreate extends ISchedule{
     count: number | 1;
 }
 

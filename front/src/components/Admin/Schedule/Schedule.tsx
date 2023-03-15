@@ -1,30 +1,37 @@
-import { Scheduler } from '@aldabil/react-scheduler';
+import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import React, { useEffect } from 'react';
+import { ProcessedEvent, SchedulerProps } from '@aldabil/react-scheduler/types';
+
 import TempCom from './TempCom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getScheduleByBarber } from '../../../store/schedule';
-import { EventActions, ProcessedEvent } from '@aldabil/react-scheduler/types';
 
 
 const Schedule = () => {
+    const { setEvents, events } = useScheduler();
     const dispatch = useAppDispatch();
-    const { schedule, newId } = useAppSelector(state => state.scheduleStore);
     const { user } = useAppSelector(state => state.authStore);
-    useEffect(() => {
-        dispatch(getScheduleByBarber(user.barber));
-    }, [dispatch, newId]);
+    const { result, status, trigger } = useAppSelector(state => state.scheduleStore);
+    // setEvents(result);
 
-    // @ts-ignore
-    const result = schedule.map(item => {
-        return {
-            event_id: item.event_id,
-            title: item.title,
-            start: new Date(item.start),
-            end: new Date(item.end),
-            color: item.color || ''
-        };
-    });
-    //  console.log(result);
+    useEffect(() => {
+        setEvents(result);
+        dispatch(getScheduleByBarber(user.barber));
+    }, [dispatch, trigger]);
+
+
+    const deleteF = async (): Promise<string | number | void> => {
+        return new Promise((resolve, reject) => {
+            resolve('ok');
+        });
+    };
+
+    const remote = async (): Promise<ProcessedEvent[]> => {
+        if (status === 'fulfilled') return result as ProcessedEvent[];
+        return [];
+    };
+
+
     const fetchRemote = async (): Promise<ProcessedEvent[]> => {
         // console.log({ query });
         /**Simulate fetchin remote data */
@@ -47,7 +54,6 @@ const Schedule = () => {
                             color: item.color
                         };
                     });
-                    console.log(result);
                     res(result);
                 })
                 .catch(error => {
@@ -59,51 +65,48 @@ const Schedule = () => {
     return (
         <div>
             <h4>РАСПИСАНИЕ</h4>
-            {result[0] &&
+            {status === null || status === 'fulfilled' &&
                 <Scheduler
                     customEditor={(scheduler) => <TempCom scheduler={scheduler}/>}
-                    // loading={loading}
-                    // getRemoteEvents={fetchRemote}
+                    //
+                    //
                     events={result}
-                    viewerExtraComponent={(fields, event) => {
+                    // getRemoteEvents={remote}
+                    //onDelete={handleDelete}
+                    // viewerExtraComponent={(fields, event) => {
+                    //     return (
+                    //         <div>
+                    //             <p>Useful to render custom fields...</p>
+                    //             <p>Description: {event.days || 'Nothing...'}</p>
+                    //         </div>
+                    //     );
+                    // }}
+                    // onConfirm={}
+                    eventRenderer={(event) => {
                         return (
-                            <div>
-                                <p>Useful to render custom fields...</p>
-                                <p>Description: {event.days || 'Nothing...'}</p>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    height: '100%',
+                                    //   background: "#757575"
+                                }}
+                            >
+                                <div
+                                    style={{ height: 20, background: '#ffffffb5', color: 'black' }}
+                                >
+                                    {event.start.toLocaleTimeString('ru-RU', {
+                                        timeStyle: 'short'
+                                    })}
+                                </div>
+                                <div
+                                    style={{ height: 20, background: '#ffffffb5', color: 'black' }}
+                                >
+                                    {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                                </div>
                             </div>
                         );
-                    }}
-                    //onConfirm={confirmFunc}
-                    // schedule[1] && <Child events={kolya}/>
-                    eventRenderer={(event) => {
-                       // if (+event.event_id % 2 === 0) {
-                            return (
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        justifyContent: "space-between",
-                                        height: "100%",
-                                     //   background: "#757575"
-                                    }}
-                                >
-                                    <div
-                                        style={{ height: 20, background: "#ffffffb5", color: "black" }}
-                                    >
-                                        {event.start.toLocaleTimeString("ru-RU", {
-                                            timeStyle: "short"
-                                        })}
-                                    </div>
-                                    {/*<div>{event.title}</div>*/}
-                                    <div
-                                        style={{ height: 20, background: "#ffffffb5", color: "black" }}
-                                    >
-                                        {event.end.toLocaleTimeString("ru-RU", { timeStyle: "short" })}
-                                    </div>
-                                </div>
-                            );
-                        //}
-                       // return null;
                     }}
                 />
             }

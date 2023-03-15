@@ -6,7 +6,8 @@ import dayjs from 'dayjs';
 import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { createSchedule } from '../../../store/schedule';
+import { createSchedule, getScheduleByBarber } from '../../../store/schedule';
+import barber from '../../Booking/steps/Barber/Barber';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -17,34 +18,27 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
     const { user } = useAppSelector(state => state.authStore);
     const dispatch = useAppDispatch();
     const [state, setState] = useState({
+        event_id: scheduler?.state.event_id.value,
         start: scheduler?.state.start.value || '',
-        end: event?.end || '',
+        end: event?.end || scheduler.state.end.value,
         count: 1
     });
     const handleSubmit = async () => {
-        //e.preventDefault();
-        //  const event = scheduler.state;
-        // scheduler.onConfirm(event, null);
         await dispatch(createSchedule({
-            schedule: [{
-                start: String(scheduler.state.start.value),
-                //end: String(scheduler.state.end.value),
-                end: String(state.end),
-                barber: user.barber
-            }],
-            count: 2
+            start: String(scheduler.state.start.value),
+            end: String(state.end),
+            barber: user.barber,
+            count: state.count
         }));
+        dispatch(getScheduleByBarber(user.barber));
         const added_updated_event: ProcessedEvent =
             {
-                event_id: Math.random(),
+                event_id: scheduler?.state.event_id.value || Math.random(),
                 title: '',
                 start: new Date(state.start),
                 end: new Date(state.end)
-                // start: scheduler.state.start.value,
-                // end: scheduler.state.end.value,
-                // barber: '63e7cfcf5f71d58ec927d84e'
             };
-      //  scheduler.onConfirm(added_updated_event, event ? 'edit' : 'create');
+        //scheduler.onConfirm(added_updated_event, event ? 'edit' : 'create');
         scheduler.close();
     };
     const start = String(scheduler.state.start.value);
@@ -57,8 +51,6 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
             };
         });
     };
-    console.log(state);
-    // @ts-ignore
     return (
         <div style={{
             display: 'flex',
@@ -68,54 +60,48 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
             padding: '20px'
         }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <div><p style={{ textAlign: 'center' }}><big>Добавить промежуток</big></p></div>
+                <div><p style={{ textAlign: 'center' }}>Добавить/редактировать промежуток</p></div>
                 <div>
                     <DateTimeField
-                    ///inputRef={...register({ required: true })}
-                    label={'start'}
-                    defaultValue={dayjs(start)}
-                    ampm={false}
-                    disabled
-                    onChange={(e) => handleChange(String(e), 'start')}
-                />
-                </div>
-                <div>
-                    <DateTimeField
-                       // clearable={true}
+                        fullWidth
+                        label={'start'}
+                        defaultValue={dayjs(start)}
                         ampm={false}
-                        defaultValue={dayjs(start).add(1,'hours')}
-                        label={'end'}
-                        onChange={(e) => handleChange(String(e), 'end')}
-                        //value={selectedDate}
-                       // onChange={handleDateChange}
+                        disabled
+                        onChange={(e) => handleChange(String(e), 'start')}
                     />
-                {/*    <DateTimeField*/}
-                {/*    label={'end'} defaultValue={dayjs(start).add(1, 'hour')}*/}
-                {/*   onChange={(e) => handleChange(String(e), 'end')}*/}
-
-                {/*/>*/}
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <p>повторить промежуток:</p>
-                    <br/><br/><br/>
-                    <FormControl fullWidth>
-                        <InputLabel id="days">Дней</InputLabel>
-                        <Select
-                            id="days"
-                            label="Дней"
-                            value={scheduler.state.days}
-                            onChange={(e:any) => handleChange(e, 'count')}
-                            // onChange={handleChange}
-                        >
-                            <MenuItem defaultChecked={true} value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                            <MenuItem value={4}>4</MenuItem>
-                            <MenuItem value={5}>5</MenuItem>
-                            <MenuItem value={6}>6</MenuItem>
-                            <MenuItem value={7}>7</MenuItem>
-                        </Select>
-                    </FormControl>
+                <div>
+                    <DateTimeField
+                        fullWidth
+                        ampm={false}
+                        defaultValue={dayjs(state.end)}
+                        label={'end'}
+                        onChange={(e) => handleChange(String(dayjs(e)), 'end')}
+                    />
+                </div>
+                <div className={!event ? 'show_item' : 'hide_item'}>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <p>повторить промежуток:</p>
+                        <br/><br/>
+                        <FormControl fullWidth>
+                            <InputLabel id="days">Дней</InputLabel>
+                            <Select
+                                id="days"
+                                label="Дней"
+                                defaultValue={1}
+                                onChange={(e) => handleChange(e.target.value, 'count')}
+                            >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                                <MenuItem value={6}>6</MenuItem>
+                                <MenuItem value={7}>7</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
                 <div style={{ margin: '0 auto' }}>
                     <DialogActions>
@@ -123,7 +109,6 @@ const TempCom = ({ scheduler }: CustomEditorProps) => {
                         <Button onClick={scheduler.close}>Отмена</Button>
                     </DialogActions>
                 </div>
-                {/*</form>*/}
             </LocalizationProvider>
         </div>
     );
