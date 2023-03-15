@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { createSchedule, getScheduleByBarber } from '../../../store/schedule';
+import { createSchedule, getScheduleByBarber, updateSchedule } from '../../../store/schedule';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -23,12 +23,22 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
         count: 1
     });
     const handleSubmit = async () => {
-        await dispatch(createSchedule({
-            start: String(scheduler.state.start.value),
-            end: String(state.end),
-            barber: user.barber,
-            count: state.count
-        }));
+        if (event) {
+            await dispatch(updateSchedule({
+                start: String(scheduler.state.start.value),
+                end: String(state.end),
+                barber: user.barber,
+                id: event.event_id
+            },));
+        } else {
+            await dispatch(createSchedule({
+                start: String(scheduler.state.start.value),
+                end: String(state.end),
+                barber: user.barber,
+                count: state.count
+            }));
+        }
+
         dispatch(getScheduleByBarber(user.barber));
         scheduler.close();
     };

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ISchedule, IScheduleCreate } from '../interfaces/schedule-create';
+import { ISchedule, IScheduleCreate, IScheduleUpdate } from '../interfaces/schedule-create';
 import { scheduleService } from '../services/schedule.service';
 import { ProcessedEvent } from '@aldabil/react-scheduler/types';
 
@@ -8,7 +8,6 @@ interface IInitialState {
     result: ProcessedEvent[];
     error: null | string;
     status: string | null;
-    trigger: number;
 }
 
 const initialState: IInitialState = {
@@ -16,7 +15,6 @@ const initialState: IInitialState = {
     result: [],
     error: null,
     status: null,
-    trigger: 0,
 };
 
 export const getScheduleByBarber = createAsyncThunk(
@@ -40,6 +38,29 @@ export const createSchedule = createAsyncThunk(
         }
     }
 );
+
+export const updateSchedule = createAsyncThunk(
+    'scheduleSlice/update',
+    async (data: IScheduleUpdate, thunkAPI) => {
+        try {
+            return scheduleService.updateSchedule(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const deleteSchedule = createAsyncThunk(
+    'scheduleSlice/delete',
+    async (id: string | number, thunkAPI) => {
+        try {
+            return scheduleService.deleteSchedule(id);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+
+)
 const scheduleSlice = createSlice({
     name: 'scheduleSlice',
     initialState,
@@ -76,10 +97,7 @@ const scheduleSlice = createSlice({
             .addCase(createSchedule.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                state.trigger = state.trigger +1;
                 state.schedule = action.payload;
-                // @ts-ignore
-               // state.result = [];
             })
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';

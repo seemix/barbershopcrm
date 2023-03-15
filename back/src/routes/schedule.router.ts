@@ -9,5 +9,7 @@ scheduleRouter.get('/:barberId',
     authMiddleware([roles.admin, roles.user]),
     barberScheduleController.getScheduleByBarber);
 scheduleRouter.post('/', barberScheduleController.createBarberScheduler);
+scheduleRouter.put('/', barberScheduleController.updateSchedule);
+scheduleRouter.delete('/:id', barberScheduleController.deleteSchedule);
 
 export default scheduleRouter;
