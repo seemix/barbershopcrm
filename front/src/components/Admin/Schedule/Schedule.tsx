@@ -1,5 +1,7 @@
 import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import React, { useEffect } from 'react';
+import { ru } from 'date-fns/locale';
+
 
 import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -34,7 +36,7 @@ const Schedule = () => {
 
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteSchedule(id));
-        return new Promise((res, rej) => {
+        return new Promise((res) => {
             dispatch(getAllSchedules());
             setEvents(result);
             res('ok');
@@ -43,7 +45,7 @@ const Schedule = () => {
 
     return (
         <div>
-            <h2>РАСПИСАНИЕ </h2>
+            <h2>Расписание</h2>
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
                 <span>Переключатель вида: </span>
@@ -66,7 +68,18 @@ const Schedule = () => {
             </div>
             {(status === null || status === 'fulfilled') && resources[0] && result[0] &&
                 <Scheduler
+                    locale={ru}
+                    hourFormat={'24'}
                     customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
+                    week={{
+                        weekDays: [0, 1, 2, 3, 4, 5, 6],
+                        weekStartOn: 1,
+                        startHour: 8,
+                        endHour: 19,
+                        step: 60,
+                        navigation: true,
+                        disableGoToDay: false
+                    }}
                     events={result}
                     resources={resources}
                     resourceViewMode={'tabs'}

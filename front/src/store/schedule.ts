@@ -114,8 +114,6 @@ const scheduleSlice = createSlice({
             .addCase(getAllSchedules.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                //  state.schedule = action.payload;
-               // console.log(action.payload);
                 // @ts-ignore
                 state.result = action.payload.map(item => {
                     return {
