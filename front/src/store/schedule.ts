@@ -16,7 +16,16 @@ const initialState: IInitialState = {
     error: null,
     status: null,
 };
-
+export const getAllSchedules = createAsyncThunk(
+    'scheduleSlice/getAllSchedules',
+    async (_, thunkAPI) => {
+        try {
+            return scheduleService.getAllSchedules();
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 export const getScheduleByBarber = createAsyncThunk(
     'scheduleSlice/getByBarber',
     async (barberId: string, thunkAPI) => {
@@ -59,8 +68,7 @@ export const deleteSchedule = createAsyncThunk(
             return thunkAPI.rejectWithValue(e);
         }
     }
-
-)
+);
 const scheduleSlice = createSlice({
     name: 'scheduleSlice',
     initialState,
@@ -74,7 +82,7 @@ const scheduleSlice = createSlice({
             .addCase(getScheduleByBarber.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                state.schedule = action.payload;
+                //  state.schedule = action.payload;
                 // @ts-ignore
                 state.result = action.payload.map(item => {
                     return {
@@ -82,7 +90,7 @@ const scheduleSlice = createSlice({
                         title: item.title,
                         start: new Date(item.start),
                         end: new Date(item.end),
-                        color: item.color || ''
+                        color: item.color || '',
                     };
                 });
             })
@@ -102,6 +110,23 @@ const scheduleSlice = createSlice({
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
+            })
+            .addCase(getAllSchedules.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.error = null;
+                //  state.schedule = action.payload;
+               // console.log(action.payload);
+                // @ts-ignore
+                state.result = action.payload.map(item => {
+                    return {
+                        event_id: item.event_id,
+                        title: item.title,
+                        start: new Date(item.start),
+                        end: new Date(item.end),
+                        color: item.color || '',
+                        admin_id: item.admin_id
+                    };
+                });
             });
     }
 });

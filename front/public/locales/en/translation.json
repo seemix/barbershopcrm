@@ -32,10 +32,15 @@
   "Выберите услугу": "Choose service",
   "Выберите дополнительные услуги": "Choose additional services",
   "Выберите  дату и время": "Pick date & time",
+  "Время для записи недоступно": "No available time",
+  "Возможная дата для записи": "Next available date",
   "Заполните форму": "Fill the form",
   "Номер телефона": "Phone number",
   "Имя / Фамилия": "Name / Surname",
   "Запись успешно оформлена": "Your appointment has booked successfully",
   "Ваш заказ": "You ordered",
-  "Общая сумма": "Total price is"
+  "будет ждать вас": "will wait for you",
+  "Общая сумма": "Total price is",
+  "cancelOrderEmail": "To cancel the appointment use link on your email",
+  "cancelOrderPhone": "or call"
 }

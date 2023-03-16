@@ -2,6 +2,7 @@ import axiosService from './axios.service';
 import { IScheduleCreate, IScheduleUpdate } from '../interfaces/schedule-create';
 
 export const scheduleService = {
+    getAllSchedules: () => axiosService.get('/schedule/').then(value => value.data),
     getScheduleByBarber: (barberId: string) => axiosService.get('/schedule/' + barberId).then(value => value.data),
     createSchedule: (data: IScheduleCreate) => axiosService.post('/schedule', { data }).then(value => value.data),
     updateSchedule: (data: IScheduleUpdate) => axiosService.put(`/schedule`, { data }).then(value => value.data),

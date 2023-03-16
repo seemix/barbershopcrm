@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Card, CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getRecordById } from '../../../store/record';
 import { createOrder } from '../../../store/order';
-import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 
 const FinalStep = () => {
     const { t } = useTranslation();
@@ -39,8 +39,8 @@ const FinalStep = () => {
                     {status === 'loading' && <CircularProgress/>}
                 </div>
                 {status === 'fulfilled' && <div>
-                    <p style={{ fontSize: '22px', textAlign: 'center' }}>Dear {customer.name} !</p>
-                    <big><p style={{ textAlign: 'center' }}>{barber.name} будет ждать вас <u> {dateOut} в {time} </u>
+                    <p style={{ fontSize: '22px', textAlign: 'center' }}>{customer.name} !</p>
+                    <big><p style={{ textAlign: 'center' }}>{barber.name} {t('будет ждать вас')} <u> {dateOut},  {time} </u>
                     </p></big>
                     <p>{t('Ваш заказ')}:</p>
                     <div style={{ marginLeft: '15px' }}>
@@ -49,8 +49,8 @@ const FinalStep = () => {
                     </div>
                     <hr/>
                     <p style={{ textAlign: 'right' }}>{t('Общая сумма')} {price} MDL</p>
-                    <p>Для отмены или изменения записи воспользуйтесь ссылкой на почте <big>{customer.email} </big>
-                        или перезвоните по номеру <big> 555-555-555 </big></p>
+                    <p>{t('cancelOrderEmail')} <big>{customer.email} </big>
+                        {t('cancelOrderPhone')} <big> +37360233555 </big></p>
                 </div>
                 }
             </Card>

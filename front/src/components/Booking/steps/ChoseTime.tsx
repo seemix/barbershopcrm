@@ -35,8 +35,8 @@ const ChoseTime = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && availableTimeslots &&
                     <ScheduleMeeting
-                        lang_emptyListText={'Время для записи недоступно'}
-                        lang_goToNextAvailableDayText={'Возможная дата для записи'}
+                        lang_emptyListText={String(t('Время для записи недоступно'))}
+                        lang_goToNextAvailableDayText={String(t('Возможная дата для записи'))}
                         borderRadius={3}
                         primaryColor="#9e8a78"
                         eventDurationInMinutes={duration}

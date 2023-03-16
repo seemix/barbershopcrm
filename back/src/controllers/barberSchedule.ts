@@ -4,6 +4,22 @@ import ApiError from '../errors/api.error.js';
 import moment from 'moment';
 
 export const barberScheduleController = {
+    getAllSchedules: async (req: Request, res: Response, next: NextFunction) => {
+      try {
+          const allSchedules = await Schedule.find();
+          const result = allSchedules.map(item => {
+              return {
+                  event_id: item._id,
+                  start: item.startTime,
+                  end: item.endTime,
+                  admin_id: item.barber
+              };
+          });
+          res.json(result);
+      }catch (e) {
+          next(new ApiError('Error retrieving data', 500));
+      }
+    },
     createBarberScheduler: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { data } = req.body;

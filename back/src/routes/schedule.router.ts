@@ -8,6 +8,7 @@ const scheduleRouter = Router();
 scheduleRouter.get('/:barberId',
     authMiddleware([roles.admin, roles.user]),
     barberScheduleController.getScheduleByBarber);
+scheduleRouter.get('/',barberScheduleController.getAllSchedules);
 scheduleRouter.post('/', barberScheduleController.createBarberScheduler);
 scheduleRouter.put('/', barberScheduleController.updateSchedule);
 scheduleRouter.delete('/:id', barberScheduleController.deleteSchedule);

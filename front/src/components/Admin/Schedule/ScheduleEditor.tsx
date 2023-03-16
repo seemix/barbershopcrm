@@ -5,8 +5,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { createSchedule, getScheduleByBarber, updateSchedule } from '../../../store/schedule';
+import { useAppDispatch } from '../../../hooks/redux';
+import { createSchedule, getAllSchedules, updateSchedule } from '../../../store/schedule';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -14,7 +14,6 @@ interface CustomEditorProps {
 
 const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
     const event = scheduler.edited;
-    const { user } = useAppSelector(state => state.authStore);
     const dispatch = useAppDispatch();
     const [state, setState] = useState({
         event_id: scheduler?.state.event_id.value,
@@ -27,19 +26,19 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
             await dispatch(updateSchedule({
                 start: String(scheduler.state.start.value),
                 end: String(state.end),
-                barber: user.barber,
+                barber: scheduler.state.admin_id.value,
                 id: event.event_id
             },));
         } else {
             await dispatch(createSchedule({
                 start: String(scheduler.state.start.value),
                 end: String(state.end),
-                barber: user.barber,
+                barber: scheduler.state.admin_id.value,
                 count: state.count
             }));
         }
 
-        dispatch(getScheduleByBarber(user.barber));
+        dispatch(getAllSchedules());
         scheduler.close();
     };
     const start = String(scheduler.state.start.value);
