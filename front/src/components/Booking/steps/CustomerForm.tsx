@@ -10,8 +10,10 @@ import userValidator from '../../../validators/user.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getCustomerByPhone, setCustomer } from '../../../store/order';
 import { handleBack, handleNext } from '../../../store/stepper';
+import { useTranslation } from 'react-i18next';
 
 const CustomerForm = () => {
+    const { t } = useTranslation();
     const {
         register,
         handleSubmit,
@@ -40,7 +42,7 @@ const CustomerForm = () => {
     }, [phone, dispatch, setValue, order.customerPhone, order.customerEmail, order.customerName]);
     return (
         <div>
-            <h3>Fill the Form</h3>
+            <h3>{t('Заполните форму')}</h3>
             <div className={'selector_wrapper'}>
                 <form onSubmit={handleSubmit(handleNextButton)}>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
@@ -55,7 +57,7 @@ const CustomerForm = () => {
                                 ),
                                 style: { fontSize: 25, backgroundColor: '#fff', width: '250px' }
                             }}
-                            label={'Номер телефона'}
+                            label={t('Номер телефона')}
                             variant={'outlined'}
                             size={'medium'}
                             autoComplete="Номер телефона"
@@ -76,7 +78,7 @@ const CustomerForm = () => {
                                 style: { fontSize: 18 }
                             }}
                             style={{ backgroundColor: '#fff', width: '250px' }}
-                            label={'Имя'}
+                            label={t('Имя / Фамилия')}
                             variant={'outlined'}
                             size={'medium'}
                             autoComplete="name"
@@ -112,7 +114,7 @@ const CustomerForm = () => {
                                 <Button variant={'contained'}
                                         onClick={() => dispatch(handleBack())}
                                         style={{ marginBottom: '20px', padding: '10px 15px' }}>
-                                    <KeyboardArrowLeft/> Назад
+                                    <KeyboardArrowLeft/> {t('назад')}
                                 </Button>
                             }
                         </div>
@@ -124,7 +126,7 @@ const CustomerForm = () => {
                                         style={{
                                             marginBottom: '20px',
                                             padding: '10px 15px'
-                                        }}> Далее <KeyboardArrowRight/>
+                                        }}> {t('далее')} <KeyboardArrowRight/>
                                 </Button>
                             }
                         </div>

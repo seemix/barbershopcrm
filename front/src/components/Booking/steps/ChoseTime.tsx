@@ -8,16 +8,11 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/redux';
 import { getFreeSlots } from '../../../store/slots';
 import { handleBack, handleNext } from '../../../store/stepper';
 import { removeDateTime, setDateTime } from '../../../store/order';
+import { useTranslation } from 'react-i18next';
 
 
 const ChoseTime = () => {
-    // const availableTimeslots = [0, 1, 2, 3, 4, 5].map((id) => {
-    //     return {
-    //         id,
-    //         startTime: new Date(new Date(new Date().setDate(new Date().getDate() + id)).setHours(9, 0, 0, 0)),
-    //         endTime: new Date(new Date(new Date().setDate(new Date().getDate() + id)).setHours(17, 0, 0, 0)),
-    //     };
-    // });
+    const { t } = useTranslation();
     const { barberId, duration } = useAppSelector(state => state.orderStore);
     const availableTimeslots = useAppSelector(state => state.freeSlotsStore.freeSlots);
     const { status } = useAppSelector(state => state.freeSlotsStore);
@@ -35,7 +30,7 @@ const ChoseTime = () => {
 
     return (
         <div>
-            <h3>Choose date & time</h3>
+            <h3>{t('Выберите  дату и время')}</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && availableTimeslots &&
@@ -55,7 +50,8 @@ const ChoseTime = () => {
                         {
                             <Button variant={'contained'}
                                     onClick={handleBackButton}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}>
+                                <KeyboardArrowLeft/> {t('назад')}
                             </Button>
                         }
                     </div>
@@ -63,7 +59,8 @@ const ChoseTime = () => {
                         {
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
+                                <KeyboardArrowRight/>
                             </Button>
                         }
                     </div>

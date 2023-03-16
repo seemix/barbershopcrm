@@ -9,8 +9,10 @@ import Service from './Service/Service';
 import { handleBack, handleNext } from '../../../store/stepper';
 import '../Booking.css';
 import { resetService } from '../../../store/order';
+import { useTranslation } from 'react-i18next';
 
 const ChoseService = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
     const { services, status } = useAppSelector(state => state.serviceStore);
@@ -23,7 +25,7 @@ const ChoseService = () => {
     }, [dispatch, barberId]);
     return (
         <div>
-            <h3>Choose Service</h3>
+            <h3>{t('Выберите услугу')}</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && services && services.map(item =>
@@ -38,7 +40,7 @@ const ChoseService = () => {
                         {
                             <Button variant={'contained'}
                                     onClick={handleBackButton}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> {t('назад')}
                             </Button>
                         }
                     </div>
@@ -47,7 +49,7 @@ const ChoseService = () => {
                             serviceId &&
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>
                             </Button>
                         }
                     </div>

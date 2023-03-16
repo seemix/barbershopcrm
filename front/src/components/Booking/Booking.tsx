@@ -9,8 +9,10 @@ import { useAppSelector } from '../../hooks/redux';
 import ChoseAdditional from './steps/ChoseAdditional';
 import CustomerForm from './steps/CustomerForm';
 import FinalStep from './steps/FinalStep';
+import { useTranslation } from 'react-i18next';
 
 const Booking: FC = () => {
+    const { t } = useTranslation();
     const steps = [
         <ChoseBarber/>,
         <ChoseService/>,
@@ -20,7 +22,9 @@ const Booking: FC = () => {
         <FinalStep/>
     ];
     const order = useAppSelector(state => state.orderStore);
-    console.log(order);
+    //console.log(order);
+   // console.log(i18n.language);
+
     const { activeStep } = useAppSelector(state => state.stepperStore);
     const maxSteps = steps.length;
 
@@ -29,7 +33,7 @@ const Booking: FC = () => {
             <div style={{ minHeight: 'calc(100vh - 150px)' }}
                  className={order.showBooking ? 'services show_item' : 'services hide_item'}>
 
-                <h2>Booking</h2>
+                <h2>{t('Он-лайн запись')}</h2>
                 <div style={{
                     width: '100%',
                     display: 'flex',

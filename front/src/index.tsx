@@ -5,6 +5,7 @@ import { store } from './store/store';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import './18n';
 
 
 const root = ReactDOM.createRoot(

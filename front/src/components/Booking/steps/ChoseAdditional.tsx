@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 import { handleBack, handleNext } from '../../../store/stepper';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useTranslation } from 'react-i18next';
 
 const ChoseAdditional = () => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
     const { additionals, status } = useAppSelector(state => state.additionalStore);
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
     useEffect(() => {
@@ -18,7 +20,7 @@ const ChoseAdditional = () => {
     if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     return (
         <div>
-            <h3>Chose additional service (multi-choice)</h3>
+            <h3>{t('Выберите дополнительные услуги')}</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {
@@ -35,7 +37,7 @@ const ChoseAdditional = () => {
                     {
                         <Button variant={'contained'}
                                 onClick={() => dispatch(handleBack())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> Назад
+                                style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> {t('назад')}
                         </Button>
                     }
                 </div>
@@ -44,7 +46,7 @@ const ChoseAdditional = () => {
                         serviceId &&
                         <Button variant={'contained'}
                                 onClick={() => dispatch(handleNext())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
+                                style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>
                         </Button>
                     }
                 </div>

@@ -13,7 +13,7 @@
 .menu_wrapper {
     display: flex;
     justify-content: center;
-    column-gap: 30px;
+    column-gap: 20px;
     list-style: none;
     text-align: center;
     transition: all 0.4s ease-in-out;
@@ -51,7 +51,7 @@
 .nav_link {
     text-decoration: none;
     cursor: pointer;
-    padding: 42px 20px;
+    padding: 18px 20px;
     text-align: center;
 }
 

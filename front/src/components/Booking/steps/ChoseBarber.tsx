@@ -8,8 +8,10 @@ import { getAllBarbers } from '../../../store/barbers';
 import Barber from './Barber/Barber';
 import '../Booking.css';
 import { CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const ChoseBarber = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllBarbers());
@@ -19,7 +21,7 @@ const ChoseBarber = () => {
     const { barberId } = useAppSelector(state => state.orderStore);
     return (
         <>
-            <h3>Choose the Barber first</h3>
+            <h3>{t('Выберите мастера')}</h3>
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' &&
@@ -37,7 +39,7 @@ const ChoseBarber = () => {
                         }
                     </div>
                 }
-                <div> </div>
+                <div></div>
                 <div className={'buttons_wrapper'}>
                     <div></div>
                     <div>
@@ -45,7 +47,7 @@ const ChoseBarber = () => {
                             barberId &&
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> Далее <KeyboardArrowRight/>
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>
                             </Button>
                         }
                     </div>

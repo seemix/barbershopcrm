@@ -6,26 +6,28 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 
 import './Contacts.css';
 import { Card } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const Contacts: FC = () => {
+    const { t } = useTranslation();
     return (
         <div id={'contacts'} className={'services'}>
             <div className={'section_caption'}>
                 <h3>LevelUP Barbershop</h3>
-                <h2>Контакты</h2>
+                <h2>{t('Контакты')}</h2>
                 <div className={'heading_line'}></div>
                 <div className={'cards_wrapper'}>
                     <Card className={'contact_form'}>
                         <div className={'time_wrapper'}>
                             <div><h3><LocationOnOutlinedIcon/></h3></div>
-                            <div><h3>Адрес</h3></div>
+                            <div><h3>{t('Адрес')}</h3></div>
                         </div>
                         <h4>
-                            г. Бельцы, ул. Дечебал 142
+                            {t('г. Бельцы, ул. Дечебал 142')}
                         </h4>
                         <div className={'time_wrapper'}>
                             <div><h3><PhoneIphoneOutlinedIcon/></h3></div>
-                            <div><h3> Телефон </h3></div>
+                            <div><h3> {t('Телефон')} </h3></div>
                         </div>
                         <h4>
                             +37360233555
@@ -40,12 +42,12 @@ const Contacts: FC = () => {
                         </h4>
                         <div className={'time_wrapper'}>
                             <div><h3><EventAvailableOutlinedIcon/></h3></div>
-                            <div><h3> График работы </h3></div>
+                            <div><h3> {t('График работы')} </h3></div>
 
                         </div>
                         <h4>
-                            Пн-Сб: 8:00 - 18:00 </h4>
-                        <h4> Вс: выходной
+                            {t('Пн-Сб: 8:00 - 18:00')} </h4>
+                        <h4> {t('Вс: 11:00 - 18:00')}
                         </h4>
                     </Card>
                     <div className={'map'}>

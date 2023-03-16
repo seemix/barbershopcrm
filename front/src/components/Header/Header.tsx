@@ -2,16 +2,17 @@ import React, { FC, useState } from 'react';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
 import './Header.css';
 import { Link } from 'react-scroll';
-import { menuItems } from './MenuItem';
-import { IMenuItem } from './models/IMenuItem';
 import logo from '../../images/logo.png';
+import LangSwitch from '../LangSwitch/LangSwitch';
 
 const Header: FC = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const handleMenuButton = () => setOpenMenu(!openMenu);
+    const { t } = useTranslation();
     return (
         <nav className={'navbar_items'} id={'menu'}>
             <h1>
@@ -23,24 +24,41 @@ const Header: FC = () => {
                     <InstagramIcon fontSize={'large'}/>
                 </a>
             </div>
+            <LangSwitch/>
             <div className={'navigation'}>
                 <ul className={openMenu ? 'menu_wrapper show_burger_menu' : 'menu_wrapper'}>
-                    {
-                        menuItems.map((item: IMenuItem, index: number) => {
-                            return (
-                                <li>
-                                    <Link
-                                        onClick={handleMenuButton}
-                                        className={item.cls} key={index}
-                                        to={item.link}
-                                        smooth={true} spy={false}
-                                        duration={800}
-                                        offset={!openMenu ? -77 : -90}>{item.title}
-                                    </Link>
-                                </li>
-                            );
-                        })
-                    }
+                    <Link
+                        onClick={handleMenuButton}
+                        className={'nav_link'}
+                        to={'top'}
+                        smooth={true} spy={false}
+                        duration={800}
+                        offset={-90}>{t('главная')}
+                    </Link>
+                    <Link
+                        onClick={handleMenuButton}
+                        className={'nav_link'}
+                        to={'services'}
+                        smooth={true} spy={false}
+                        duration={800}
+                        offset={-90}>{t('услуги')}
+                    </Link>
+                    <Link
+                        onClick={handleMenuButton}
+                        className={'nav_link'}
+                        to={'barbers'}
+                        smooth={true} spy={false}
+                        duration={800}
+                        offset={-90}>{t('барберы')}
+                    </Link>
+                    <Link
+                        onClick={handleMenuButton}
+                        className={'nav_link'}
+                        to={'contacts'}
+                        smooth={true} spy={false}
+                        duration={800}
+                        offset={-90}>{t('контакты')}
+                    </Link>
                 </ul>
             </div>
             <div>

@@ -10,8 +10,10 @@ import './Barbers.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getAllBarbers } from '../../store/barbers';
 import BarberSingle from './BarberSingle';
+import { useTranslation } from 'react-i18next';
 
 const Barbers: FC = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllBarbers());
@@ -22,7 +24,7 @@ const Barbers: FC = () => {
         <div className={'barbers'}>
             <div className={'section_caption'}>
                 <h3>LevelUP Barbershop</h3>
-                <h2>Наши барберы</h2>
+                <h2>{t('Наши барберы')}</h2>
                 <Swiper
                     autoHeight={true}
                     slidesPerView={1}
@@ -61,21 +63,21 @@ const Barbers: FC = () => {
                     className="swiper_wrap"
                 >
                     {/*<div className={'cards_wrapper'}>*/}
-                        {
-                            status === 'fulfilled' &&
-                            barbers && barbers.map(barber =>
-                                <SwiperSlide>
-                                    <BarberSingle
-                                        key={barber._id}
-                                        description={barber.description}
-                                        name={barber.name}
-                                        picture={barber.picture}
-                                        rating={barber.rating}
-                                        isActive={barber.isActive}
-                                        _id={barber._id}
-                                    />
-                                </SwiperSlide>)
-                        }
+                    {
+                        status === 'fulfilled' &&
+                        barbers && barbers.map(barber =>
+                            <SwiperSlide>
+                                <BarberSingle
+                                    key={barber._id}
+                                    description={barber.description}
+                                    name={barber.name}
+                                    picture={barber.picture}
+                                    rating={barber.rating}
+                                    isActive={barber.isActive}
+                                    _id={barber._id}
+                                />
+                            </SwiperSlide>)
+                    }
                     {/*</div>*/}
                 </Swiper>
             </div>

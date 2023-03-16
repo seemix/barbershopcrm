@@ -40,7 +40,11 @@ const additionalSlice = createSlice({
                 state.status = 'fulfilled';
                 state.error = null;
                 state.additionals = action.payload;
-            });
+            })
+            .addCase(getAdditionalsByBarberAndService.pending, state => {
+                state.status = 'loading';
+                state.error = null;
+            })
     }
 });
 
