@@ -23,7 +23,7 @@ const Footer: FC = () => {
                 <p>{t('Вс: 11:00 - 18:00')} </p>
             </div>
             <div className={'footer_widget'}>
-                <h5>{t('он-лайн запись')}</h5>
+                <h5>{t('Он-лайн запись')}</h5>
                 <button className={'button-5 bottom booking'}>{t('ЗАПИСАТЬСЯ')}</button>
             </div>
         </div>

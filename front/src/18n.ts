@@ -6,8 +6,8 @@ import { initReactI18next } from 'react-i18next';
 export type I18n = typeof i18n;
 
 const i18nOptions: InitOptions = {
-    fallbackLng: 'ru',
-    debug: true,
+  //  fallbackLng: 'ru',
+  //  debug: true,
     detection: {
         order: ['queryString', 'cookie'],
         caches: ['cookie'],
