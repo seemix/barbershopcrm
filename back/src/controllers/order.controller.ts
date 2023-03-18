@@ -89,6 +89,7 @@ export const orderController = {
                 next(new ApiError('Bad request params', 400));
             }
             const slots = await freeSlots(String(barberId), String(duration));
+            if(!slots) res.json([]).status(200);
             res.json(slots).status(200);
 
         } catch (e) {

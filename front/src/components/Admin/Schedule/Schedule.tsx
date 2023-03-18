@@ -7,7 +7,7 @@ import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { deleteSchedule, getAllSchedules } from '../../../store/schedule';
 import { Button, CircularProgress } from '@mui/material';
-import CustomEventRenderer from './CustomEventRenderer';
+import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
 
 
@@ -84,16 +84,16 @@ const Schedule = () => {
                     resources={resources}
                     resourceViewMode={'tabs'}
                     resourceFields={{
-                        idField: "admin_id",
-                        textField: "title",
-                        subTextField: "mobile",
-                        avatarField: "avatar",
-                        colorField: "color"
+                        idField: 'admin_id',
+                        textField: 'title',
+                        subTextField: 'mobile',
+                        avatarField: 'avatar',
+                        colorField: 'color'
                     }}
                     fields={[
                         {
-                            name: "admin_id",
-                            type: "select",
+                            name: 'admin_id',
+                            type: 'select',
                             default: resources[0].admin_id,
                             options: resources.map((res) => {
                                 return {
@@ -102,7 +102,7 @@ const Schedule = () => {
                                     value: res.admin_id //Should match "name" property
                                 };
                             }),
-                            config: { label: "Assignee", required: true }
+                            config: { label: 'Assignee', required: true }
                         }
                     ]}
                     // getRemoteEvents={remote}

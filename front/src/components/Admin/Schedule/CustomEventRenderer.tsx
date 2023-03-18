@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CustomEventRenderer = (event: any) => {
+export const CustomEventRenderer = (event: any) => {
     return (
         <div
             style={{
@@ -23,8 +23,6 @@ const CustomEventRenderer = (event: any) => {
                 {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
             </div>
         </div>
-
     );
 };
 
-export default CustomEventRenderer;
