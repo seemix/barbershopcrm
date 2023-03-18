@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { Avatar } from '@mui/material';
 import { logout } from '../../../store/auth';
 
+
 const MainAdmin = () => {
     const { user } = useAppSelector(state => state.authStore);
     const dispatch = useAppDispatch();
@@ -21,9 +22,9 @@ const MainAdmin = () => {
                 </h1>
                 <div className="navigation">
                     <ul className="menu_wrapper">
-                        <li><NavLink className={'nav_link'} to={'/admin/calendar'}>Календарь</NavLink></li>
-                        <li><NavLink className={'nav_link'} to={'/admin/schedule'}>Расписание</NavLink></li>
-                        <li><NavLink className={'nav_link'} to={'/admin/prices'}>Цены</NavLink></li>
+                        <li><NavLink className={'nav_link add_padding'} to={'/admin/calendar'}>Календарь</NavLink></li>
+                        <li><NavLink className={'nav_link add_padding'} to={'/admin/schedule'}>Расписание</NavLink></li>
+                        <li><NavLink className={'nav_link add_padding'} to={'/admin/prices'}>Цены</NavLink></li>
                         {/*<li><NavLink className={'nav_link'} to={'/'}>Услуги</NavLink></li>*/}
                     </ul>
                 </div>
@@ -36,6 +37,7 @@ const MainAdmin = () => {
                                       onClick={() => dispatch(logout())}/></span>
                 </div>
             </nav>
+
             <Outlet/>
         </div>
     );
