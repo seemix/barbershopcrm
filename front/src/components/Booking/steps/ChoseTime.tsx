@@ -3,6 +3,8 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { CircularProgress } from '@mui/material';
 import { ScheduleMeeting, StartTimeEventEmit } from 'react-schedule-meeting';
 import Button from '@mui/material/Button';
+import { ru, ro, enUS } from 'date-fns/locale';
+
 
 import { useAppSelector, useAppDispatch } from '../../../hooks/redux';
 import { getFreeSlots } from '../../../store/slots';
@@ -35,6 +37,8 @@ const ChoseTime = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && availableTimeslots &&
                     <ScheduleMeeting
+                        locale={ru}
+                        format_startTimeFormatString="HH:mm"
                         lang_emptyListText={String(t('Время для записи недоступно'))}
                         lang_goToNextAvailableDayText={String(t('Возможная дата для записи'))}
                         borderRadius={3}
