@@ -3,6 +3,7 @@ import moment from 'moment/moment.js';
 
 export const freeSlots = async (barberId: string, duration: string) => {
     const arr = await busySlots(String(barberId));
+    if(!arr) return [];
     const nowMinutes = Math.ceil((moment().minutes() / 10)) * 10;
     let start = moment(Date.now()).set('minutes', nowMinutes).set('seconds', 0).set('milliseconds', 0);
     let finish = moment(arr[0].startTime);

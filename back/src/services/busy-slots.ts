@@ -12,7 +12,7 @@ export const busySlots = async (barberId: string | undefined) => {
     })
         .select('startTime')
         .select('endTime');
-
+    if(timeTable.length === 0) return;
     const order = await Order.find({
         startTime: { $gte: start },
         barber: barberId
@@ -34,6 +34,7 @@ export const busySlots = async (barberId: string | undefined) => {
             endTime: moment(arr[0].startTime)
         });
     }
+    if(timeSlots.length === 0) return;
     for (let i = 0; i < arr.length - 1; i++) {
         timeSlots.push({ startTime: moment(arr[i].endTime), endTime: moment(arr[i + 1].startTime) });
     }
