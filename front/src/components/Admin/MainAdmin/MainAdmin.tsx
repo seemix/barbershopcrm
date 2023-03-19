@@ -1,10 +1,9 @@
 import React from 'react';
 
-import '../../../components/Header/Header.css';
 import './MainAdmin.css';
 
 import { NavLink, Outlet } from 'react-router-dom';
-import logo from '../../../images/logo.png';
+import logo from './logo_admin.webp';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { Avatar } from '@mui/material';
@@ -16,16 +15,18 @@ const MainAdmin = () => {
     const dispatch = useAppDispatch();
     return (
         <div>
-            <nav className={'navbar_items'}>
+            <nav className={'navbar'}>
                 <h1>
-                    <img className={'main_logo'} src={logo} alt="logo"/>
+                    <img src={logo} alt="logo"/>
                 </h1>
-                <div className="navigation">
-                    <ul className="menu_wrapper">
-                        <li><NavLink className={'nav_link add_padding'} to={'/admin/calendar'}>Календарь</NavLink></li>
-                        <li><NavLink className={'nav_link add_padding'} to={'/admin/schedule'}>Расписание</NavLink></li>
-                        <li><NavLink className={'nav_link add_padding'} to={'/admin/prices'}>Цены</NavLink></li>
-                        {/*<li><NavLink className={'nav_link'} to={'/'}>Услуги</NavLink></li>*/}
+                <div className="navi">
+                    <ul className="menu_wrap">
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/calendar'}>Календарь</NavLink></li>
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/schedule'}>Расписание</NavLink></li>
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/services'}>Услуги</NavLink></li>
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/prices'}>Цены</NavLink></li>
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/customers'}>Клиенты</NavLink></li>
+                        <li><NavLink className={'nav_link_admin'} to={'/admin/barbers'}>Барберы</NavLink></li>
                     </ul>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', columnGap: '10px' }}>
