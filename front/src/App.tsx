@@ -10,7 +10,10 @@ import Loader from './components/Loader/Loader';
 import Schedule from './components/Admin/Schedule/Schedule';
 import Calendar from './components/Admin/Calendar/Calendar';
 import Prices from './components/Admin/Prices/Prices';
+import Services from './components/Admin/Services/Services';
 import Register from './components/Admin/Register/Register';
+import Customers from './components/Admin/Customers/Customers';
+import Barbers from './components/Admin/Barbers/Barbers';
 
 const Layout = React.lazy(() => import('./components/Layout/Layout'));
 const AdminLayout = React.lazy(() => import('./components/Admin/AdminLayout'));
@@ -22,13 +25,16 @@ const App: FC = () => {
                 <Route index element={<React.Suspense fallback={<Loader/>}>
                     <Layout/>
                 </React.Suspense>}/>
-                <Route path={'admin'} element={<React.Suspense fallback={<Loader/>}>
+                <Route element={<React.Suspense fallback={<Loader/>}>
                     <AdminLayout/>
                 </React.Suspense>}>
-                    <Route path={''} element={<MainAdmin/>}>
+                    <Route path={'admin'} element={<MainAdmin/>}>
                         <Route path={'calendar'} element={<Calendar/>}/>
                         <Route path={'schedule'} element={<Schedule/>}/>
+                        <Route path={'services'} element={<Services/>}/>
                         <Route path={'prices'} element={<Prices/>}/>
+                        <Route path={'customers'} element={<Customers/>}/>
+                        <Route path={'barbers'} element={<Barbers/>}/>
                     </Route>
                 </Route>
                 <Route path={'admin/login'} element={<Login/>}/>

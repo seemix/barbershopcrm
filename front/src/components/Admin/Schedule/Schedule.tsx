@@ -2,14 +2,12 @@ import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import React, { useEffect } from 'react';
 import { ru } from 'date-fns/locale';
 
-
 import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { deleteSchedule, getAllSchedules } from '../../../store/schedule';
 import { Button, CircularProgress } from '@mui/material';
 import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
-
 
 const Schedule = () => {
     const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
