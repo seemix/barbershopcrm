@@ -14,7 +14,7 @@ const Services: FC = () => {
                 <h2>{t('Наши услуги')}</h2>
                 <div className={'heading_line'}></div>
                 <div className={'cards_wrapper'}>
-                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
+                    <Card style={{ width: '350px', padding: '20px', color: '#777', margin: '20px' }}>
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-scissors-1"></i>
                         </div>
@@ -47,7 +47,7 @@ const Services: FC = () => {
                             </div>
                         </div>
                     </Card>
-                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
+                    <Card style={{ width: '350px', padding: '20px', color: '#777', margin: '20px' }}>
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-razor-2"></i>
                         </div>
@@ -79,7 +79,7 @@ const Services: FC = () => {
                             </div>
                         </div>
                     </Card>
-                    <Card style={{ width: '350px', padding: '20px', color: '#777' }}>
+                    <Card style={{ width: '350px', padding: '20px', color: '#777', margin: '20px' }}>
                         <div className={'price_icon_wrap'}>
                             <i className="bs bs-hairbrush-1"></i>
                         </div>

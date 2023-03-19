@@ -31,11 +31,19 @@ const Barbers: FC = () => {
                     spaceBetween={10}
                     breakpoints={{
                         '@0.00': {
+                            slidesPerView: 1,
+                            spaceBetween: 5,
+                        },
+                        '@0.50': {
                             slidesPerView: 1.2,
                             spaceBetween: 5,
                         },
+                        '@0.60': {
+                            slidesPerView: 1.5,
+                            spaceBetween: 5,
+                        },
                         '@0.75': {
-                            slidesPerView: 2,
+                            slidesPerView: 1.8,
                             spaceBetween: 10,
                         },
                         '@1.00': {

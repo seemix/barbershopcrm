@@ -11,12 +11,18 @@ import LangSwitch from '../LangSwitch/LangSwitch';
 
 const Header: FC = () => {
     const [openMenu, setOpenMenu] = useState(false);
+    const [scroll, setScroll]  = useState(false);
+    const handleScroll = (e: any) => {
+        if (window.scrollY > 100) setScroll(true)
+        else setScroll(false);
+    };
+    window.addEventListener('scroll', handleScroll);
     const handleMenuButton = () => setOpenMenu(!openMenu);
     const { t } = useTranslation();
     return (
-        <nav className={'navbar_items'} id={'menu'}>
+        <nav className={scroll ? 'navbar_items navbar_scroll' : 'navbar_items'} id={'menu'}>
             <h1>
-                <img className={'main_logo'} src={logo} alt="logo"/>
+                <img className={scroll ? 'main_logo main_logo_scroll' : 'main_logo'} src={logo} alt="logo"/>
             </h1>
             <div className={'instagram_icon'}>
                 <a target="_blank" rel="noreferrer" href="front/src/components/Header/Header"
@@ -29,7 +35,7 @@ const Header: FC = () => {
                 <ul className={openMenu ? 'menu_wrapper show_burger_menu' : 'menu_wrapper'}>
                     <Link
                         onClick={handleMenuButton}
-                        className={'nav_link'}
+                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'top'}
                         smooth={true} spy={false}
                         duration={800}
@@ -37,7 +43,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={'nav_link'}
+                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'services'}
                         smooth={true} spy={false}
                         duration={800}
@@ -45,7 +51,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={'nav_link'}
+                        className={scroll? 'nav_link' : 'nav_link  nav_link_scroll'}
                         to={'barbers'}
                         smooth={true} spy={false}
                         duration={800}
@@ -53,7 +59,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={'nav_link'}
+                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'contacts'}
                         smooth={true} spy={false}
                         duration={800}

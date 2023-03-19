@@ -20,7 +20,7 @@
 }
 
 .navbar_items {
-    background-color: #1E1E1EFF;
+    background-color: rgba(30,30,30,0.2) ;
     width: 100%;
     height: 100px;
     display: flex;
@@ -29,12 +29,17 @@
     padding: 0 10px;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
-    position: sticky;
+    position: fixed;
     top: 0;
     transition: all 0.4s ease-in-out;
     z-index: 2;
 }
 
+.navbar_scroll {
+    background-color: rgba(30,30,30,100);
+    transition: all 0.4s ease-in-out;
+    height: 90px;
+}
 
 .menu_icon {
     color: whitesmoke;
@@ -51,9 +56,13 @@
 .nav_link {
     text-decoration: none;
     cursor: pointer;
-    padding: 15px 20px;
+    padding: 11px 20px;
     text-align: center;
 }
+.nav_link_scroll {
+    padding: 15px 20px;
+}
+
 
 .nav_link:hover, .active {
     box-shadow: 0 -3px 0 whitesmoke inset,
@@ -70,10 +79,15 @@
 }
 
 .main_logo {
-    margin-top: 5px;
-    width: 290px;
+    margin-top: 10px;
+    width: 280px;
+    transition: 0.4s all ease-in-out;
 }
-
+.main_logo_scroll {
+    margin-top: 10px;
+    width: 270px;
+    transition: 0.4s all ease-in-out;
+}
 
 @media screen and (max-width: 767px) {
     .menu_wrapper {
@@ -83,15 +97,22 @@
         right: -800px;
         width: 100%;
         background: rgba(30, 30, 30, .9);
-        top: 85px;
+        top: 75px;
     }
     .show_burger_menu {
         right: 0;
-        top: 85px;
+        top: 75px;
     }
 
     .navbar_items {
         justify-content: space-between;
+        background-color: rgba(30,30,30,100);
+        height: 90px;
+
+    }
+    .navbar_scroll {
+        background-color: rgba(30,30,30,100);
+        transition: all 0.4s ease-in-out;
     }
 
     .nav_link {
