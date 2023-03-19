@@ -18,6 +18,7 @@ const ChoseTime = () => {
     const { barberId, duration } = useAppSelector(state => state.orderStore);
     const availableTimeslots = useAppSelector(state => state.freeSlotsStore.freeSlots);
     const { status } = useAppSelector(state => state.freeSlotsStore);
+    const { startTime } = useAppSelector(state => state.orderStore);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getFreeSlots({ barberId, duration }));
@@ -60,7 +61,7 @@ const ChoseTime = () => {
                         }
                     </div>
                     <div>
-                        {
+                        {startTime &&
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
                                     style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
