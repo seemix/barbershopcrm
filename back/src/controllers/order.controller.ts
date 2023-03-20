@@ -7,8 +7,27 @@ import Customer from '../models/customer.js';
 import { sendMail } from '../services/send-email.service.js';
 import { IOrderRecord } from '../interfaces/order-record.js';
 import barber from '../models/barber.js';
+import moment from 'moment/moment.js';
 
 export const orderController = {
+    getOrders: async (req: Request, res: Response, next: NextFunction) => {
+        const orders = await Order.find({startTime: {$gte: Date.now(), $lt: moment(Date.now()).add(1, 'week')}})
+            .populate({
+                path: 'customer',
+                select: ['name','phone'],
+            })
+            .populate({
+                path: 'service',
+                select: 'name',
+            })
+            .populate({
+                path: 'additional',
+                select: 'name',
+                strictPopulate: false
+            });
+        res.json(orders).status(200);
+    },
+
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {
@@ -89,7 +108,7 @@ export const orderController = {
                 next(new ApiError('Bad request params', 400));
             }
             const slots = await freeSlots(String(barberId), String(duration));
-            if(!slots) res.json([]).status(200);
+            if (!slots) res.json([]).status(200);
             res.json(slots).status(200);
 
         } catch (e) {

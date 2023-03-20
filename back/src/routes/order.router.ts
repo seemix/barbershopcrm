@@ -3,6 +3,7 @@ import { orderController } from '../controllers/order.controller.js';
 
 const orderRouter = Router();
 orderRouter.post('/', orderController.createOrder);
+orderRouter.get('/',orderController.getOrders);
 orderRouter.get('/slots', orderController.generateSlots);
 orderRouter.get('/:orderId',orderController.getOrderById);
 
