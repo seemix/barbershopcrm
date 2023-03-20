@@ -1,4 +1,3 @@
-import { IShowCalendarOrder } from '../interfaces/order.model';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { orderService } from '../services/order.service';
 import { ProcessedEvent } from '@aldabil/react-scheduler/types';
@@ -43,7 +42,8 @@ export const orderCalendarSlice = createSlice({
                         start: new Date(item.startTime),
                         end: new Date(item.endTime),
                         color: item.color || '',
-                        customer: item.customer.name
+                        customer: item.customer.name,
+                        phone: item.customer.phone
                     };
                 });
             })

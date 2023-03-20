@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
-import { EVENTS } from './data';
 import { CustomOrderRenderer } from './CustomOrderRenderer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
 import { getOrdersForCalendar } from '../../../store/calendarOrder';
 import { Button, CircularProgress } from '@mui/material';
+import { ExtraComponents } from './ExtraComponents';
+import { ru } from 'date-fns/locale';
 
 const Calendar = () => {
     const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
@@ -30,7 +31,7 @@ const Calendar = () => {
     console.log(orders);
     return (
         <div>
-            <h2>Calendar</h2>
+            <h2>Календарь</h2>
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
                 <span>Переключатель вида: </span>
@@ -53,6 +54,7 @@ const Calendar = () => {
             </div>
             {(status === null || status === 'fulfilled') && resources[0] && orders[0] &&
                 <Scheduler
+                    locale={ru}
                     events={orders}
                     hourFormat={'24'}
                     week={{
@@ -76,6 +78,7 @@ const Calendar = () => {
                     // day={step: 30}
                     day={{ step: 30, startHour: 8, endHour: 20 }}
                     eventRenderer={CustomOrderRenderer}
+                    viewerExtraComponent={ExtraComponents}
                 />
             }
         </div>

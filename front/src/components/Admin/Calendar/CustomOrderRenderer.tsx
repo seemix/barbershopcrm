@@ -17,9 +17,7 @@ export const CustomOrderRenderer = (event: any) => {
                     timeStyle: 'short'
                 })} - {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
             </div>
-            <div style={{backgroundColor: '', height: 30}}>
-                {event.customer}
-            </div>
+
             <div style={{backgroundColor: '', height: 30}}>
                 <b>{event.title}</b>
             </div>
