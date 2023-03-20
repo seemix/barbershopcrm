@@ -8,6 +8,7 @@ import freeSlotsStore from './slots';
 import recordStore from './record';
 import authStore from './auth';
 import scheduleStore from './schedule';
+import orderCalendarStore from './calendarOrder';
 
 export const store = configureStore({
     middleware: getDefaultMiddleware =>
@@ -17,6 +18,7 @@ export const store = configureStore({
     reducer: {
         barberStore,
         orderStore,
+        orderCalendarStore,
         stepperStore,
         serviceStore,
         additionalStore,

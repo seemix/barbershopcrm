@@ -25,12 +25,12 @@ const Schedule = () => {
             avatar: item.picture,
         };
     });
-
+    console.log(result);
     useEffect(() => {
         dispatch(getAllSchedules());
         dispatch(getAllBarbers());
         setEvents(result);
-    }, [dispatch, result]);
+    }, [dispatch]);
 
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteSchedule(id));
@@ -80,7 +80,7 @@ const Schedule = () => {
                     }}
                     events={result}
                     resources={resources}
-                    resourceViewMode={'tabs'}
+                    resourceViewMode={'default'}
                     resourceFields={{
                         idField: 'admin_id',
                         textField: 'title',
@@ -114,8 +114,7 @@ const Schedule = () => {
                     //     );
                     // }}
                     // onConfirm={}
-                    eventRenderer={CustomEventRenderer}
-
+                   eventRenderer={CustomEventRenderer}
                 />
             }
         </div>
