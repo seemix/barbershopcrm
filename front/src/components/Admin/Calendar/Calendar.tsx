@@ -7,6 +7,7 @@ import { getOrdersForCalendar } from '../../../store/calendarOrder';
 import { Button, CircularProgress } from '@mui/material';
 import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
+import OrderEditor from './OrderEditor';
 
 const Calendar = () => {
     const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
@@ -57,6 +58,7 @@ const Calendar = () => {
                     locale={ru}
                     events={orders}
                     hourFormat={'24'}
+                    customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     week={{
                         weekDays: [0, 1, 2, 3, 4, 5, 6],
                         weekStartOn: 1,
