@@ -1,0 +1,17 @@
+.card {
+    display: flex;
+    align-items: center;
+    /*justify-content: space-evenly;*/
+    column-gap: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative;
+
+    box-sizing: border-box;
+}
+
+.card_select {
+    border-left: 3px solid rgb(158, 138, 120);
+    box-sizing: border-box;
+}

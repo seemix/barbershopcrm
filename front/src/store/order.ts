@@ -17,7 +17,11 @@ const initialState: IOrder = {
     endTime: null,
     price: 0,
     duration: 0,
-    orderId: null
+    orderId: null,
+    status: 'new',
+    color: '#9e8a78',
+    comment: '',
+    createdBy: ''
 };
 
 interface IAdditional {
@@ -90,6 +94,9 @@ export const orderSlice = createSlice({
         openBooking(state) {
             state.showBooking = true;
         },
+        setColor(state, action) {
+            state.color = action.payload;
+        }
 
     },
     extraReducers: builder => {
@@ -121,7 +128,8 @@ export const {
     setDateTime,
     removeDateTime,
     setCustomer,
-    openBooking
+    openBooking,
+    setColor
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;
 export default orderStore;

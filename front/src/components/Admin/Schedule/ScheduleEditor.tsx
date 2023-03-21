@@ -24,15 +24,15 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
     const handleSubmit = async () => {
         if (event) {
             await dispatch(updateSchedule({
-                start: String(scheduler.state.start.value),
-                end: String(state.end),
+                start: dayjs(scheduler.state.start.value).toJSON(),
+                end: dayjs(state.end).toJSON(),
                 barber: scheduler.state.admin_id.value,
                 id: event.event_id
             },));
         } else {
             await dispatch(createSchedule({
-                start: String(scheduler.state.start.value),
-                end: String(state.end),
+                start: dayjs(scheduler.state.start.value).toJSON(),
+                end: dayjs(state.end).toJSON(),
                 barber: scheduler.state.admin_id.value,
                 count: state.count
             }));

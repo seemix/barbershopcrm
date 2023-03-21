@@ -29,7 +29,7 @@ const Calendar = () => {
         setEvents(orders);
     }, [dispatch]);
 
-    console.log(orders);
+ //   console.log(orders);
     return (
         <div>
             <h2>Календарь</h2>
@@ -59,6 +59,21 @@ const Calendar = () => {
                     events={orders}
                     hourFormat={'24'}
                     customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
+                    fields={[
+                        {
+                            name: 'admin_id',
+                            type: 'select',
+                            default: resources[0].admin_id,
+                            options: resources.map((res) => {
+                                return {
+                                    id: res.admin_id,
+                                    text: `${res.title} (${res.mobile})`,
+                                    value: res.admin_id //Should match "name" property
+                                };
+                            }),
+                            config: { label: 'Assignee', required: true }
+                        }
+                    ]}
                     week={{
                         weekDays: [0, 1, 2, 3, 4, 5, 6],
                         weekStartOn: 1,

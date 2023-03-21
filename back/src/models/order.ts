@@ -7,9 +7,11 @@ const orderSchema = new Schema({
     additional: [{ type: Schema.Types.ObjectId, ref: 'Additional' }],
     startTime: { type: Date },
     endTime: { type: Date },
-    status: { type: String, enum: ['new', 'completed', 'canceled'] },
+    status: { type: String, enum: ['new', 'completed'] },
     price: { type: Number, default: 0 },
-    color: { type: String, default: '' }
+    color: { type: String, default: '' },
+    createdBy: {type: String, enum: ['site', 'barber', 'admin']},
+    comment: { type: String }
 }, { timestamps: true });
 
 export default model('Order', orderSchema);
