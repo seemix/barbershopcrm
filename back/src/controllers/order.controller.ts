@@ -30,6 +30,7 @@ export const orderController = {
 
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
+           // console.log(req.body);
             const {
                 customerName,
                 customerPhone,
@@ -60,7 +61,8 @@ export const orderController = {
             });
             res.json(newOrder);
         } catch (e) {
-            next(new ApiError('Error creating order', 500));
+            console.log(e);
+            //next(new ApiError('Error creating order', 500));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
