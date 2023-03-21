@@ -94,7 +94,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                         }
                     </div>
                     <div>
-                        <div style={{ boxSizing: 'border-box' }}>
+                        <div style={{ boxSizing: 'border-box', width: '370px' }}>
                             <h5>Дополнительные услуги</h5>
                             {serviceId &&
                                 additionals.map(item => <SelectAdditional _id={item._id} barber={item.barber}

@@ -128,7 +128,6 @@ export const orderSlice = createSlice({
             } )
     }
 });
-
 export const {
     setBarber,
     setService,
