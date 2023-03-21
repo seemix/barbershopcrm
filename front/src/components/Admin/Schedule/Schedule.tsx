@@ -13,10 +13,9 @@ const Schedule = () => {
     const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
 
     const dispatch = useAppDispatch();
-    const { result, status } = useAppSelector(state => state.scheduleStore);
+    const { result, status, schedule, loading } = useAppSelector(state => state.scheduleStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
-
     const resources = activeBarbers.map(item => {
         return {
             admin_id: item._id,
@@ -25,12 +24,11 @@ const Schedule = () => {
             avatar: item.picture,
         };
     });
-    console.log(result);
     useEffect(() => {
         dispatch(getAllSchedules());
-        dispatch(getAllBarbers());
         setEvents(result);
-    }, [dispatch]);
+        dispatch(getAllBarbers());
+    }, [dispatch, schedule]);
 
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteSchedule(id));
@@ -66,6 +64,8 @@ const Schedule = () => {
             </div>
             {(status === null || status === 'fulfilled') && resources[0] && result[0] &&
                 <Scheduler
+                    loading={loading}
+                    renderDeps={result}
                     locale={ru}
                     hourFormat={'24'}
                     customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
@@ -103,22 +103,11 @@ const Schedule = () => {
                             config: { label: 'Assignee', required: true }
                         }
                     ]}
-                    // getRemoteEvents={remote}
                     onDelete={(id) => handleDelete(id)}
-                    // viewerExtraComponent={(fields, event) => {
-                    //     return (
-                    //         <div>
-                    //             <p>Useful to render custom fields...</p>
-                    //             <p>Description: {event.days || 'Nothing...'}</p>
-                    //         </div>
-                    //     );
-                    // }}
-                    // onConfirm={}
-                   eventRenderer={CustomEventRenderer}
+                    eventRenderer={CustomEventRenderer}
                 />
             }
         </div>
     );
 };
-
 export default Schedule;

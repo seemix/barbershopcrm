@@ -8,6 +8,7 @@ interface IInitialState {
     result: ProcessedEvent[];
     error: null | string;
     status: string | null;
+    loading: boolean;
 }
 
 const initialState: IInitialState = {
@@ -15,6 +16,7 @@ const initialState: IInitialState = {
     result: [],
     error: null,
     status: null,
+    loading: false
 };
 export const getAllSchedules = createAsyncThunk(
     'scheduleSlice/getAllSchedules',
@@ -78,11 +80,13 @@ const scheduleSlice = createSlice({
             .addCase(getScheduleByBarber.pending, state => {
                 state.status = 'loading';
                 state.error = null;
+                state.loading = true;
+                state.result = [];
             })
             .addCase(getScheduleByBarber.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
+                state.loading = false;
                 state.error = null;
-                //  state.schedule = action.payload;
                 // @ts-ignore
                 state.result = action.payload.map(item => {
                     return {
@@ -96,6 +100,7 @@ const scheduleSlice = createSlice({
             })
             .addCase(getScheduleByBarber.rejected, (state, action) => {
                 state.status = 'error';
+                state.loading = false;
                 state.error = action.payload as string;
             })
             .addCase(createSchedule.pending, state => {
