@@ -6,7 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { Button, DialogActions, TextField } from '@mui/material';
+import { Button, DialogActions } from '@mui/material';
 import { getServicesByBarber } from '../../../store/services';
 import { setBarber, setDateTime } from '../../../store/order';
 import SelectService from './SelectService/SelectService';
@@ -14,7 +14,6 @@ import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import SelectAdditional from './SelectAdditional/SelectAdditional';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import FaceIcon from '@mui/icons-material/Face';
 import SelectColor from './SelectColor/SelectColor';
 import SelectUser from './SelectUser/SelectUser';
 
@@ -65,7 +64,6 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         <div style={{ padding: '20px' }}>
             <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-evenly' }}>
-
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimeField
@@ -107,15 +105,14 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                     </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
-                    <div>
-                        <TextField style={{ backgroundColor: '#fff' }}
-                                   variant={'outlined'}
-                                   label={'комментарий к заказу'}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <TextField style={{ backgroundColor: '#fff' }}*/}
+                    {/*               variant={'outlined'}*/}
+                    {/*               label={'комментарий к заказу'}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <SelectUser/>
-                      {/*<SelectUser _id={'2'} name={'Федя Феденко'} phone={'+373657215'}/>*/}
                     </div>
                     <div>Цвет:
                         <SelectColor/>

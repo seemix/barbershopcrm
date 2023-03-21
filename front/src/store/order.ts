@@ -95,6 +95,12 @@ export const orderSlice = createSlice({
             state.customerName = action.payload.name;
             state.customerPhone = action.payload.phone;
         },
+        resetCustomer (state) {
+            state.customerEmail = null;
+            state.customerId = null;
+            state.customerName = null;
+            state.customerPhone = null;
+        },
         openBooking(state) {
             state.showBooking = true;
         },
@@ -132,6 +138,7 @@ export const {
     setDateTime,
     removeDateTime,
     setCustomer,
+    resetCustomer,
     openBooking,
     setColor
 } = orderSlice.actions;

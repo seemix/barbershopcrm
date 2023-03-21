@@ -1,69 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Card, TextField } from '@mui/material';
-import FaceIcon from '@mui/icons-material/Face';
-import CloseIcon from '@mui/icons-material/Close';
+import { Autocomplete, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { searchCustomers } from '../../../../store/customer';
-import { setCustomer } from '../../../../store/order';
+import { resetCustomer, setCustomer } from '../../../../store/order';
 
-interface IUserProps {
-    _id: string | null;
-    name: string;
-    phone: string;
-}
 
 const SelectUser = () => {
     const [q, setQ] = useState('');
     const { customers } = useAppSelector(state => state.customersStore);
     const [value, setValue] = React.useState<string | null>(null);
-
-    const [inputValue, setInputValue] = React.useState('');
     const dispatch = useAppDispatch();
-    console.log(value);
-    const handleChange = (e: any) => {
-        setQ(q => e.target.value);
-    };
     useEffect(() => {
         if (q.length > 2) dispatch(searchCustomers(q));
     }, [q]);
+
     return (
         <>
             <Autocomplete
+                value={value}
                 onChange={(event: any, newValue: string | null) => {
-                    dispatch(setCustomer(newValue));
+                    setValue(newValue);
+                    if (newValue) {
+                        dispatch(setCustomer(newValue));
+                    } else {
+                        dispatch(resetCustomer());
+                    }
                 }}
-                inputValue={inputValue || ''}
-                onInputChange={(event, newInputValue) => {
-                    setInputValue(newInputValue);
+                inputValue={q}
+                onInputChange={(event, q) => {
+                    setQ(q);
                 }}
-                // disablePortal
-                id="combo-box-demo"
+                id="controllable-states-demo"
                 options={customers}
                 sx={{ width: 300 }}
-
-                renderInput={(params) => <TextField {...params} label="клиент" />}/>
+                renderInput={(params) => <TextField {...params} label={'клиент'}/>}/>
         </>
-
-        // <Card style={{ padding: '10px', backgroundColor: '#fcf9f5' }}>
-        //     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-        //         <div style={{ display: 'flex', flexDirection: 'column', }}>
-        //             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        //                 <div><FaceIcon/></div>
-        //                 <div>{user.name}</div>
-        //
-        //             </div>
-        //             <div style={{textAlign:'center'}}>
-        //                 <p>{user.phone}</p>
-        //             </div>
-        //
-        //         </div>
-        //         <div>
-        //             <CloseIcon fontSize={'medium'}/>
-        //         </div>
-        //     </div>
-        // </Card>
-
-
     );
 };
 
