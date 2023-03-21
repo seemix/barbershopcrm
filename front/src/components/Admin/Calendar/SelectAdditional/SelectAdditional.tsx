@@ -4,6 +4,7 @@ import { addAdditional, removeAdditional } from '../../../../store/order';
 import { IAdditional } from '../../../../interfaces/additional.model';
 import { Card } from '@mui/material';
 import '../SelectService/SelectService.css';
+
 const SelectAdditional = (item: IAdditional) => {
     const { additionalServices } = useAppSelector(state => state.orderStore);
     const [selected, setSelected] = useState<boolean>(additionalServices.includes(item.additional._id));
@@ -19,7 +20,8 @@ const SelectAdditional = (item: IAdditional) => {
     };
     return (
         <>
-            <Card style={{padding: '10px'}} className={selected ? 'card card_select' : 'card'}
+            <Card style={{ padding: '10px', backgroundColor: '#fcf9f5' }}
+                  className={selected ? 'card card_select' : 'card'}
                   onClick={handleSelect}>
                 {additionalServices.length > 0 && !additionalServices.includes(item.additional._id) &&
                     <div className={'unselected_hover'}></div>}

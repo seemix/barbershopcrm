@@ -6,7 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { Button,  DialogActions } from '@mui/material';
+import { Button, DialogActions, TextField } from '@mui/material';
 import { getServicesByBarber } from '../../../store/services';
 import { setBarber, setDateTime } from '../../../store/order';
 import SelectService from './SelectService/SelectService';
@@ -14,7 +14,9 @@ import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import SelectAdditional from './SelectAdditional/SelectAdditional';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import FaceIcon from '@mui/icons-material/Face';
 import SelectColor from './SelectColor/SelectColor';
+import SelectUser from './SelectUser/SelectUser';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -60,19 +62,22 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     }, [barberId, serviceId, dispatch]);
 
     return (
-        <div style={{ padding: '20px', backgroundColor: '#fcf9f5' }}>
+        <div style={{ padding: '20px' }}>
             <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <div><LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateTimeField
-                            label={'start'}
-                            defaultValue={dayjs(start)}
-                            ampm={false}
-                            //disabled
-                            onChange={(e) => handleChange(String(e), 'start')}
-                        />
-                    </LocalizationProvider></div>
-                    <div style={{ position: 'absolute', top: 20, right: 25 }}>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-evenly' }}>
+
+                    <div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DateTimeField
+                                style={{ backgroundColor: '#fff' }}
+                                label={'время визита'}
+                                defaultValue={dayjs(start)}
+                                ampm={false}
+                                //disabled
+                                onChange={(e) => handleChange(String(e), 'start')}
+                            />
+                        </LocalizationProvider></div>
+                    <div>
                         <div style={{ display: 'flex', gap: '20px' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}><AttachMoneyIcon/> {order.price}
                             </div>
@@ -82,16 +87,16 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '20px' }}>
-                    <div>
-                        <h5>Услуга:</h5>
+                <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                    <div style={{ boxSizing: 'border-box' }}>
+                        <h5>Услуга</h5>
                         {
                             services.map(item => <SelectService _id={item._id} service={item.service} price={item.price}
                                                                 duration={item.duration}/>)
                         }
                     </div>
                     <div>
-                        <div>
+                        <div style={{ boxSizing: 'border-box' }}>
                             <h5>Дополнительные услуги</h5>
                             {serviceId &&
                                 additionals.map(item => <SelectAdditional _id={item._id} barber={item.barber}
@@ -100,17 +105,26 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                             }
                         </div>
                     </div>
-
                 </div>
-                <div>
-                    Цвет:
-                    <SelectColor/>
-
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+                    <div>
+                        <TextField style={{ backgroundColor: '#fff' }}
+                                   variant={'outlined'}
+                                   label={'комментарий к заказу'}
+                        />
+                    </div>
+                    <div>
+                        <SelectUser/>
+                      {/*<SelectUser _id={'2'} name={'Федя Феденко'} phone={'+373657215'}/>*/}
+                    </div>
+                    <div>Цвет:
+                        <SelectColor/>
+                    </div>
                 </div>
                 <div>
                     <DialogActions>
-                        <Button onClick={handleSubmit}>ОК</Button>
-                        <Button onClick={scheduler.close}>Отмена</Button>
+                        <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>
+                        <Button onClick={scheduler.close} variant={'contained'}>Отмена</Button>
                     </DialogActions>
                 </div>
             </div>

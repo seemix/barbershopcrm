@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import Customer from '../models/customer.js';
 import ApiError from '../errors/api.error.js';
+import { customerController } from '../controllers/customer.controller.js';
 
 const customerRouter = Router();
 customerRouter.post('/', async (req, res, next) => {
@@ -15,7 +16,8 @@ customerRouter.get('/:customerPhone', async (req, res, next) => {
     } catch (e) {
         next(new ApiError('Error retrieving customer', 400));
     }
-
 });
+
+customerRouter.get('/', customerController.searchCustomers);
 
 export default customerRouter;

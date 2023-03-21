@@ -15,6 +15,7 @@ const SelectService = (item: IService) => {
     return (
         <>
             <Card className={item.service._id === order.serviceId ? 'card card_select' : 'card'}
+                  style={{backgroundColor: '#fcf9f5'}}
                   onClick={handleSelect}
             >
                 {order.serviceId && order.serviceId !== item.service._id &&
