@@ -35,28 +35,32 @@ const Barbers: FC = () => {
                             spaceBetween: 5,
                         },
                         '@0.50': {
-                            slidesPerView: 1.2,
+                            slidesPerView: 1,
                             spaceBetween: 5,
                         },
                         '@0.60': {
-                            slidesPerView: 1.5,
+                            slidesPerView: 1.2,
                             spaceBetween: 5,
                         },
                         '@0.75': {
-                            slidesPerView: 1.8,
+                            slidesPerView: 1.5,
                             spaceBetween: 10,
                         },
                         '@1.00': {
-                            slidesPerView: 2.4,
+                            slidesPerView: 1.8,
                             spaceBetween: 10,
                         },
                         '@1.25': {
-                            slidesPerView: 3,
+                            slidesPerView: 2.1,
                             spaceBetween: 10,
                         },
                         '@1.50': {
-                            slidesPerView: 4,
+                            slidesPerView: 2.6,
                             spaceBetween: 10,
+                        },
+                        '@1.80': {
+                            slidesPerView: 3,
+                            spaceBetween: 10
                         },
                         '@2.00': {
                             slidesPerView: 4,
@@ -64,13 +68,10 @@ const Barbers: FC = () => {
                         },
                     }}
                     loop={false}
-                    // loopFillGroupWithBlank={true}
                     navigation
-                    //pagination={true}
                     modules={[Pagination, Navigation]}
                     className="swiper_wrap"
                 >
-                    {/*<div className={'cards_wrapper'}>*/}
                     {
                         status === 'fulfilled' &&
                         barbers && barbers.map(barber =>
@@ -86,7 +87,6 @@ const Barbers: FC = () => {
                                 />
                             </SwiperSlide>)
                     }
-                    {/*</div>*/}
                 </Swiper>
             </div>
         </div>
