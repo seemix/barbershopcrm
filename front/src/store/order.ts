@@ -90,8 +90,9 @@ export const orderSlice = createSlice({
             // state.customerEmail = action.payload.customerEmail;
             // state.customerName = action.payload.customerName;
             // state.customerPhone = action.payload.customerPhone;
+
             state.customerEmail = action.payload.email;
-            state.customerId = action.payload._id;
+            state.customerId = action.payload?._id;
             state.customerName = action.payload.name;
             state.customerPhone = action.payload.phone;
         },

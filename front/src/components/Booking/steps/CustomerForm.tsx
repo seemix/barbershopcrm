@@ -30,9 +30,9 @@ const CustomerForm = () => {
         let phoneLength = e.target.value;
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
-    const handleNextButton = (data: FieldValues) => {
+    const handleNextButton = (data: any) => {
         dispatch(setCustomer(data));
-        if (String(order.customerEmail).length >= 9) dispatch(handleNext());
+        // if (String(order.customerEmail).length >= 9) dispatch(handleNext());
     };
     useEffect(() => {
         if (phone) dispatch(getCustomerByPhone(phone));
@@ -122,7 +122,7 @@ const CustomerForm = () => {
                             {
                                 <Button variant={'contained'}
                                         type={'submit'}
-                                        onClick={handleNextButton}
+                                    // onClick={handleNextButton}
                                         style={{
                                             marginBottom: '20px',
                                             padding: '10px 15px'
