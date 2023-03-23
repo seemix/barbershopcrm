@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IOrder } from '../interfaces/order.model';
-import { customerService } from '../services/customer.service';
 import { orderService } from '../services/order.service';
 
 const initialState: IOrder = {
@@ -30,15 +29,6 @@ interface IAdditional {
     duration: number;
 }
 
-export const getCustomerByPhone = createAsyncThunk(
-    'orderSlice/getCustomerByPhone',
-    async (phone: string | null, thunkAPI) => {
-        try {
-            return await customerService.getCustomerByPhone(phone);
-        } catch (e) {
-            return thunkAPI.rejectWithValue(e);
-        }
-    });
 
 export const createOrder = createAsyncThunk(
     'orderSlice/createOrder',
@@ -91,12 +81,13 @@ export const orderSlice = createSlice({
             // state.customerName = action.payload.customerName;
             // state.customerPhone = action.payload.customerPhone;
 
+            console.log('set'+action.payload);
             state.customerEmail = action.payload.email;
             state.customerId = action.payload?._id;
             state.customerName = action.payload.name;
             state.customerPhone = action.payload.phone;
         },
-        resetCustomer (state) {
+        resetCustomer(state) {
             state.customerEmail = null;
             state.customerId = null;
             state.customerName = null;
@@ -112,21 +103,12 @@ export const orderSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(getCustomerByPhone.fulfilled, (state, action) => {
-                state.customerEmail = action.payload.email;
-                state.customerName = action.payload.name;
-                state.customerPhone = action.payload.phone;
-                state.customerId = action.payload._id;
-            })
-            .addCase(getCustomerByPhone.rejected, state => {
-
-            })
             .addCase(createOrder.pending, state => {
 
             })
             .addCase(createOrder.fulfilled, (state, action) => {
                 state.orderId = action.payload._id;
-            } )
+            });
     }
 });
 export const {

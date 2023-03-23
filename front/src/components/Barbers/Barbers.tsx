@@ -31,41 +31,38 @@ const Barbers: FC = () => {
                     spaceBetween={10}
                     breakpoints={{
                         '@0.00': {
-                            slidesPerView: 1,
-                            spaceBetween: 5,
-                        },
-                        '@0.50': {
-                            slidesPerView: 1,
-                            spaceBetween: 5,
-                        },
-                        '@0.60': {
                             slidesPerView: 1.2,
                             spaceBetween: 5,
                         },
-                        '@0.75': {
-                            slidesPerView: 1.5,
-                            spaceBetween: 10,
+                        '@0.50': {
+                            slidesPerView: 1.2,
+                            spaceBetween: 5,
                         },
-                        '@1.00': {
+                        '@0.60': {
+                            slidesPerView: 1.3,
+                            spaceBetween: 5,
+                        },
+                        '@0.75': {
                             slidesPerView: 1.8,
                             spaceBetween: 10,
                         },
+                        '@1.00': {
+                            slidesPerView: 2.5,
+                            spaceBetween: 10,
+                        },
                         '@1.25': {
-                            slidesPerView: 2.1,
+                            slidesPerView: 2.9,
                             spaceBetween: 10,
                         },
                         '@1.50': {
-                            slidesPerView: 2.6,
+                            slidesPerView: 4,
                             spaceBetween: 10,
                         },
                         '@1.80': {
-                            slidesPerView: 3,
-                            spaceBetween: 10
-                        },
-                        '@2.00': {
                             slidesPerView: 4,
                             spaceBetween: 10
-                        },
+                        }
+
                     }}
                     loop={false}
                     navigation

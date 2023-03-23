@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Grid, InputAdornment, TextField, Button } from '@mui/material';
 import { AccountCircle, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
@@ -8,7 +8,8 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import userValidator from '../../../validators/user.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { getCustomerByPhone, setCustomer } from '../../../store/order';
+import { setCustomer } from '../../../store/order';
+import { getCustomerByPhone } from '../../../store/customer';
 import { handleBack, handleNext } from '../../../store/stepper';
 import { useTranslation } from 'react-i18next';
 
@@ -22,6 +23,7 @@ const CustomerForm = () => {
     } = useForm({ resolver: joiResolver(userValidator) });
     const dispatch = useAppDispatch();
     const order = useAppSelector(state => state.orderStore);
+    const { customer, status } = useAppSelector(state => state.customersStore);
     const [phone, setPhone] = useState(null);
     const [disabled, setDisabled] = useState(true);
     const handleChange = (e: any) => {
@@ -31,15 +33,26 @@ const CustomerForm = () => {
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
     const handleNextButton = (data: any) => {
-        dispatch(setCustomer(data));
-        // if (String(order.customerEmail).length >= 9) dispatch(handleNext());
+        if (!customer._id) dispatch(setCustomer(data));
+        dispatch(handleNext());
     };
     useEffect(() => {
         if (phone) dispatch(getCustomerByPhone(phone));
-        if (order.customerName) setValue('customerName', order.customerName);
-        if (order.customerEmail) setValue('customerEmail', order.customerEmail);
-        if (order.customerPhone) setValue('customerPhone', order.customerPhone);
-    }, [phone, dispatch, setValue, order.customerPhone, order.customerEmail, order.customerName]);
+
+        if (customer._id && status === 'fulfilled') {
+            setValue('customerName', customer.name);
+            setValue('customerEmail', customer.email);
+            setValue('customerPhone', customer.phone);
+        }
+        dispatch(setCustomer({
+            _id: customer._id,
+            phone: customer.phone,
+            name: customer.name,
+            email: customer.email
+        }));
+
+    }, [phone, customer._id, setValue]);
+
     return (
         <div>
             <h3>{t('Заполните форму')}</h3>
@@ -96,7 +109,7 @@ const CustomerForm = () => {
                                         <AlternateEmailIcon/>
                                     </InputAdornment>
                                 ),
-                                style: { fontSize: 18, backgroundColor: '#fff', width: '250px' }
+                                style: { fontSize: 15, backgroundColor: '#fff', width: '250px' }
                             }}
                             label={'e-mail'}
                             variant={'outlined'}
