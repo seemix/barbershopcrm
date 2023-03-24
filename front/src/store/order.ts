@@ -4,6 +4,8 @@ import { IOrder } from '../interfaces/order.model';
 import { orderService } from '../services/order.service';
 
 const initialState: IOrder = {
+    orders: [],
+    error: null,
     showBooking: false,
     barberId: null,
     customerId: null,
@@ -29,7 +31,6 @@ interface IAdditional {
     duration: number;
 }
 
-
 export const createOrder = createAsyncThunk(
     'orderSlice/createOrder',
     async (order: IOrder, thunkAPI) => {
@@ -37,6 +38,16 @@ export const createOrder = createAsyncThunk(
             return await orderService.createOrder(order);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+export const getOrdersForCalendar = createAsyncThunk(
+    'orderCalendar/getOrders',
+    async (_, thunkAPI) => {
+        try {
+            return orderService.getOrders();
+        } catch (e) {
+            thunkAPI.rejectWithValue(e);
         }
     }
 );
@@ -133,7 +144,25 @@ export const orderSlice = createSlice({
             })
             .addCase(createOrder.fulfilled, (state, action) => {
                 state.orderId = action.payload._id;
-            });
+            })
+            .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.error = null;
+                // @ts-ignore
+                state.orders = action.payload.map(item => {
+                    return {
+                        event_id: item._id,
+                        title: item.service.name,
+                        admin_id: item.barber,
+                        start: new Date(item.startTime),
+                        end: new Date(item.endTime),
+                        color: item.color || '',
+                        customer: item.customer.name,
+                        phone: item.customer.phone,
+                        additional: item.additional
+                    };
+                });
+            })
     }
 });
 export const {

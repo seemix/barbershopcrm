@@ -1,5 +1,7 @@
 export interface IOrder {
-     showBooking: boolean;
+    showBooking: boolean;
+    error: string | null;
+    orders: [];
     customerId: string | null;
     customerName: string | null;
     customerPhone: string | null;

@@ -8,7 +8,6 @@ import freeSlotsStore from './slots';
 import recordStore from './record';
 import authStore from './auth';
 import scheduleStore from './schedule';
-import orderCalendarStore from './calendarOrder';
 import customersStore from './customer';
 
 export const store = configureStore({
@@ -20,7 +19,6 @@ export const store = configureStore({
         barberStore,
         customersStore,
         orderStore,
-        orderCalendarStore,
         stepperStore,
         serviceStore,
         additionalStore,

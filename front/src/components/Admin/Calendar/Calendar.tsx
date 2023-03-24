@@ -3,16 +3,16 @@ import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
 import { CustomOrderRenderer } from './CustomOrderRenderer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
-import { getOrdersForCalendar } from '../../../store/calendarOrder';
 import { Button, CircularProgress } from '@mui/material';
 import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
 import OrderEditor from './OrderEditor';
+import { getOrdersForCalendar } from '../../../store/order';
 
 const Calendar = () => {
     const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
     const dispatch = useAppDispatch();
-    const { orders, status } = useAppSelector(state => state.orderCalendarStore);
+    const { orders, status } = useAppSelector(state => state.orderStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
     const resources = activeBarbers.map(item => {
@@ -54,7 +54,7 @@ const Calendar = () => {
                     Tabs
                 </Button>
             </div>
-            {(status === null || status === 'fulfilled') && resources[0] && orders[0] &&
+            {(status === null || status === 'fulfilled') && resources[0] && orders &&
                 <Scheduler
                     locale={ru}
                     events={orders}
