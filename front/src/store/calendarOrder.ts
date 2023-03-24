@@ -35,6 +35,7 @@ export const orderCalendarSlice = createSlice({
                state.error = null;
                 // @ts-ignore
                 state.orders = action.payload.map(item => {
+
                     return {
                         event_id: item._id,
                         title: item.service.name,
@@ -43,7 +44,8 @@ export const orderCalendarSlice = createSlice({
                         end: new Date(item.endTime),
                         color: item.color || '',
                         customer: item.customer.name,
-                        phone: item.customer.phone
+                        phone: item.customer.phone,
+                        additional: item.additional
                     };
                 });
             })

@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { searchCustomers } from '../../../../store/customer';
 import { resetCustomer, setCustomer } from '../../../../store/order';
 
-
 const SelectUser = () => {
     const [q, setQ] = useState('');
     const { customers } = useAppSelector(state => state.customersStore);
@@ -33,7 +32,8 @@ const SelectUser = () => {
                 id="controllable-states-demo"
                 options={customers}
                 sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label={'клиент'}/>}/>
+                renderInput={(params) => <TextField {...params}
+                label={'клиент'}/>}/>
         </>
     );
 };

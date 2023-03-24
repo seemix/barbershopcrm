@@ -4,7 +4,7 @@ const customerSchema = new Schema ({
     name: { type: String, trim: true, required: true },
    // surname: { type: String, trim: true },
     phone: { type: String, trim: true, required: true },
-    email: { type: String, trim: true, required: true },
+    email: { type: String, trim: true },
     tag: { type: String, trim: true }
 });
 

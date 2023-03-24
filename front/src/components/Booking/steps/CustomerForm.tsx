@@ -22,7 +22,6 @@ const CustomerForm = () => {
         formState: { errors }
     } = useForm({ resolver: joiResolver(userValidator) });
     const dispatch = useAppDispatch();
-    const order = useAppSelector(state => state.orderStore);
     const { customer, status } = useAppSelector(state => state.customersStore);
     const [phone, setPhone] = useState(null);
     const [disabled, setDisabled] = useState(true);

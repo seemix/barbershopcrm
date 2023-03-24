@@ -11,7 +11,7 @@ import moment from 'moment/moment.js';
 
 export const orderController = {
     getOrders: async (req: Request, res: Response, next: NextFunction) => {
-        const orders = await Order.find({startTime: {$gte: Date.now(), $lt: moment(Date.now()).add(1, 'week')}})
+        const orders = await Order.find({startTime: {$gte: moment(Date.now()).add(-1,'day'), $lt: moment(Date.now()).add(1, 'week')}})
             .populate({
                 path: 'customer',
                 select: ['name','phone'],
@@ -39,7 +39,8 @@ export const orderController = {
                 additionalServices,
                 startTime,
                 endTime,
-                price
+                price,
+                color
             } = req.body;
             let { customerId, customerEmail } = req.body;
             if (!customerId) {
@@ -57,9 +58,10 @@ export const orderController = {
                 additional: additionalServices,
                 startTime: startTime,
                 endTime: endTime,
-                price: price
+                price: price,
+                color: color
             });
-            res.json(newOrder);
+            res.json(newOrder).status(201);
         } catch (e) {
             console.log(e);
             //next(new ApiError('Error creating order', 500));

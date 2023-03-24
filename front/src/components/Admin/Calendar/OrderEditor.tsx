@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { SchedulerHelpers } from '@aldabil/react-scheduler/types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { Button, DialogActions } from '@mui/material';
+import { Button, DialogActions, TextField } from '@mui/material';
 import { getServicesByBarber } from '../../../store/services';
-import { setBarber, setDateTime } from '../../../store/order';
+import { createOrder, resetState, setBarber, setDateTime, setEndTime } from '../../../store/order';
 import SelectService from './SelectService/SelectService';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import SelectAdditional from './SelectAdditional/SelectAdditional';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AddIcon from '@mui/icons-material/Add';
 import SelectColor from './SelectColor/SelectColor';
 import SelectUser from './SelectUser/SelectUser';
+import NewUser from './NewUser/NewUser';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -31,7 +33,8 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     const dispatch = useAppDispatch();
     const start = String(scheduler.state.start.value);
     const [state, setState] = useState({
-        start: String(scheduler.state.start.value)
+        start: String(scheduler.state.start.value),
+        newUserForm: false
     });
     const admin_id = scheduler.state.admin_id.value;
     const handleChange = (value: any, name: string) => {
@@ -42,20 +45,30 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
             };
         });
     };
+    const newForm = (action:boolean) => {
+       setState({...state, newUserForm: action});
+    }
 
     const handleSubmit = () => {
-
+        dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
+       // console.log(order.endTime);
+        dispatch(createOrder(order));
+        scheduler.close();
     };
+    const handleCancel = () => {
+        dispatch(resetState());
+        scheduler.close();
+    }
     useEffect(() => {
         dispatch(getServicesByBarber(String(admin_id)));
         dispatch(setBarber(admin_id));
     }, [dispatch, admin_id]);
-    console.log(order);
+  //  console.log(order);
     useEffect(() => {
         const startTime = dayjs(start).toDate();
         const endTime = dayjs(startTime).add(duration, 'minutes').toDate();
         dispatch(setDateTime({ startTime, endTime }));
-    }, [start]);
+    }, [start, dispatch, duration]);
     useEffect(() => {
         if (barberId && serviceId) dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, serviceId, dispatch]);
@@ -67,11 +80,10 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimeField
-                                style={{ backgroundColor: '#fff' }}
+                                style={{ backgroundColor: '#fff', width: '200px' }}
                                 label={'время визита'}
                                 defaultValue={dayjs(start)}
                                 ampm={false}
-                                //disabled
                                 onChange={(e) => handleChange(String(e), 'start')}
                             />
                         </LocalizationProvider></div>
@@ -104,15 +116,26 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
-                    {/*<div>*/}
-                    {/*    <TextField style={{ backgroundColor: '#fff' }}*/}
-                    {/*               variant={'outlined'}*/}
-                    {/*               label={'комментарий к заказу'}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                <div style={{ display: 'flex', justifyContent: 'space-between',gap: '15px' }}>
+                    <div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
+                        {!state.newUserForm &&
+                            <div>
+                                <div> <SelectUser/></div>
+                                <div>{!state.newUserForm && <Button onClick={() => newForm(true)}><AddIcon/></Button>}
+                                </div>
+                            </div>}
+                        <div>
+                            {state.newUserForm && <Button onClick={() => newForm(false)}><ArrowBackIosNewIcon/></Button>}
+                        </div>
+                    </div>
+                    {state.newUserForm && <div>
+                        <NewUser/>
+                    </div> }
                     <div>
-                        <SelectUser/>
+                        <TextField variant={'outlined'}
+                                   style={{width: '240px'}}
+                                   label={'комментарий к заказу'}
+                        />
                     </div>
                     <div>Цвет:
                         <SelectColor/>
@@ -120,8 +143,8 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                 </div>
                 <div>
                     <DialogActions>
-                        <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>
-                        <Button onClick={scheduler.close} variant={'contained'}>Отмена</Button>
+                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button> }
+                        <Button onClick={handleCancel} variant={'contained'}>Отмена</Button>
                     </DialogActions>
                 </div>
             </div>

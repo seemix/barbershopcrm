@@ -23,6 +23,7 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
+    console.log(orders);
     useEffect(() => {
         dispatch(getAllBarbers());
         dispatch(getOrdersForCalendar());

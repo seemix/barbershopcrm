@@ -72,20 +72,27 @@ export const orderSlice = createSlice({
             state.startTime = action.payload.startTime;
             state.endTime = action.payload.endTime;
         },
+        setEndTime(state, action) {
+          state.endTime = action.payload;
+        },
         removeDateTime(state) {
             state.startTime = null;
             state.endTime = null;
         },
         setCustomer(state, action) {
-            // state.customerEmail = action.payload.customerEmail;
-            // state.customerName = action.payload.customerName;
-            // state.customerPhone = action.payload.customerPhone;
-
-            console.log('set'+action.payload);
             state.customerEmail = action.payload.email;
             state.customerId = action.payload?._id;
             state.customerName = action.payload.name;
             state.customerPhone = action.payload.phone;
+        },
+        setCustomerPhone(state, action) {
+          state.customerPhone = action.payload;
+        },
+        setCustomerName(state, action) {
+            state.customerName = action.payload;
+        },
+        setCustomerEmail(state, action) {
+            state.customerEmail = action.payload;
         },
         resetCustomer(state) {
             state.customerEmail = null;
@@ -98,8 +105,26 @@ export const orderSlice = createSlice({
         },
         setColor(state, action) {
             state.color = action.payload;
+        },
+        resetState(state) {
+            state.showBooking = false;
+            state.barberId = null;
+            state.customerId = null;
+            state.customerName = null;
+            state.customerPhone = null;
+            state.customerEmail = null;
+            state.serviceId = null;
+            state.additionalServices = [];
+            state.startTime = null;
+            state.endTime = null;
+            state.price = 0;
+            state.duration = 0;
+            state.orderId = null;
+            state.status = 'new';
+            state.color = '#9e8a78';
+            state.comment = '';
+            state.createdBy = '';
         }
-
     },
     extraReducers: builder => {
         builder
@@ -118,11 +143,16 @@ export const {
     addAdditional,
     removeAdditional,
     setDateTime,
+    setEndTime,
     removeDateTime,
     setCustomer,
+    setCustomerEmail,
+    setCustomerName,
+    setCustomerPhone,
     resetCustomer,
     openBooking,
-    setColor
+    setColor,
+    resetState
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;
 export default orderStore;
