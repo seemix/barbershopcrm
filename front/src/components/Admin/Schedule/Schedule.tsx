@@ -10,7 +10,7 @@ import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
 
 const Schedule = () => {
-    const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
+    const { resourceViewMode, setResourceViewMode } = useScheduler();
 
     const dispatch = useAppDispatch();
     const { result, status, schedule, loading } = useAppSelector(state => state.scheduleStore);
@@ -26,7 +26,6 @@ const Schedule = () => {
     });
     useEffect(() => {
         dispatch(getAllSchedules());
-        setEvents(result);
         dispatch(getAllBarbers());
     }, [dispatch, schedule]);
 
@@ -34,7 +33,6 @@ const Schedule = () => {
         dispatch(deleteSchedule(id));
         return new Promise((res) => {
             dispatch(getAllSchedules());
-            setEvents(result);
             res('ok');
         });
     };

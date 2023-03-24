@@ -8,7 +8,14 @@ import { DateTimeField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Button, DialogActions, TextField } from '@mui/material';
 import { getServicesByBarber } from '../../../store/services';
-import { createOrder, resetState, setBarber, setDateTime, setEndTime } from '../../../store/order';
+import {
+    createOrder,
+    getOrdersForCalendar,
+    resetState,
+    setBarber,
+    setDateTime,
+    setEndTime
+} from '../../../store/order';
 import SelectService from './SelectService/SelectService';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import SelectAdditional from './SelectAdditional/SelectAdditional';
@@ -53,6 +60,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
        // console.log(order.endTime);
         dispatch(createOrder(order));
+        dispatch(getOrdersForCalendar());
         scheduler.close();
     };
     const handleCancel = () => {

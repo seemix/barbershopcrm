@@ -57,6 +57,7 @@ const Calendar = () => {
             {(status === null || status === 'fulfilled') && resources[0] && orders &&
                 <Scheduler
                     locale={ru}
+                    renderDeps={orders}
                     events={orders}
                     hourFormat={'24'}
                     customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}

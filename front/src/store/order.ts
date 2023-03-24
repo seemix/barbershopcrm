@@ -143,7 +143,7 @@ export const orderSlice = createSlice({
 
             })
             .addCase(createOrder.fulfilled, (state, action) => {
-                state.orderId = action.payload._id;
+
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
