@@ -19,7 +19,7 @@ export const busySlots = async (barberId: string | undefined) => {
     })
         .select('startTime')
         .select('endTime');
-
+    // console.log(order);
     const timeSlots = [];
     const arr = timeTable.map(item => {
         return {
@@ -45,9 +45,7 @@ export const busySlots = async (barberId: string | undefined) => {
         startTime: moment(item.startTime), endTime: moment(item.endTime)
     }));
     for (const filteredOrderElement of filteredOrder) {
-        if (filteredOrderElement.endTime <= timeSlots[timeSlots.length - 1].endTime) {
             timeSlots.push(filteredOrderElement);
-        }
     }
     timeSlots.sort((a, b) => Number(a['startTime']) > Number(b['startTime']) ? 1 : -1);
     return timeSlots;
