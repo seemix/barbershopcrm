@@ -7,10 +7,10 @@ import { Button, CircularProgress } from '@mui/material';
 import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
 import OrderEditor from './OrderEditor';
-import { getOrdersForCalendar } from '../../../store/order';
+import { deleteOrderById, getOrdersForCalendar } from '../../../store/order';
 
 const Calendar = () => {
-    const { setEvents, resourceViewMode, setResourceViewMode } = useScheduler();
+    const { resourceViewMode, setResourceViewMode } = useScheduler();
     const dispatch = useAppDispatch();
     const { orders, status } = useAppSelector(state => state.orderStore);
     const { barbers } = useAppSelector(state => state.barberStore);
@@ -23,11 +23,17 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
-    console.log(orders);
+    const handleDelete = (id: string | number): Promise<string | number | void> => {
+        dispatch(deleteOrderById(id));
+        return new Promise((res) => {
+            dispatch(getOrdersForCalendar());
+            res('ok');
+        });
+    };
+
     useEffect(() => {
         dispatch(getAllBarbers());
         dispatch(getOrdersForCalendar());
-        setEvents(orders);
     }, [dispatch]);
 
  //   console.log(orders);
@@ -60,6 +66,7 @@ const Calendar = () => {
                     renderDeps={orders}
                     events={orders}
                     hourFormat={'24'}
+                    onDelete={handleDelete}
                     customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     fields={[
                         {

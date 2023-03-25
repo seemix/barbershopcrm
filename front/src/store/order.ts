@@ -52,6 +52,29 @@ export const getOrdersForCalendar = createAsyncThunk(
     }
 );
 
+export const deleteOrderById = createAsyncThunk(
+    'order/DeleteById',
+    async (orderId: string | number, thunkAPI) => {
+        try {
+            return orderService.deleteOrderById(orderId);
+        } catch (e) {
+            thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const updateOrderById = createAsyncThunk(
+    'order/UpdateById',
+    async (order: IOrder, thunkAPI) => {
+        try {
+            return orderService.updateOrderById(order);
+
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
 export const orderSlice = createSlice({
     name: 'orderSlice',
     initialState,
@@ -84,7 +107,7 @@ export const orderSlice = createSlice({
             state.endTime = action.payload.endTime;
         },
         setEndTime(state, action) {
-          state.endTime = action.payload;
+            state.endTime = action.payload;
         },
         removeDateTime(state) {
             state.startTime = null;
@@ -97,7 +120,7 @@ export const orderSlice = createSlice({
             state.customerPhone = action.payload.phone;
         },
         setCustomerPhone(state, action) {
-          state.customerPhone = action.payload;
+            state.customerPhone = action.payload;
         },
         setCustomerName(state, action) {
             state.customerName = action.payload;
@@ -116,6 +139,9 @@ export const orderSlice = createSlice({
         },
         setColor(state, action) {
             state.color = action.payload;
+        },
+        setComment(state, action) {
+            state.comment = action.payload;
         },
         resetState(state) {
             state.showBooking = false;
@@ -159,10 +185,11 @@ export const orderSlice = createSlice({
                         color: item.color || '',
                         customer: item.customer.name,
                         phone: item.customer.phone,
-                        additional: item.additional
+                        additional: item.additional,
+                        comment: item.comment
                     };
                 });
-            })
+            });
     }
 });
 export const {
@@ -175,6 +202,7 @@ export const {
     setEndTime,
     removeDateTime,
     setCustomer,
+    setComment,
     setCustomerEmail,
     setCustomerName,
     setCustomerPhone,

@@ -11,26 +11,36 @@ import moment from 'moment/moment.js';
 
 export const orderController = {
     getOrders: async (req: Request, res: Response, next: NextFunction) => {
-        const orders = await Order.find({startTime: {$gte: moment(Date.now()).add(-1,'day'), $lt: moment(Date.now()).add(1, 'week')}})
-            .populate({
-                path: 'customer',
-                select: ['name','phone'],
+        try {
+            const orders = await Order.find({
+                startTime: {
+                    $gte: moment(Date.now()).add(-1, 'day'),
+                    $lt: moment(Date.now()).add(1, 'week')
+                }
             })
-            .populate({
-                path: 'service',
-                select: 'name',
-            })
-            .populate({
-                path: 'additional',
-                select: 'name',
-                strictPopulate: false
-            });
-        res.json(orders).status(200);
+                .populate({
+                    path: 'customer',
+                    select: ['name', 'phone'],
+                })
+                .populate({
+                    path: 'service',
+                    select: 'name',
+                })
+                .populate({
+                    path: 'additional',
+                    select: 'name',
+                    strictPopulate: false
+                });
+            res.json(orders).status(200);
+
+        } catch (e) {
+            next(new ApiError('Error getting orders', 500));
+        }
     },
 
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
-           // console.log(req.body);
+            // console.log(req.body);
             const {
                 customerName,
                 customerPhone,
@@ -40,7 +50,8 @@ export const orderController = {
                 startTime,
                 endTime,
                 price,
-                color
+                color,
+                comment
             } = req.body;
             let { customerId, customerEmail } = req.body;
             if (!customerId) {
@@ -59,12 +70,12 @@ export const orderController = {
                 startTime: startTime,
                 endTime: endTime,
                 price: price,
-                color: color
+                color: color,
+                comment: comment
             });
             res.json(newOrder).status(201);
         } catch (e) {
-            console.log(e);
-            //next(new ApiError('Error creating order', 500));
+            next(new ApiError('Error creating order', 500));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
@@ -117,6 +128,24 @@ export const orderController = {
 
         } catch (e) {
             next(new ApiError('Error getting free time slots', 400));
+        }
+    },
+    deleteOrderById: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            const item = await Order.deleteOne({ _id: id });
+            res.json(item).status(203);
+        } catch (e) {
+            next(new ApiError('Error deleting item', 500));
+        }
+    },
+    updateOrderById: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            const updatedItem = await Order.findByIdAndUpdate(id, req.body);
+            res.json(updatedItem).status(200);
+        } catch (e) {
+            next(new ApiError('Error updating item', 500));
         }
     }
 };

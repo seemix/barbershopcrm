@@ -12,7 +12,7 @@ import {
     createOrder,
     getOrdersForCalendar,
     resetState,
-    setBarber,
+    setBarber, setComment,
     setDateTime,
     setEndTime
 } from '../../../store/order';
@@ -55,7 +55,9 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     const newForm = (action:boolean) => {
        setState({...state, newUserForm: action});
     }
-
+    const changeComment = (e:any) => {
+        dispatch(setComment(e.target.value));
+    }
     const handleSubmit = () => {
         dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
        // console.log(order.endTime);
@@ -71,7 +73,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         dispatch(getServicesByBarber(String(admin_id)));
         dispatch(setBarber(admin_id));
     }, [dispatch, admin_id]);
-  //  console.log(order);
+    console.log(order);
     useEffect(() => {
         const startTime = dayjs(start).toDate();
         const endTime = dayjs(startTime).add(duration, 'minutes').toDate();
@@ -141,6 +143,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                     </div> }
                     <div>
                         <TextField variant={'outlined'}
+                                   onChange={changeComment}
                                    style={{width: '240px'}}
                                    label={'комментарий к заказу'}
                         />

@@ -21,11 +21,7 @@ export const CustomOrderRenderer = (event: any) => {
             <div style={{backgroundColor: '', height: 40}}>
                 <b>{event.title}</b>
             </div>
-            {/*<div*/}
-            {/*    style={{ height: 20, background: '#ffffffb5', color: 'black' }}*/}
-            {/*>*/}
-            {/*    {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}*/}
-            {/*</div>*/}
+
         </div>
     );
 };
