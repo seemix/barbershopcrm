@@ -157,7 +157,6 @@ export const orderSlice = createSlice({
             state.price = 0;
             state.duration = 0;
             state.orderId = null;
-            state.status = 'new';
             state.color = '#9e8a78';
             state.comment = '';
             state.createdBy = '';

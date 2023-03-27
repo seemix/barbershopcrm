@@ -1,7 +1,9 @@
+import { ProcessedEvent } from '@aldabil/react-scheduler/types';
+
 export interface IOrder {
     showBooking: boolean;
     error: string | null;
-    orders: [];
+    orders: ProcessedEvent[];
     customerId: string | null;
     customerName: string | null;
     customerPhone: string | null;

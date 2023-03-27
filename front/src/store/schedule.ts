@@ -87,11 +87,12 @@ const scheduleSlice = createSlice({
                 state.status = 'fulfilled';
                 state.loading = false;
                 state.error = null;
+                console.log(action.payload);
                 // @ts-ignore
                 state.result = action.payload.map(item => {
                     return {
                         event_id: item.event_id,
-                        title: item.title,
+                        title: item.name,
                         start: new Date(item.start),
                         end: new Date(item.end),
                         color: item.color || '',
@@ -120,14 +121,15 @@ const scheduleSlice = createSlice({
                 state.status = 'fulfilled';
                 state.error = null;
                 // @ts-ignore
+               // state.result = action.payload;
                 state.result = action.payload.map(item => {
                     return {
-                        event_id: item.event_id,
-                        title: item.title,
-                        start: new Date(item.start),
-                        end: new Date(item.end),
-                        color: item.color || '',
-                        admin_id: item.admin_id
+                       event_id: item.event_id,
+                       title: item.title,
+                       start: new Date(item.start),
+                       end: new Date(item.end),
+                       color: item.color || '',
+                       admin_id: item.admin_id
                     };
                 });
             });

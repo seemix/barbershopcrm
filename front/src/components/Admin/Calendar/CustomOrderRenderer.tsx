@@ -19,7 +19,7 @@ export const CustomOrderRenderer = (event: any) => {
             </div>
 
             <div style={{backgroundColor: '', height: 40}}>
-                <b>{event.title}</b>
+                {event.title}
             </div>
 
         </div>

@@ -60,7 +60,6 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     }
     const handleSubmit = () => {
         dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
-       // console.log(order.endTime);
         dispatch(createOrder(order));
         dispatch(getOrdersForCalendar());
         scheduler.close();
@@ -73,7 +72,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         dispatch(getServicesByBarber(String(admin_id)));
         dispatch(setBarber(admin_id));
     }, [dispatch, admin_id]);
-    console.log(order);
+   // console.log(order);
     useEffect(() => {
         const startTime = dayjs(start).toDate();
         const endTime = dayjs(startTime).add(duration, 'minutes').toDate();

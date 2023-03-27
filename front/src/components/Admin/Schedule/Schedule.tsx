@@ -10,9 +10,10 @@ import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
 
 const Schedule = () => {
-    const { resourceViewMode, setResourceViewMode } = useScheduler();
 
+    const { resourceViewMode, setResourceViewMode } = useScheduler();
     const dispatch = useAppDispatch();
+
     const { result, status, schedule, loading } = useAppSelector(state => state.scheduleStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
@@ -60,13 +61,14 @@ const Schedule = () => {
                     Tabs
                 </Button>
             </div>
-            {(status === null || status === 'fulfilled') && resources[0] && result[0] &&
+            {(status === null || status === 'fulfilled') && resources[0] && result &&
                 <Scheduler
                     loading={loading}
-                    renderDeps={result}
+                    renderDeps={[result]}
                     locale={ru}
                     hourFormat={'24'}
                     customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
+                    day={{ startHour: 8, endHour: 19, step: 30, navigation: true }}
                     week={{
                         weekDays: [0, 1, 2, 3, 4, 5, 6],
                         weekStartOn: 1,

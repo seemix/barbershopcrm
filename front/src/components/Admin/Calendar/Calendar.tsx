@@ -10,6 +10,7 @@ import OrderEditor from './OrderEditor';
 import { deleteOrderById, getOrdersForCalendar } from '../../../store/order';
 
 const Calendar = () => {
+
     const { resourceViewMode, setResourceViewMode } = useScheduler();
     const dispatch = useAppDispatch();
     const { orders, status } = useAppSelector(state => state.orderStore);
@@ -23,6 +24,7 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
+
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteOrderById(id));
         return new Promise((res) => {
@@ -36,7 +38,6 @@ const Calendar = () => {
         dispatch(getOrdersForCalendar());
     }, [dispatch]);
 
- //   console.log(orders);
     return (
         <div>
             <h2>Календарь</h2>
@@ -63,7 +64,7 @@ const Calendar = () => {
             {(status === null || status === 'fulfilled') && resources[0] && orders &&
                 <Scheduler
                     locale={ru}
-                    renderDeps={orders}
+                    renderDeps={[orders]}
                     events={orders}
                     hourFormat={'24'}
                     onDelete={handleDelete}
@@ -90,19 +91,18 @@ const Calendar = () => {
                         endHour: 19,
                         step: 30,
                         navigation: true,
-                        disableGoToDay: false
+                        disableGoToDay:true
                     }}
-                    resources={resources}
-                    resourceViewMode={'tabs'}
-                    resourceFields={{
+                   resources={resources}
+                   resourceViewMode={'tabs'}
+                   resourceFields={{
                         idField: 'admin_id',
                         textField: 'title',
                         subTextField: 'mobile',
                         avatarField: 'avatar',
                         colorField: 'color'
                     }}
-                    // day={step: 30}
-                    day={{ step: 30, startHour: 8, endHour: 20 }}
+                    day={{ step: 60, startHour: 8, endHour: 20 }}
                     eventRenderer={CustomOrderRenderer}
                     viewerExtraComponent={ExtraComponents}
                 />
