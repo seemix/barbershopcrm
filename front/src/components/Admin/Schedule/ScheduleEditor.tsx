@@ -37,7 +37,6 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
                 count: state.count
             }));
         }
-
         dispatch(getAllSchedules());
         scheduler.close();
     };

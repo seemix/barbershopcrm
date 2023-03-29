@@ -23,8 +23,8 @@ const SelectAdditional = (item: IAdditional) => {
             <Card style={{ padding: '10px', backgroundColor: '#fcf9f5' }}
                   className={selected ? 'card card_select' : 'card'}
                   onClick={handleSelect}>
-                {additionalServices.length > 0 && !additionalServices.includes(item.additional._id) &&
-                    <div className={'unselected_hover'}></div>}
+                {/*{additionalServices.length > 0 && !additionalServices.includes(item.additional._id) &&*/}
+                {/*    <div className={'unselected_hover'}></div>}*/}
                 <div>
                     {item.additional.name} <small> {item.duration}м/{item.price} MDL </small>
                 </div>

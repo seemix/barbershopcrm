@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IOrder } from '../interfaces/order.model';
 import { orderService } from '../services/order.service';
+import dayjs from 'dayjs';
 
 const initialState: IOrder = {
     orders: [],
@@ -160,7 +161,24 @@ export const orderSlice = createSlice({
             state.color = '#9e8a78';
             state.comment = '';
             state.createdBy = '';
-        }
+        },
+        setOrderForEdit(state, action) {
+            state.barberId = action.payload.admin_id;
+            state.customerId = action.payload.customerId;
+            state.customerName = action.payload.customer;
+            state.customerPhone = action.payload.phone;
+            state.customerEmail = action.payload.email;
+            state.serviceId = action.payload.service;
+            state.additionalServices = action.payload.additional;
+            state.startTime = action.payload.start;
+            state.endTime = action.payload.end;
+            state.price = action.payload.price;
+            state.duration = action.payload.duration;
+            state.orderId = action.payload.event_id;
+            state.color = action.payload.color;
+            state.comment = action.payload.comment;
+            state.createdBy = '';
+        },
     },
     extraReducers: builder => {
         builder
@@ -178,14 +196,19 @@ export const orderSlice = createSlice({
                     return {
                         event_id: item._id,
                         title: item.service.name,
-                        admin_id: item.barber,
                         start: new Date(item.startTime),
                         end: new Date(item.endTime),
+                        service: item.service._id,
+                        admin_id: item.barber,
                         color: item.color || '',
                         customer: item.customer.name,
                         phone: item.customer.phone,
-                        additional: item.additional,
-                        comment: item.comment
+                        price: item.price,
+                        additional: item.additional.map((add: { _id: any; }) => {return add._id}),
+                        add_names: item.additional,
+                        comment: item.comment,
+                        duration: dayjs(item.endTime).diff(dayjs(item.startTime),'minutes'),
+                        customerId: item.customer._id
                     };
                 });
             });
@@ -208,6 +231,7 @@ export const {
     resetCustomer,
     openBooking,
     setColor,
+    setOrderForEdit,
     resetState
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;

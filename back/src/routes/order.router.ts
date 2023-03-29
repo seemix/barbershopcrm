@@ -5,7 +5,7 @@ const orderRouter = Router();
 orderRouter.post('/', orderController.createOrder);
 orderRouter.get('/', orderController.getOrders);
 orderRouter.delete('/:id', orderController.deleteOrderById);
-orderRouter.put(':/id', orderController.updateOrderById);
+orderRouter.put('/:id', orderController.updateOrderById);
 orderRouter.get('/slots', orderController.generateSlots);
 orderRouter.get('/:orderId', orderController.getOrderById);
 

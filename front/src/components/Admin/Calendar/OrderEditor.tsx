@@ -14,7 +14,7 @@ import {
     resetState,
     setBarber, setComment,
     setDateTime,
-    setEndTime
+    setEndTime, setOrderForEdit, updateOrderById
 } from '../../../store/order';
 import SelectService from './SelectService/SelectService';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
@@ -33,16 +33,19 @@ interface CustomEditorProps {
 const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     const event = scheduler.edited;
     const order = useAppSelector(state => state.orderStore);
-
     const { services } = useAppSelector(state => state.serviceStore);
     const { additionals } = useAppSelector(state1 => state1.additionalStore);
     const { duration, barberId, serviceId } = useAppSelector(state1 => state1.orderStore);
     const dispatch = useAppDispatch();
+    useEffect(() => {
+        if (event) dispatch(setOrderForEdit(event));
+    }, []);
     const start = String(scheduler.state.start.value);
     const [state, setState] = useState({
         start: String(scheduler.state.start.value),
         newUserForm: false
     });
+    console.log(order);
     const admin_id = scheduler.state.admin_id.value;
     const handleChange = (value: any, name: string) => {
         setState((prev) => {
@@ -52,27 +55,33 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
             };
         });
     };
-    const newForm = (action:boolean) => {
-       setState({...state, newUserForm: action});
-    }
-    const changeComment = (e:any) => {
+    const newForm = (action: boolean) => {
+        setState({ ...state, newUserForm: action });
+    };
+    const changeComment = (e: any) => {
         dispatch(setComment(e.target.value));
-    }
+    };
     const handleSubmit = () => {
-        dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
-        dispatch(createOrder(order));
+        if (event) {
+           // const duration = dayjs(+event.end - +event.end);
+           // console.log(duration);
+            dispatch(setEndTime(event.end));
+            dispatch(updateOrderById(order));
+        } else {
+            dispatch(setEndTime(dayjs(order.startTime).add(+order.duration, 'minutes').toJSON()));
+            dispatch(createOrder(order));
+        }
         dispatch(getOrdersForCalendar());
         scheduler.close();
     };
     const handleCancel = () => {
         dispatch(resetState());
         scheduler.close();
-    }
+    };
     useEffect(() => {
         dispatch(getServicesByBarber(String(admin_id)));
         dispatch(setBarber(admin_id));
     }, [dispatch, admin_id]);
-   // console.log(order);
     useEffect(() => {
         const startTime = dayjs(start).toDate();
         const endTime = dayjs(startTime).add(duration, 'minutes').toDate();
@@ -98,10 +107,10 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                         </LocalizationProvider></div>
                     <div>
                         <div style={{ display: 'flex', gap: '20px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}><AttachMoneyIcon/> {order.price}
+                            <div style={{ display: 'flex', alignItems: 'center' }}><AttachMoneyIcon/> {order?.price}
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <AccessTimeIcon/>&nbsp; {order.duration}</div>
+                                <AccessTimeIcon/>&nbsp; {order?.duration}</div>
                         </div>
                     </div>
                 </div>
@@ -125,27 +134,31 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between',gap: '15px' }}>
-                    <div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '15px' }}>
+                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                         {!state.newUserForm &&
                             <div>
-                                <div> <SelectUser/></div>
+                                <div><SelectUser/></div>
                                 <div>{!state.newUserForm && <Button onClick={() => newForm(true)}><AddIcon/></Button>}
                                 </div>
                             </div>}
                         <div>
-                            {state.newUserForm && <Button onClick={() => newForm(false)}><ArrowBackIosNewIcon/></Button>}
+                            {state.newUserForm &&
+                                <Button onClick={() => newForm(false)}><ArrowBackIosNewIcon/></Button>}
                         </div>
                     </div>
                     {state.newUserForm && <div>
                         <NewUser/>
-                    </div> }
+                    </div>}
                     <div>
-                        <TextField variant={'outlined'}
-                                   onChange={changeComment}
-                                   style={{width: '240px'}}
-                                   label={'комментарий к заказу'}
-                        />
+                        {
+                            <TextField variant={'outlined'}
+                                       onChange={changeComment}
+                                       style={{ width: '240px' }}
+                                       defaultValue={event?.comment}
+                                       label={'комментарий к заказу'}
+                            />
+                        }
                     </div>
                     <div>Цвет:
                         <SelectColor/>
@@ -153,7 +166,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                 </div>
                 <div>
                     <DialogActions>
-                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button> }
+                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>}
                         <Button onClick={handleCancel} variant={'contained'}>Отмена</Button>
                     </DialogActions>
                 </div>

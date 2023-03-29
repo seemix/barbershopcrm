@@ -21,7 +21,7 @@ export const ExtraComponents = (fields: any, event: any) => {
                     <div><Phone/></div>
                     <div>{event.phone || 'Nothing...'}</div>
                 </div>
-                <small>{event.additional.map((item: { name: any; }) => item.name)}</small>
+                <small>{event.add_names.map((item: { name: any; }) => item.name)}</small>
             </div>
             <div><p style={{textAlign: 'center'}}><i><small>{event.comment}</small></i></p></div>
         </div>
