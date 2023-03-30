@@ -7,3 +7,10 @@ export interface IService  {
     price: number;
     duration: number
 }
+
+export interface IAllService {
+    _id: string;
+    name: string;
+    description: string;
+    order: number;
+}
