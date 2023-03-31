@@ -9,8 +9,8 @@ export interface IService  {
 }
 
 export interface IAllService {
-    _id: string;
+    _id?: string;
     name: string;
     description: string;
-    order: number;
+    order?: number;
 }
