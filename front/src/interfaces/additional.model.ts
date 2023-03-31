@@ -11,3 +11,9 @@ export interface IAdditional {
     price: number;
     duration: number;
 }
+
+export interface IAdd {
+    _id?: string;
+    name: string;
+    order?: number
+}

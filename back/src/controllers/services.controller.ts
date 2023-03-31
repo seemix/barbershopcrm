@@ -29,7 +29,7 @@ export const servicesController = {
         try {
             const { id } = req.params;
             const deleted = await Service.deleteOne({ _id: id });
-            res.json(deleted).status(203);
+            res.json(deleted).status(204);
         } catch (e) {
             next(new ApiError('Error deleting item', 500));
         }

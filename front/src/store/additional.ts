@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { additionalService } from '../services/additional.service';
-import { IAdditional } from '../interfaces/additional.model';
+import { IAdd, IAdditional } from '../interfaces/additional.model';
+import { IAllService } from '../interfaces/service.model';
 
 interface IInitState {
     additionals: IAdditional[] | [],
     status: string;
     error: string | null;
+    dialogOpen: boolean;
+    deleteDialogOpen: boolean;
+    additionalToDelete: string | null;
+    additionalToUpdate: IAdd | null;
 }
 
 interface IParams {
@@ -16,7 +21,11 @@ interface IParams {
 const initialState: IInitState = {
     additionals: [],
     status: '',
-    error: null
+    error: null,
+    additionalToDelete: null,
+    additionalToUpdate: null,
+    deleteDialogOpen: false,
+    dialogOpen: false
 };
 
 export const getAdditionalsByBarberAndService = createAsyncThunk(
@@ -30,6 +39,61 @@ export const getAdditionalsByBarberAndService = createAsyncThunk(
         }
     });
 
+export const getAllAdditionals = createAsyncThunk(
+    'additionalsSlice/GetAll',
+    async (_, thunkAPI) => {
+        try {
+            return additionalService.getAllAdditionals();
+        } catch (e) {
+            thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const createAdditional = createAsyncThunk(
+    'additionalsSlice/CreateAdditional',
+    async (data: IAdd, thunkAPI) => {
+        try {
+            return additionalService.createAdditional(data);
+        } catch (e) {
+            thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const deleteAdditional = createAsyncThunk(
+    'servicesSlice/DeleteService',
+    async (_id: string, thunkAPI) => {
+        try {
+            return additionalService.deleteAdditional(_id);
+        } catch (e) {
+            thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const updateAdditional = createAsyncThunk(
+    'servicesSlice/UpdateService',
+    async (data: IAdd, thunkAPI) => {
+        try {
+            return additionalService.updateAdditional(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const saveAdditionalOrder = createAsyncThunk(
+    'servicesSlice/SaveOrder',
+    async (arr: IAllService[], thunkAPI) => {
+        try {
+            return additionalService.saveAdditionalOrder(arr);
+
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 const additionalSlice = createSlice({
     name: 'additionalSlice',
     initialState,
@@ -44,7 +108,7 @@ const additionalSlice = createSlice({
             .addCase(getAdditionalsByBarberAndService.pending, state => {
                 state.status = 'loading';
                 state.error = null;
-            })
+            });
     }
 });
 
