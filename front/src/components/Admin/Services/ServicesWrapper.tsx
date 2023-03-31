@@ -4,7 +4,7 @@ import AdditionalServices from './AdditionalServices/AdditionalServices';
 
 const ServicesWrapper = () => {
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'space-evenly'}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'center', gap:'40px'}}>
             <div><Services/></div>
             <div><AdditionalServices/></div>
         </div>
