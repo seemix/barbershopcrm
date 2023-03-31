@@ -95,6 +95,7 @@ const serviceSlice = createSlice({
             return state;
         },
         closeDialog(state) {
+            state.serviceToUpdate = {_id: '', name: '', description: ''}
             state.dialogOpen = false;
         },
         openDialog(state) {
@@ -168,7 +169,7 @@ const serviceSlice = createSlice({
                 state.status = 'loading';
                 state.error = null;
             })
-            .addCase(deleteService.fulfilled, (state, action) => {
+            .addCase(deleteService.fulfilled, state => {
                 state.status = 'fulfilled';
                 state.allServices = state.allServices.filter(service => service._id !== state.serviceToDelete);
                 state.error = null;
@@ -178,7 +179,15 @@ const serviceSlice = createSlice({
                 state.status = 'error';
                 state.error = action.payload as string;
             })
-            .addCase(updateService.fulfilled, (state, action) => {
+            .addCase(updateService.pending, state => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(updateService.rejected, (state, action) => {
+                state.status = 'error';
+                state.error = action.payload as string;
+            })
+            .addCase(updateService.fulfilled, state => {
                 state.status = 'fulfilled';
                 state.error = null;
                 state.allServices = state.allServices.map(item => item._id === state.serviceToUpdate._id ? {

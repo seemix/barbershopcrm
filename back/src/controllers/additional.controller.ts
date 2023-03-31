@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import Additional from '../models/additional.js';
 import ApiError from '../errors/api.error.js';
-import Service from '../models/service.js';
 
 export const additionalController = {
     createAdditional: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const newAdditional = await Additional.create(req.body);
+            const newAdditional = await Additional.create({ name: req.body.name, order: 0 });
             res.json(newAdditional).status(201);
         } catch (e) {
             next(new ApiError('Error creating new additional service', 400));
@@ -14,7 +13,7 @@ export const additionalController = {
     },
     getAllAdditional: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const allAdditional = await Additional.find();
+            const allAdditional = await Additional.find().sort({ order: 1 });
             res.json(allAdditional).status(200);
         } catch (e) {
             next(new ApiError('Error getting additional service', 400));

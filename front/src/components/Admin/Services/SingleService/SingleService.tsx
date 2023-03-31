@@ -9,11 +9,9 @@ import { useAppDispatch } from '../../../../hooks/redux';
 import { setDelete, setServiceForUpdate } from '../../../../store/services';
 
 const SingleService = (item: IAllService) => {
-  //  const { deleteDialogOpen, serviceToDelete } = useAppSelector(state => state.serviceStore);
     const dispatch = useAppDispatch();
     return (
         <div className={'container'}>
-
             <Card className={'service_card'}>
                 <div className={'card_inside_wrapper'}>
                     <div>
@@ -26,7 +24,6 @@ const SingleService = (item: IAllService) => {
                     </div>
                 </div>
             </Card>
-
         </div>
     );
 };

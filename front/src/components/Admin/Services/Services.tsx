@@ -17,14 +17,13 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 const Services = () => {
     const dispatch = useAppDispatch();
-    const { allServices, deleteDialogOpen, serviceToDelete } = useAppSelector(state => state.serviceStore);
+    const { allServices, deleteDialogOpen, serviceToDelete, dialogOpen } = useAppSelector(state => state.serviceStore);
     useEffect(() => {
         dispatch(getAllServices());
     }, [dispatch]);
     const reOrder = (newOrder: any) => {
         dispatch(servicesReorder(newOrder));
     };
-    const { dialogOpen } = useAppSelector(state => state.serviceStore);
     return (
         <div className={'container'} style={{ flexDirection: 'column' }}>
             <Dialog
@@ -46,7 +45,8 @@ const Services = () => {
             </Dialog>
             <h2>Услуги <Button onClick={() => dispatch(openDialog())}><AddCircleIcon/><span
                 style={{ marginLeft: '5px' }}> Добавить</span></Button>
-                <Button style={{ maxWidth: '350px' }} onClick={() => dispatch(saveOrder(allServices))}>Сохранить</Button>
+                <Button style={{ maxWidth: '350px' }}
+                        onClick={() => dispatch(saveOrder(allServices))}>Сохранить</Button>
             </h2>
 
             <Reorder.Group values={allServices} onReorder={(newOrder) => reOrder(newOrder)} as={'ol'}>
