@@ -7,17 +7,19 @@ const Prices = () => {
     const dispatch = useAppDispatch();
     const { services } = useAppSelector(state => state.barberServiceStore);
     useEffect(() => {
-          dispatch(getAllBarberServices());
+        dispatch(getAllBarberServices());
     }, []);
+
     return (
         <div>
             <h2>Prices</h2>
             {
                 services.map(item => <SingleBarberPrice barber={item.barber} price={item.price} service={item.service}
-                                                        duration={item.duration} />)
+                                                        duration={item.duration}/>)
             }
         </div>
     );
 };
 
 export default Prices;
+const ee = [{ name: 'John', services: [{ name: 'shaving', price: 50 }, { name: 'trimming', price: 20 }] }];

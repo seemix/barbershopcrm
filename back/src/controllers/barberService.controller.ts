@@ -6,15 +6,58 @@ import ApiError from '../errors/api.error.js';
 export const barberServiceController = {
     getAllBarberServices: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const allBarberServices = await BarberService.find().populate({
-                path: 'barber',
-                select: ['name']
-            })
-                .populate({
-                    path: 'service',
-                    select: ['name']
-                })
-                .sort({ barber: 1 });
+            const allBarberServices = await BarberService.aggregate([
+                {
+                    $lookup: {
+                        from: 'barbers',
+                        localField: 'barber',
+                        foreignField: '_id',
+                        as: 'barber'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'services',
+                        localField: 'service',
+                        foreignField: '_id',
+                        as: 'service'
+                    }
+                },
+                {
+                    $unwind: '$barber'
+                },
+                {
+                    $unwind: '$service'
+                },
+                {
+                    $group: {
+                        _id: '$barber.name',
+                        barberId: { $first: '$barber._id' },
+                        services: {
+                            $push: {
+                                name: '$service.name',
+                                price: '$price',
+                                _id: '$_id'
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        barber: {
+                            _id: '$barberId',
+                            name: '$_id'
+                        },
+                        _id: 0,
+                        services: 1
+                    }
+                },
+                {
+                    $sort: {
+                        name: 1
+                    }
+                }
+            ]);
             res.json(allBarberServices).status(200);
         } catch (e) {
             next(new ApiError('Error getting services', 400));
