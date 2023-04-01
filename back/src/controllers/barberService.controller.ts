@@ -6,7 +6,15 @@ import ApiError from '../errors/api.error.js';
 export const barberServiceController = {
     getAllBarberServices: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const allBarberServices = await BarberService.find();
+            const allBarberServices = await BarberService.find().populate({
+                path: 'barber',
+                select: ['name']
+            })
+                .populate({
+                    path: 'service',
+                    select: ['name']
+                })
+                .sort({ barber: 1 });
             res.json(allBarberServices).status(200);
         } catch (e) {
             next(new ApiError('Error getting services', 400));
@@ -25,7 +33,7 @@ export const barberServiceController = {
         try {
             const { barber } = req.params;
             const byBarber = await BarberService.find({ barber: barber })
-                .select(['service','price','duration'])
+                .select(['service', 'price', 'duration'])
                 .populate({
                     path: 'service',
                     select: ['name'],

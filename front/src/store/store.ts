@@ -9,6 +9,7 @@ import recordStore from './record';
 import authStore from './auth';
 import scheduleStore from './schedule';
 import customersStore from './customer';
+import barberServiceStore from './barberService';
 
 export const store = configureStore({
     middleware: getDefaultMiddleware =>
@@ -17,6 +18,7 @@ export const store = configureStore({
         }),
     reducer: {
         barberStore,
+        barberServiceStore,
         customersStore,
         orderStore,
         stepperStore,
