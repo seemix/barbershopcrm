@@ -38,6 +38,8 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
             }));
         }
         dispatch(getAllSchedules());
+        // @ts-ignore
+       // calendarRef.current.scheduler.handleState(result,'events')
         scheduler.close();
     };
     const start = String(scheduler.state.start.value);

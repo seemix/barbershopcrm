@@ -196,18 +196,21 @@ export const orderSlice = createSlice({
                     return {
                         event_id: item._id,
                         title: item.service.name,
-                        start: new Date(item.startTime),
-                        end: new Date(item.endTime),
+                        start: item.startTime,
+                        end: item.endTime,
                         service: item.service._id,
-                        admin_id: item.barber,
+                        barber: item.barber,
+                       // admin_id: String(item.barber),
                         color: item.color || '',
                         customer: item.customer.name,
                         phone: item.customer.phone,
                         price: item.price,
-                        additional: item.additional.map((add: { _id: any; }) => {return add._id}),
+                        additional: item.additional.map((add: { _id: any; }) => {
+                            return add._id;
+                        }),
                         add_names: item.additional,
                         comment: item.comment,
-                        duration: dayjs(item.endTime).diff(dayjs(item.startTime),'minutes'),
+                        duration: dayjs(item.endTime).diff(dayjs(item.startTime), 'minutes'),
                         customerId: item.customer._id
                     };
                 });

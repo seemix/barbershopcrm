@@ -87,12 +87,12 @@ const scheduleSlice = createSlice({
                 state.status = 'fulfilled';
                 state.loading = false;
                 state.error = null;
-                console.log(action.payload);
+               // console.log(action.payload);
                 // @ts-ignore
                 state.result = action.payload.map(item => {
                     return {
                         event_id: item.event_id,
-                        title: item.name,
+                        title: 'Jazz',
                         start: new Date(item.start),
                         end: new Date(item.end),
                         color: item.color || '',
@@ -125,7 +125,7 @@ const scheduleSlice = createSlice({
                 state.result = action.payload.map(item => {
                     return {
                        event_id: item.event_id,
-                       title: item.title,
+                       title: 'Jazz',
                        start: new Date(item.start),
                        end: new Date(item.end),
                        color: item.color || '',

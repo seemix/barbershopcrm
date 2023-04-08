@@ -37,6 +37,7 @@ export const barberServiceController = {
                             $push: {
                                 name: '$service.name',
                                 price: '$price',
+                                duration: '$duration',
                                 _id: '$_id'
                             }
                         }

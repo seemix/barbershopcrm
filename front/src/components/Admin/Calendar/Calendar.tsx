@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
-import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
+import React, { useEffect, useRef } from 'react';
+import { Scheduler } from '@aldabil/react-scheduler';
 import { CustomOrderRenderer } from './CustomOrderRenderer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
-import { Button, CircularProgress } from '@mui/material';
+import {  CircularProgress } from '@mui/material';
 import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
 import OrderEditor from './OrderEditor';
 import { deleteOrderById, getOrdersForCalendar } from '../../../store/order';
+import { SchedulerRef } from '@aldabil/react-scheduler/types';
 
 const Calendar = () => {
-
-    const { resourceViewMode, setResourceViewMode } = useScheduler();
+    const calendarRef = useRef<SchedulerRef>(null);
     const dispatch = useAppDispatch();
     const { orders, status } = useAppSelector(state => state.orderStore);
     const { barbers } = useAppSelector(state => state.barberStore);
@@ -24,7 +24,7 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
-
+    console.log(orders);
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteOrderById(id));
         return new Promise((res) => {
@@ -44,34 +44,34 @@ const Calendar = () => {
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
                 <span>Переключатель вида: </span>
-                <Button
-                    color={resourceViewMode === 'default' ? 'primary' : 'inherit'}
-                    variant={resourceViewMode === 'default' ? 'contained' : 'text'}
-                    size="small"
-                    onClick={() => setResourceViewMode('default')}
-                >
-                    Default
-                </Button>
-                <Button
-                    color={resourceViewMode === 'tabs' ? 'primary' : 'inherit'}
-                    variant={resourceViewMode === 'tabs' ? 'contained' : 'text'}
-                    size="small"
-                    onClick={() => setResourceViewMode('tabs')}
-                >
-                    Tabs
-                </Button>
+                {/*<Button*/}
+                {/*    color={resourceViewMode === 'default' ? 'primary' : 'inherit'}*/}
+                {/*    variant={resourceViewMode === 'default' ? 'contained' : 'text'}*/}
+                {/*    size="small"*/}
+                {/*    onClick={() => setResourceViewMode('default')}*/}
+                {/*>*/}
+                {/*    Default*/}
+                {/*</Button>*/}
+                {/*<Button*/}
+                {/*    color={resourceViewMode === 'tabs' ? 'primary' : 'inherit'}*/}
+                {/*    variant={resourceViewMode === 'tabs' ? 'contained' : 'text'}*/}
+                {/*    size="small"*/}
+                {/*    onClick={() => setResourceViewMode('tabs')}*/}
+                {/*>*/}
+                {/*    Tabs*/}
+                {/*</Button>*/}
             </div>
-            {(status === null || status === 'fulfilled') && resources[0] && orders &&
+            {(status === null || status === 'fulfilled') && resources[0] && orders[0] &&
                 <Scheduler
+                    ref={calendarRef}
                     locale={ru}
-                    renderDeps={[orders]}
                     events={orders}
                     hourFormat={'24'}
                     onDelete={handleDelete}
                     customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     fields={[
                         {
-                            name: 'admin_id',
+                            name: 'barber',
                             type: 'select',
                             default: resources[0].admin_id,
                             options: resources.map((res) => {
@@ -91,16 +91,16 @@ const Calendar = () => {
                         endHour: 19,
                         step: 30,
                         navigation: true,
-                        disableGoToDay:true
+                        disableGoToDay: true
                     }}
-                   resources={resources}
-                   resourceViewMode={'tabs'}
-                   resourceFields={{
-                        idField: 'admin_id',
+                    resources={resources}
+                    resourceViewMode={'tabs'}
+                    resourceFields={{
+                        idField: 'barber',
                         textField: 'title',
                         subTextField: 'mobile',
                         avatarField: 'avatar',
-                        colorField: 'color'
+                     //   colorField: 'color'
                     }}
                     day={{ step: 60, startHour: 8, endHour: 20 }}
                     eventRenderer={CustomOrderRenderer}

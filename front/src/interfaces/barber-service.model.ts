@@ -1,12 +1,15 @@
+interface IService {
+    _id: string;
+    name: string;
+    price: string | number;
+    duration: string | number;
+}
+
 export interface IBarberService {
-    price: string | null;
-    duration: number | string | null;
-    service: {
-        name: string;
-        _id: string;
-    },
+
+    services: IService[];
     barber: {
         _id: string;
         name: string
-    }
+    };
 }

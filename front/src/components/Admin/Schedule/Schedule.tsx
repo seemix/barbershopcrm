@@ -1,6 +1,7 @@
-import { Scheduler, useScheduler } from '@aldabil/react-scheduler';
-import React, { useEffect } from 'react';
+import { Scheduler } from '@aldabil/react-scheduler';
+import React, { useEffect, useRef, useState } from 'react';
 import { ru } from 'date-fns/locale';
+import { SchedulerRef } from '@aldabil/react-scheduler/types';
 
 import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -10,10 +11,8 @@ import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
 
 const Schedule = () => {
-
-    const { resourceViewMode, setResourceViewMode } = useScheduler();
+    const calendarRef = useRef<SchedulerRef>(null);
     const dispatch = useAppDispatch();
-
     const { result, status, schedule, loading } = useAppSelector(state => state.scheduleStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
@@ -28,44 +27,63 @@ const Schedule = () => {
     useEffect(() => {
         dispatch(getAllSchedules());
         dispatch(getAllBarbers());
+        calendarRef.current?.scheduler?.handleState(result, 'events');
     }, [dispatch, schedule]);
-
+    useEffect(() => {
+        calendarRef.current?.scheduler?.handleState(
+            result,
+            'events'
+        );
+    }, [calendarRef.current]);
     const handleDelete = (id: string | number): Promise<string | number | void> => {
-        dispatch(deleteSchedule(id));
         return new Promise((res) => {
+            dispatch(deleteSchedule(id));
             dispatch(getAllSchedules());
             res('ok');
         });
     };
-
+    const [mode, setMode] = useState<'default' | 'tabs'>('default');
     return (
         <div>
             <h2>Расписание</h2>
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
-                <span>Переключатель вида: </span>
+                <span> Переключатель вида: </span>
                 <Button
-                    color={resourceViewMode === 'default' ? 'primary' : 'inherit'}
-                    variant={resourceViewMode === 'default' ? 'contained' : 'text'}
+                    color={mode === 'default' ? 'primary' : 'inherit'}
+                    variant={mode === 'default' ? 'contained' : 'text'}
                     size="small"
-                    onClick={() => setResourceViewMode('default')}
+                    onClick={() => {
+                        setMode('default');
+                        calendarRef.current?.scheduler?.handleState(
+                            'default',
+                            'resourceViewMode'
+                        );
+                    }}
                 >
                     Default
                 </Button>
                 <Button
-                    color={resourceViewMode === 'tabs' ? 'primary' : 'inherit'}
-                    variant={resourceViewMode === 'tabs' ? 'contained' : 'text'}
+                    color={mode === 'tabs' ? 'primary' : 'inherit'}
+                    variant={mode === 'tabs' ? 'contained' : 'text'}
                     size="small"
-                    onClick={() => setResourceViewMode('tabs')}
+                    onClick={() => {
+                        setMode('tabs');
+                        calendarRef.current?.scheduler?.handleState(
+                            'tabs',
+                            'resourceViewMode'
+                        );
+                    }}
                 >
                     Tabs
                 </Button>
             </div>
-            {(status === null || status === 'fulfilled') && resources[0] && result &&
+            {resources[0] && result[0] &&
                 <Scheduler
                     loading={loading}
-                    renderDeps={[result]}
                     locale={ru}
+                    ref={calendarRef}
+                    events={result}
                     hourFormat={'24'}
                     customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
                     day={{ startHour: 8, endHour: 19, step: 30, navigation: true }}
@@ -78,7 +96,6 @@ const Schedule = () => {
                         navigation: true,
                         disableGoToDay: false
                     }}
-                    events={result}
                     resources={resources}
                     resourceViewMode={'default'}
                     resourceFields={{
@@ -99,12 +116,21 @@ const Schedule = () => {
                                     text: `${res.title} (${res.mobile})`,
                                     value: res.admin_id //Should match "name" property
                                 };
+
                             }),
                             config: { label: 'Assignee', required: true }
                         }
                     ]}
                     onDelete={(id) => handleDelete(id)}
                     eventRenderer={CustomEventRenderer}
+                    viewerExtraComponent={(fields, event) => {
+                        return (
+                            <div>
+                                <p>Useful to render custom fields...</p>
+                                <p>Description: {event.description || "Nothing..."}</p>
+                            </div>
+                        );
+                    }}
                 />
             }
         </div>

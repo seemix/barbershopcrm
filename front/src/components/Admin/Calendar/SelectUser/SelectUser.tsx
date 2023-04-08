@@ -21,7 +21,7 @@ const SelectUser = () => {
             //order.customerName &&
             <Autocomplete
                // defaultValue={order.customerName}
-                value={value}
+                value={String(value)}
                 onChange={(event: any, newValue: string | null) => {
                     setValue(newValue);
                     if (newValue) {
