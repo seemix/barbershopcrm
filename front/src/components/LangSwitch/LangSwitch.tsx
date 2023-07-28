@@ -11,10 +11,10 @@ const LangSwitch = () => {
         changeLanguage(e.target.value);
 
     };
-    const handleBlur = (e: any) => {
+    const handleBlur = () => {
         setBack(false);
     };
-    const handleFocus = (e: any) => {
+    const handleFocus = () => {
         setBack(true);
     };
     const changeLanguage = (language: string) => {
@@ -23,10 +23,10 @@ const LangSwitch = () => {
     return (
         <div>
             <select className={back ? 'select_css select_active' : 'select_css'} onChange={handleChange}
-                    onBlur={handleBlur} onFocus={handleFocus}>
-                <option value={'ru'} selected={i18n.language === 'ro'}>RU</option>
-                <option value={'ro'} selected={i18n.language === 'ro'}>RO</option>
-                <option value={'en'} selected={i18n.language === 'en'}>EN</option>
+                    onBlur={handleBlur} onFocus={handleFocus} defaultValue={i18n.language.toUpperCase()}>
+                <option value={'ru'}>RU</option>
+                <option value={'ro'}>RO</option>
+                <option value={'en'}>EN</option>
             </select>
         </div>
     );

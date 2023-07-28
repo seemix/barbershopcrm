@@ -72,7 +72,7 @@ const Barbers: FC = () => {
                     {
                         status === 'fulfilled' &&
                         barbers && barbers.map(barber =>
-                            <SwiperSlide>
+                            <SwiperSlide key={barber._id}>
                                 <BarberSingle
                                     key={barber._id}
                                     description={barber.description}
