@@ -21,8 +21,7 @@ const Barber = (barber: IBarber) => {
                     <div className={'unselected_hover'}></div>
                 }
                 <Avatar src={barber.picture}
-                        sx={{ width: 80, height: 80 }}/>
-
+                        sx={{ width: 75, height: 75 }}/>
                 <h4>{barber.name} </h4>
                 <h4><small> {barber.description}</small></h4>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -33,7 +32,6 @@ const Barber = (barber: IBarber) => {
                         </big>
                     </h4>
                 </div>
-
             </Card>
         </>
     );

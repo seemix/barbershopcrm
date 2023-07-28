@@ -13,7 +13,7 @@ const Services: FC = () => {
         <div className={'services'} id={'services'}>
             <div className={'section_caption'}>
                 <motion.h3
-                    custom={2}
+                    custom={2.5}
                     initial={'hidden'}
                     whileInView={'visible'}
                     variants={topAnimation}
@@ -27,7 +27,7 @@ const Services: FC = () => {
                 >{t('Наши услуги')}
                 </motion.h2>
                 <motion.div
-                    custom={2}
+                    custom={2.5}
                     initial={'hidden'}
                     whileInView={'visible'}
                     variants={bottomAnimation}

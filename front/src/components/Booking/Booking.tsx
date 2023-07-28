@@ -10,6 +10,8 @@ import ChoseAdditional from './steps/ChoseAdditional';
 import CustomerForm from './steps/CustomerForm';
 import FinalStep from './steps/FinalStep';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import { bottomAnimation, titleAnimation } from '../../constants/animations';
 
 const Booking: FC = () => {
     const { t } = useTranslation();
@@ -22,7 +24,7 @@ const Booking: FC = () => {
         <FinalStep/>
     ];
     const order = useAppSelector(state => state.orderStore);
-    console.log(order);
+  //  console.log(order);
    // console.log(i18n.language);
 
     const { activeStep } = useAppSelector(state => state.stepperStore);
@@ -32,8 +34,20 @@ const Booking: FC = () => {
         <div id={'booking'}>
             <div style={{ minHeight: 'calc(100vh - 150px)' }}
                  className={order.showBooking ? 'services show_item' : 'services hide_item'}>
-
-                <h2>{t('Он-лайн запись')}</h2>
+                <motion.h2
+                    custom={3.5}
+                    initial={'hidden'}
+                    whileInView={'visible'}
+                    variants={titleAnimation}
+                >{t('Он-лайн запись')}
+                </motion.h2>
+                <motion.div
+                    custom={2.5}
+                    initial={'hidden'}
+                    whileInView={'visible'}
+                    variants={bottomAnimation}
+                    className={'heading_line'}>
+                </motion.div>
                 <div style={{
                     width: '100%',
                     display: 'flex',
@@ -41,7 +55,7 @@ const Booking: FC = () => {
                     flexDirection: 'row',
                     backgroundColor: '#fcf9f5'
                 }}>
-                    <div>
+                    <div style={{marginTop: '-30px'}}>
                         <div style={{ minWidth: 400, maxWidth: 1100 }}>
                             <Box sx={{ height: 'auto', p: 0 }}>
                                 {steps[activeStep]}

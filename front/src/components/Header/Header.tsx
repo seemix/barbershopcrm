@@ -38,7 +38,7 @@ const Header: FC = () => {
                         className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'top'}
                         smooth={true} spy={false}
-                        duration={800}
+                        duration={700}
                         offset={-80}>{t('главная')}
                     </Link>
                     <Link
@@ -46,7 +46,7 @@ const Header: FC = () => {
                         className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'services'}
                         smooth={true} spy={false}
-                        duration={800}
+                        duration={700}
                         offset={-80}>{t('услуги')}
                     </Link>
                     <Link
@@ -54,7 +54,7 @@ const Header: FC = () => {
                         className={scroll? 'nav_link' : 'nav_link  nav_link_scroll'}
                         to={'barbers'}
                         smooth={true} spy={false}
-                        duration={800}
+                        duration={700}
                         offset={-80}>{t('барберы')}
                     </Link>
                     <Link
@@ -62,7 +62,7 @@ const Header: FC = () => {
                         className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'contacts'}
                         smooth={true} spy={false}
-                        duration={800}
+                        duration={700}
                         offset={-80}>{t('контакты')}
                     </Link>
                 </ul>

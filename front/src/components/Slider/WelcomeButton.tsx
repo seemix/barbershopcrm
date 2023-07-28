@@ -25,7 +25,7 @@ const WelcomeButton = () => {
                         initial={'hidden'}
                         whileInView={'visible'}
                         variants={buttonAnimation}>
-                        <Link to={'booking'} smooth={true} spy={false} offset={-80}>
+                        <Link to={'booking'} smooth={true} spy={false} offset={-40}>
                             <button
                                 onClick={handleBooking}
                                 className={'button-5 booking'}>{t('ЗАПИСАТЬСЯ')}
