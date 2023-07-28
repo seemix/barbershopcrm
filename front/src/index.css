@@ -21,3 +21,7 @@ button.go241900306 {
 .css-rh92k-MuiPaper-root-MuiMobileStepper-root {
   display: none !important;
 }
+
+.swiper-pagination-bullet-active {
+  background-color: rgb(252, 251, 251) !important;
+}

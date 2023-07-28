@@ -46,7 +46,7 @@ export const getOrdersForCalendar = createAsyncThunk(
     'orderCalendar/getOrders',
     async (_, thunkAPI) => {
         try {
-            return orderService.getOrders();
+            return await orderService.getOrders();
         } catch (e) {
             thunkAPI.rejectWithValue(e);
         }
@@ -196,11 +196,11 @@ export const orderSlice = createSlice({
                     return {
                         event_id: item._id,
                         title: item.service.name,
-                        start: item.startTime,
-                        end: item.endTime,
+                        start: dayjs(item.startTime),
+                        end:  dayjs(item.endTime),
                         service: item.service._id,
-                        barber: item.barber,
-                       // admin_id: String(item.barber),
+                        //barber: item.barber,
+                        admin_id: String(item.barber),
                         color: item.color || '',
                         customer: item.customer.name,
                         phone: item.customer.phone,
@@ -214,6 +214,7 @@ export const orderSlice = createSlice({
                         customerId: item.customer._id
                     };
                 });
+               // state.orders = action.payload;
             });
     }
 });

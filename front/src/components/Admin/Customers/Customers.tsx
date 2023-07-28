@@ -119,6 +119,7 @@ function Customers() {
         {
             event_id: 9,
             title: 'Event 11',
+            ser: 'Finc',
             start: new Date(
                 new Date(new Date(new Date().setHours(13)).setMinutes(0)).setDate(
                     new Date().getDate() + 1
@@ -134,6 +135,7 @@ function Customers() {
         {
             event_id: 10,
             title: 'Event 9',
+            ser: 'Rck',
             start: new Date(
                 new Date(new Date(new Date().setHours(15)).setMinutes(0)).setDate(
                     new Date().getDate() + 1
@@ -149,6 +151,7 @@ function Customers() {
         {
             event_id: 11,
             title: 'Event 10',
+            ser: 'Jazz',
             start: new Date(
                 new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
                     new Date().getDate() - 1
@@ -263,9 +266,26 @@ function Customers() {
                         config: { label: 'Assignee', required: true }
                     }
                 ]}
-                eventRenderer={({ event }: EventRendererProps) => {
-                    return (<div>
-                        {event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                eventRenderer={(props: EventRendererProps) => {
+                    return (<div {...props} style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        color: 'black',
+                        justifyContent: 'space-between',
+                        fontSize: '12px',
+                        // padding: '5px',
+                        alignItems: 'center',
+                        backgroundColor: '#ccc'
+                    }}>
+                        <div>
+                            {props.event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                        </div>
+                        <div>{props.event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}</div>
+                        <div>
+                            <b>{props.event.ser}</b>
+                        </div>
                     </div>);
                 }}
 

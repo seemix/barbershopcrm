@@ -5,7 +5,7 @@ import ApiError from '../errors/api.error.js';
 export const barbersController = {
     getAllBarbers: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { active } = req.query;
+          //  const { active } = req.query;
             const allBarbers = await Barber.find()
                 .select('name')
                 .select('description')
@@ -24,7 +24,7 @@ export const barbersController = {
             await Barber.create(req.body);
             res.status(201).json('ok');
         } catch (e) {
-            next(new ApiError('Error creating barber', 400));
+            next(e);
         }
     }
 };

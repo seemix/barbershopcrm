@@ -7,7 +7,6 @@ import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { deleteSchedule, getAllSchedules } from '../../../store/schedule';
 import { Button, CircularProgress } from '@mui/material';
-import { CustomEventRenderer } from './CustomEventRenderer';
 import { getAllBarbers } from '../../../store/barbers';
 
 const Schedule = () => {
@@ -122,7 +121,7 @@ const Schedule = () => {
                         }
                     ]}
                     onDelete={(id) => handleDelete(id)}
-                    eventRenderer={CustomEventRenderer}
+                   // eventRenderer={CustomEventRenderer}
                     viewerExtraComponent={(fields, event) => {
                         return (
                             <div>

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Scheduler } from '@aldabil/react-scheduler';
-import { CustomOrderRenderer } from './CustomOrderRenderer';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
-import {  CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
 import OrderEditor from './OrderEditor';
@@ -16,6 +15,7 @@ const Calendar = () => {
     const { orders, status } = useAppSelector(state => state.orderStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
+    const [mode, setMode] = useState<"default" | "tabs">("default");
     const resources = activeBarbers.map(item => {
         return {
             admin_id: item._id,
@@ -29,6 +29,7 @@ const Calendar = () => {
         dispatch(deleteOrderById(id));
         return new Promise((res) => {
             dispatch(getOrdersForCalendar());
+            calendarRef.current?.scheduler.handleState(orders, 'events');
             res('ok');
         });
     };
@@ -37,6 +38,9 @@ const Calendar = () => {
         dispatch(getAllBarbers());
         dispatch(getOrdersForCalendar());
     }, [dispatch]);
+    useEffect(()=>{
+        calendarRef.current?.scheduler.handleState(orders, 'events');
+    },[calendarRef, orders])
 
     return (
         <div>
@@ -44,24 +48,39 @@ const Calendar = () => {
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
                 <span>Переключатель вида: </span>
-                {/*<Button*/}
-                {/*    color={resourceViewMode === 'default' ? 'primary' : 'inherit'}*/}
-                {/*    variant={resourceViewMode === 'default' ? 'contained' : 'text'}*/}
-                {/*    size="small"*/}
-                {/*    onClick={() => setResourceViewMode('default')}*/}
-                {/*>*/}
-                {/*    Default*/}
-                {/*</Button>*/}
-                {/*<Button*/}
-                {/*    color={resourceViewMode === 'tabs' ? 'primary' : 'inherit'}*/}
-                {/*    variant={resourceViewMode === 'tabs' ? 'contained' : 'text'}*/}
-                {/*    size="small"*/}
-                {/*    onClick={() => setResourceViewMode('tabs')}*/}
-                {/*>*/}
-                {/*    Tabs*/}
-                {/*</Button>*/}
+                <div style={{ textAlign: "center" }}>
+                    <span>Resource View Mode: </span>
+                    <Button
+                        color={mode === "default" ? "primary" : "inherit"}
+                        variant={mode === "default" ? "contained" : "text"}
+                        size="small"
+                        onClick={() => {
+                            setMode("default");
+                            calendarRef.current?.scheduler?.handleState(
+                                "default",
+                                "resourceViewMode"
+                            );
+                        }}
+                    >
+                        Default
+                    </Button>
+                    <Button
+                        color={mode === "tabs" ? "primary" : "inherit"}
+                        variant={mode === "tabs" ? "contained" : "text"}
+                        size="small"
+                        onClick={() => {
+                            setMode("tabs");
+                            calendarRef.current?.scheduler?.handleState(
+                                "tabs",
+                                "resourceViewMode"
+                            );
+                        }}
+                    >
+                        Tabs
+                    </Button>
+                </div>
             </div>
-            {(status === null || status === 'fulfilled') && resources[0] && orders[0] &&
+            {(status === null || status === 'fulfilled')  &&
                 <Scheduler
                     ref={calendarRef}
                     locale={ru}
@@ -71,7 +90,7 @@ const Calendar = () => {
                     customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     fields={[
                         {
-                            name: 'barber',
+                            name: 'admin_id',
                             type: 'select',
                             default: resources[0].admin_id,
                             options: resources.map((res) => {
@@ -96,14 +115,14 @@ const Calendar = () => {
                     resources={resources}
                     resourceViewMode={'tabs'}
                     resourceFields={{
-                        idField: 'barber',
+                        idField: 'admin_id',
                         textField: 'title',
                         subTextField: 'mobile',
                         avatarField: 'avatar',
-                     //   colorField: 'color'
+                        colorField: 'color'
                     }}
                     day={{ step: 60, startHour: 8, endHour: 20 }}
-                    eventRenderer={CustomOrderRenderer}
+                    //eventRenderer={}
                     viewerExtraComponent={ExtraComponents}
                 />
             }

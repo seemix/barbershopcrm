@@ -12,8 +12,8 @@ import LangSwitch from '../LangSwitch/LangSwitch';
 const Header: FC = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const [scroll, setScroll]  = useState(false);
-    const handleScroll = (e: any) => {
-        if (window.scrollY > 100) setScroll(true)
+    const handleScroll = () => {
+        if (window.scrollY > 80) setScroll(true)
         else setScroll(false);
     };
     window.addEventListener('scroll', handleScroll);
@@ -22,7 +22,7 @@ const Header: FC = () => {
     return (
         <nav className={scroll ? 'navbar_items navbar_scroll' : 'navbar_items'} id={'menu'}>
             <h1>
-                <img className={scroll ? 'main_logo main_logo_scroll' : 'main_logo'} src={logo} alt="logo"/>
+                <img className={'main_logo'} src={logo} alt="logo"/>
             </h1>
             <div className={'instagram_icon'}>
                 <a target="_blank" rel="noreferrer" href="front/src/components/Header/Header"
@@ -39,7 +39,7 @@ const Header: FC = () => {
                         to={'top'}
                         smooth={true} spy={false}
                         duration={800}
-                        offset={-90}>{t('главная')}
+                        offset={-80}>{t('главная')}
                     </Link>
                     <Link
                         onClick={handleMenuButton}
@@ -47,7 +47,7 @@ const Header: FC = () => {
                         to={'services'}
                         smooth={true} spy={false}
                         duration={800}
-                        offset={-90}>{t('услуги')}
+                        offset={-80}>{t('услуги')}
                     </Link>
                     <Link
                         onClick={handleMenuButton}
@@ -55,7 +55,7 @@ const Header: FC = () => {
                         to={'barbers'}
                         smooth={true} spy={false}
                         duration={800}
-                        offset={-90}>{t('барберы')}
+                        offset={-80}>{t('барберы')}
                     </Link>
                     <Link
                         onClick={handleMenuButton}
@@ -63,7 +63,7 @@ const Header: FC = () => {
                         to={'contacts'}
                         smooth={true} spy={false}
                         duration={800}
-                        offset={-90}>{t('контакты')}
+                        offset={-80}>{t('контакты')}
                     </Link>
                 </ul>
             </div>

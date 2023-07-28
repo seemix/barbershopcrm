@@ -1,35 +1,47 @@
 import React, { FC } from 'react';
-import { Link } from 'react-scroll';
-import { useTranslation } from 'react-i18next';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 
 import './Slider.css';
-import { useAppDispatch } from '../../hooks/redux';
-import { openBooking } from '../../store/order';
+import WelcomeButton from './WelcomeButton';
 
 const Slider: FC = () => {
-    const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const handleBooking = () => {
-        dispatch(openBooking());
-    };
+    const slides = ['/slides/1.webp', '/slides/2.webp', '/slides/3.webp', '/slides/4.webp', '/slides/5.webp'];
     return (
         <div>
-            <div className="overlay_container">
-                <div className="pic" id="pic1"/>
-                <div className="pic" id="pic2"/>
-                <div className="pic" id="pic3"/>
-                <div className="pic" id="pic4"/>
-                <div className={'overlay'}>
-                    <div className={'slider_welcome'}>
-                        <h1>{t('Добро пожаловать в')} LevelUP Barbershop</h1>
-                        <div>
-                            <Link to={'booking'} smooth={true} spy={false}
-                                  duration={800} offset={-80}>
-                                <button className={'button-5'} onClick={handleBooking}>{t('ЗАПИСАТЬСЯ')}</button>
-                            </Link>
+            <div className={'overlay_container'}>
+                <Swiper
+                    speed={2500}
+                    spaceBetween={30}
+                    slidesPerView={1}
+                    autoplay={{
+                        delay: 5500,
+                        disableOnInteraction: false,
+                    }}
+                    effect={'fade'}
+                    fadeEffect={{
+                        crossFade: false,
+                    }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    modules={[Autoplay, EffectFade, Navigation, Pagination]}
+                    className={'slider_container'}
+                    loop={true}
+                >
+                    {slides.map(slide => <SwiperSlide key={slide}>
+
+                        <div className={'pic'} style={{ backgroundImage: `url(${slide})` }}>
+                            <WelcomeButton/>
                         </div>
-                    </div>
-                </div>
+                    </SwiperSlide>)}
+                </Swiper>
+
             </div>
         </div>
     );
