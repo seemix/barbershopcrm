@@ -94,6 +94,7 @@ export const orderSlice = createSlice({
             state.price = 0;
         },
         addAdditional(state, action: PayloadAction<IAdditional>) {
+            console.log(action.payload);
             state.additionalServices.push(action.payload._id);
             state.price = state.price + action.payload.price;
             state.duration = state.duration + action.payload.duration;

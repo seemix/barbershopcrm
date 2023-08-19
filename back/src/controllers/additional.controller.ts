@@ -55,7 +55,8 @@ export const additionalController = {
         } catch (e) {
             next(new ApiError('Error reorder', 400));
         }
-    }
+    },
+
 };
 
 export default additionalController;

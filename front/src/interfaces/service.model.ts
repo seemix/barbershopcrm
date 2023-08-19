@@ -13,4 +13,5 @@ export interface IAllService {
     name: string;
     description: string;
     order?: number;
+    barber?: string;
 }

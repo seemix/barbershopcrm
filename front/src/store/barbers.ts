@@ -5,13 +5,15 @@ import { barbersService } from '../services/barbers.service';
 interface IInitState {
     barbers: IBarber[],
     error: string | null,
-    status: string | null
+    status: string | null,
+    currentBarber: IBarber | null
 }
 
 const initialState: IInitState = {
     barbers: [],
     error: null,
-    status: ''
+    status: '',
+    currentBarber: null
 };
 export const getAllBarbers = createAsyncThunk(
     'barbersSlice/getAll',
@@ -23,6 +25,17 @@ export const getAllBarbers = createAsyncThunk(
         }
 
     });
+
+export const getBarberById = createAsyncThunk(
+    'barbersSlice/getById',
+    async (_id: string, thunkAPI) => {
+        try {
+            return barbersService.getById(_id);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 export const barbersSlice = createSlice({
     name: 'barbersSlice',
     initialState,
@@ -41,6 +54,9 @@ export const barbersSlice = createSlice({
             .addCase(getAllBarbers.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
+            })
+            .addCase(getBarberById.fulfilled, (state, action) => {
+                state.currentBarber = action.payload;
             });
     }
 });

@@ -1,0 +1,18 @@
+.add_form_main {
+    padding: 20px;
+}
+
+.add_form_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.add_form_price_wrap {
+    display: flex;
+    gap: 20px;
+}
+.small_text_field {
+    width: 100px;
+}

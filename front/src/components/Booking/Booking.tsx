@@ -24,7 +24,7 @@ const Booking: FC = () => {
         <FinalStep/>
     ];
     const order = useAppSelector(state => state.orderStore);
-  //  console.log(order);
+   console.log(order);
    // console.log(i18n.language);
 
     const { activeStep } = useAppSelector(state => state.stepperStore);

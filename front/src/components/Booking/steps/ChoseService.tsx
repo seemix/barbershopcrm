@@ -29,7 +29,9 @@ const ChoseService = () => {
             <div className={'selector_wrapper'}>
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && services && services.map(item =>
-                    <Service _id={item._id}
+                    <Service
+                            key={item._id}
+                            _id={item._id}
                              service={item.service}
                              price={item.price}
                              duration={item.duration}

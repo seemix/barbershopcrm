@@ -1,0 +1,21 @@
+.single_service_card {
+    padding: 20px;
+    margin: 10px;
+}
+
+.single_service_wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.single_service_int_wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.single_service_bottom {
+    display: flex;
+    justify-content: right;
+    margin-top: 15px;
+}

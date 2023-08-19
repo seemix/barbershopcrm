@@ -14,6 +14,7 @@ import Register from './components/Admin/Register/Register';
 import Customers from './components/Admin/Customers/Customers';
 import Barbers from './components/Admin/Barbers/Barbers';
 import ServicesWrapper from './components/Admin/Services/ServicesWrapper';
+import SingleBarberPrice from './components/Admin/Prices/SingleBarberPrice/SingleBarberPrice';
 
 const Layout = React.lazy(() => import('./components/Layout/Layout'));
 const AdminLayout = React.lazy(() => import('./components/Admin/AdminLayout'));
@@ -33,6 +34,7 @@ const App: FC = () => {
                         <Route path={'schedule'} element={<Schedule/>}/>
                         <Route path={'services'} element={<ServicesWrapper/>}/>
                         <Route path={'prices'} element={<Prices/>}/>
+                        <Route path={'prices/:barberId'} element={<SingleBarberPrice/>}/>
                         <Route path={'customers'} element={<Customers/>}/>
                         <Route path={'barbers'} element={<Barbers/>}/>
                     </Route>

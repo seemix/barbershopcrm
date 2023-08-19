@@ -2,9 +2,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    column-gap: 20px;
-    padding: 5px 10px;
-    margin-bottom: 20px;
+    column-gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
     position: relative;
     width: 400px;
@@ -17,6 +17,7 @@
         max-width: 90%;
         box-sizing: border-box;
     }
+
     .service_card h4 {
         font-size: 15px;
     }

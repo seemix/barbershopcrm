@@ -40,6 +40,7 @@ export const getAdditionalsByBarberAndService = createAsyncThunk(
         }
     });
 
+
 export const getAllAdditionals = createAsyncThunk(
     'additionalsSlice/GetAll',
     async (_, thunkAPI) => {
@@ -48,8 +49,7 @@ export const getAllAdditionals = createAsyncThunk(
         } catch (e) {
             thunkAPI.rejectWithValue(e);
         }
-    }
-);
+    });
 
 export const createAdditional = createAsyncThunk(
     'additionalsSlice/CreateAdditional',
@@ -105,7 +105,7 @@ const additionalSlice = createSlice({
         },
         closeAddDialog(state) {
             state.addDialogOpen = false;
-            state.additionalToUpdate = {_id: '', name: ''}
+            state.additionalToUpdate = { _id: '', name: '' };
         },
         openAddDialog(state) {
             state.addDialogOpen = true;

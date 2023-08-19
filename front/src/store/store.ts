@@ -10,6 +10,7 @@ import authStore from './auth';
 import scheduleStore from './schedule';
 import customersStore from './customer';
 import barberServiceStore from './barberService';
+import barberAdditionalStore from './barberAdditional';
 
 export const store = configureStore({
     middleware: getDefaultMiddleware =>
@@ -18,6 +19,7 @@ export const store = configureStore({
         }),
     reducer: {
         barberStore,
+        barberAdditionalStore,
         barberServiceStore,
         customersStore,
         orderStore,

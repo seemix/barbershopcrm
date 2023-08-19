@@ -12,12 +12,12 @@ import { useTranslation } from 'react-i18next';
 const ChoseAdditional = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
-    const { additionals, status } = useAppSelector(state => state.additionalStore);
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
     useEffect(() => {
         dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, dispatch, serviceId]);
-    if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
+     const { additionals, status } = useAppSelector(state => state.additionalStore);
+    // if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     return (
         <div>
             <h3>{t('Выберите дополнительные услуги')}</h3>
@@ -25,9 +25,10 @@ const ChoseAdditional = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {
                     additionals.map(item => <Additional
+                        key={item._id}
                         _id={item._id}
                         barber={item.barber}
-                        additional={item.additional}
+                        name={item.name}
                         price={item.price}
                         duration={item.duration}/>)
                 }

@@ -23,7 +23,7 @@ const Service = (item: IService) => {
                 {order.serviceId && order.serviceId !== item.service._id &&
                     <div className={'unselected_hover'}></div>
                 }
-                <div className={'price_item'} style={{ marginTop: '15px', marginLeft: '10px' }}>
+                <div style={{ marginLeft: '10px' }}>
                     <h4><i className={'bs bs-scissors-1'}/> {t(`${item.service.name}`)} </h4>
                     <div className={'time_wrapper section_caption'}>
                         <div className={'time_icon'}><AccessTimeIcon fontSize={'small'}/>

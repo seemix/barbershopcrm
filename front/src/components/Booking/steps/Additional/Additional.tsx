@@ -10,14 +10,14 @@ import { useTranslation } from 'react-i18next';
 const Additional = (item: IAdditional) => {
     const { t } = useTranslation();
     const { additionalServices } = useAppSelector(state => state.orderStore);
-    const [selected, setSelected] = useState<boolean>(additionalServices.includes(item.additional._id));
+    const [selected, setSelected] = useState<boolean>(additionalServices.includes(item._id));
     const dispatch = useAppDispatch();
     const handleSelect = () => {
         if (!selected) {
-            dispatch(addAdditional({ _id: item.additional._id, duration: item.duration, price: item.price }));
+            dispatch(addAdditional({ _id: item._id, duration: item.duration, price: item.price }));
             setSelected(true);
         } else {
-            dispatch(removeAdditional({ _id: item.additional._id, duration: item.duration, price: item.price }));
+            dispatch(removeAdditional({ _id: item._id, duration: item.duration, price: item.price }));
             setSelected(false);
         }
     };
@@ -25,10 +25,10 @@ const Additional = (item: IAdditional) => {
         <>
             <Card className={selected ? 'service_card card_select' : 'service_card'}
                   onClick={handleSelect}>
-                {additionalServices.length > 0 && !additionalServices.includes(item.additional._id) &&
+                {additionalServices.length > 0 && !additionalServices.includes(item._id) &&
                     <div className={'unselected_hover'}></div>}
-                <div className={'price_item'} style={{ marginTop: '15px', marginLeft: '10px' }}>
-                    <h4><i className="bs bs-hairbrush-1"></i> {t(`${item.additional.name}`)} </h4>
+                <div style={{ marginLeft: '10px' }}>
+                    <h4><i className="bs bs-hairbrush-1"></i> {t(`${item.name}`)} </h4>
                     <div className={'time_wrapper section_caption'}>
                         <div className={'time_icon'}><AccessTimeIcon fontSize={'small'}/>
                         </div>
