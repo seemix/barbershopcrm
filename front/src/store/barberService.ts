@@ -7,11 +7,15 @@ interface IInitialState {
     error: string | null;
     services: IBarberService[];
     barberServices: IAdminBarberService[];
+    barberServiceForEdit: IAdminBarberService | null;
+    barberServiceModal: boolean;
 }
 
 const initialState: IInitialState = {
     services: [],
     barberServices: [],
+    barberServiceModal: false,
+    barberServiceForEdit: null,
     status: null,
     error: null
 };
@@ -50,7 +54,20 @@ export const getServicesByBarber = createAsyncThunk(
 export const barberServiceSlice = createSlice({
     name: 'barberServiceSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        openBarberServiceModal(state) {
+            state.barberServiceModal = true;
+        },
+        closeBarberServiceModal(state) {
+            state.barberServiceModal = false;
+        },
+        setBarberServiceForEdit(state, action) {
+            state.barberServiceForEdit = action.payload;
+        },
+        resetBarberServiceForEdit(state) {
+            state.barberServiceForEdit = null;
+        },
+    },
     extraReducers: builder => {
         builder
             .addCase(getAllBarberServices.fulfilled, (state, action) => {
@@ -68,5 +85,6 @@ export const barberServiceSlice = createSlice({
             });
     }
 });
+export const { openBarberServiceModal, closeBarberServiceModal, setBarberServiceForEdit, resetBarberServiceForEdit } = barberServiceSlice.actions;
 const barberServiceStore = barberServiceSlice.reducer;
 export default barberServiceStore;

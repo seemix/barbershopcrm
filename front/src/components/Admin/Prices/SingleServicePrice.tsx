@@ -7,9 +7,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 
 import './SingleServicePrice.css';
+import { useAppDispatch } from '../../../hooks/redux';
+import { openBarberServiceModal, setBarberServiceForEdit } from '../../../store/barberService';
 
 const SingleServicePrice = (props: any) => {
     const { service } = props;
+    const dispatch = useAppDispatch();
+    // const {} = useAppSelector(state => state.barberServiceStore);
+    const handleEdit = () => {
+        dispatch(setBarberServiceForEdit(service));
+        dispatch(openBarberServiceModal());
+    }
     return (
         <Card className={'single_service_card'}>
             <h5>{service.service.name}</h5>
@@ -21,10 +29,9 @@ const SingleServicePrice = (props: any) => {
                 </div>
             </div>
             <ul>
-                {service.additionals?.map(item => <li key={item._id}><small>{item.additional.name}</small></li>)}
             </ul>
             <div className={'single_service_bottom'}>
-                <Button><EditIcon/></Button>
+                <Button><EditIcon onClick={handleEdit}/></Button>
                 <Button><DeleteForeverIcon/></Button>
             </div>
         </Card>

@@ -15,6 +15,7 @@ import UnactiveAdditional from '../UnactiveAdditional/UnactiveAdditional';
 import './SingleBarberPrice.css';
 import { IAllService } from '../../../../interfaces/service.model';
 import UnactiveService from '../UnactiveService/UnactiveService';
+import ServicePriceForm from '../ServicePriceForm/ServicePriceForm';
 
 const SingleBarberPrice = () => {
     const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const SingleBarberPrice = () => {
     }, [barberId, dispatch]);
 
     const { allServices } = useAppSelector(state => state.serviceStore);
-    const { barberServices } = useAppSelector(state => state.barberServiceStore);
+    const { barberServices, barberServiceModal } = useAppSelector(state => state.barberServiceStore);
     const { barberAdditionals, barberAddEditModal } = useAppSelector(state => state.barberAdditionalStore);
     const { allAdditionals } = useAppSelector(state => state.additionalStore);
     const { currentBarber } = useAppSelector(state => state.barberStore);
@@ -87,6 +88,9 @@ const SingleBarberPrice = () => {
                     </div>
                 </div>
             </div>
+            <Dialog open={barberServiceModal}>
+                <ServicePriceForm/>
+            </Dialog>
             <Dialog open={barberAddEditModal}>
                 <AdditionalPriceForm/>
             </Dialog>
