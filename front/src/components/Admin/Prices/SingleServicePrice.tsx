@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@mui/material';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -8,16 +8,19 @@ import Button from '@mui/material/Button';
 
 import './SingleServicePrice.css';
 import { useAppDispatch } from '../../../hooks/redux';
-import { openBarberServiceModal, setBarberServiceForEdit } from '../../../store/barberService';
+import { deleteBarberService, openBarberServiceModal, setBarberServiceForEdit } from '../../../store/barberService';
+import { IAdminBarberService } from '../../../interfaces/barber-service.model';
 
-const SingleServicePrice = (props: any) => {
-    const { service } = props;
+const SingleServicePrice = (service: IAdminBarberService) => {
     const dispatch = useAppDispatch();
-    // const {} = useAppSelector(state => state.barberServiceStore);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const handleDelete = () => {
+        dispatch(deleteBarberService(service._id));
+    }
     const handleEdit = () => {
         dispatch(setBarberServiceForEdit(service));
         dispatch(openBarberServiceModal());
-    }
+    };
     return (
         <Card className={'single_service_card'}>
             <h5>{service.service.name}</h5>
@@ -29,10 +32,16 @@ const SingleServicePrice = (props: any) => {
                 </div>
             </div>
             <ul>
+                {service.additionals && service.additionals?.map(item => <li
+                    key={item._id}>{item.additional?.name}</li>)}
             </ul>
             <div className={'single_service_bottom'}>
                 <Button><EditIcon onClick={handleEdit}/></Button>
-                <Button><DeleteForeverIcon/></Button>
+                {!confirmDelete && <Button><DeleteForeverIcon onClick={() => setConfirmDelete(true)}/></Button>}
+                {confirmDelete && <>
+                    <Button onClick={() => setConfirmDelete(false)}>отмена</Button>
+                    <Button onClick={handleDelete}>удалить</Button>
+                </>}
             </div>
         </Card>
     );

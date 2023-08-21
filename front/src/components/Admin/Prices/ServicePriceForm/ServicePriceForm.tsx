@@ -5,13 +5,18 @@ import priceDurationValidator from '../../../../validators/price-duration.valida
 import { Checkbox, DialogActions, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { closeBarberServiceModal, resetBarberServiceForEdit } from '../../../../store/barberService';
+import {
+    closeBarberServiceModal, createBarberService,
+    resetBarberServiceForEdit,
+    updateBarberService
+} from '../../../../store/barberService';
 import { useParams } from 'react-router-dom';
+import { IUpdateBarberService } from '../../../../interfaces/barber-service.model';
 
 const ServicePriceForm = () => {
     const { barberId } = useParams();
     const dispatch = useAppDispatch();
-    const { barberServiceForEdit } = useAppSelector(state => state.barberServiceStore);
+    const { barberServiceForEdit, barberServiceForCreate } = useAppSelector(state => state.barberServiceStore);
     const { barberAdditionals } = useAppSelector(state => state.barberAdditionalStore);
     const {
         handleSubmit,
@@ -20,10 +25,14 @@ const ServicePriceForm = () => {
         formState: { errors }
     } = useForm({ resolver: joiResolver(priceDurationValidator) });
 
-
-    const submitForm = (data: any) => {
+    const submitForm = (data: IUpdateBarberService) => {
         data.additionals = additionals;
-        console.log(data);
+        if(barberServiceForCreate) data.service = barberServiceForCreate.service._id;
+        if (barberServiceForCreate) {
+            dispatch(createBarberService(data));
+        } else {
+            dispatch(updateBarberService(data));
+        }
     };
     const handleCancel = () => {
         dispatch(closeBarberServiceModal());
@@ -34,9 +43,8 @@ const ServicePriceForm = () => {
         setValue('duration', barberServiceForEdit?.duration);
     }, [barberServiceForEdit]);
 
-    const init = barberServiceForEdit?.additionals.map(add => add.additional._id);
+    const init = barberServiceForEdit?.additionals.map(add => add._id);
     const [additionals, setAdditionals] = useState<String[]>(init || []);
-    // console.log(additionals);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.checked) {
             setAdditionals(additionals.filter(item => item !== e.target.name));
@@ -55,16 +63,17 @@ const ServicePriceForm = () => {
                                defaultValue={barberId}
 
                         />
-                        <input type={'hidden'}
-                               {...register('_id')}
-                               defaultValue={barberServiceForEdit?._id}
-                        />
+                        {barberServiceForEdit &&  <input type={'hidden'}
+                                                         {...register('_id')}
+                                                         defaultValue={barberServiceForEdit?._id}
+                        /> }
+
                         <TextField
                             fullWidth
                             InputProps={{
                                 readOnly: true,
                             }}
-                            defaultValue={barberServiceForEdit?.service.name}
+                            defaultValue={barberServiceForEdit?.service.name || barberServiceForCreate?.service.name}
                         />
                     </div>
                     <div className={'add_form_price_wrap'}>
@@ -98,9 +107,9 @@ const ServicePriceForm = () => {
                             <div>
                                 <Checkbox
                                     onChange={handleChange}
-                                    name={item.additional._id}
+                                    name={item._id}
                                     inputProps={{ 'aria-label': 'controlled' }}
-                                    defaultChecked={barberServiceForEdit?.additionals.some(item1 => item1.additional._id === item.additional._id)}
+                                    defaultChecked={barberServiceForEdit?.additionals.some(item1 => item1._id === item._id)}
                                 />
                             </div>
                         </div>)}

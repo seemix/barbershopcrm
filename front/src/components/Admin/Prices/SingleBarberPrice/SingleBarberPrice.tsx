@@ -70,7 +70,10 @@ const SingleBarberPrice = () => {
                         {filteredServices.map(item => <UnactiveService key={item._id} name={item.name}
                                                                        description={item.description} barber={barberId}
                                                                        _id={item._id}/>)}
-                        {barberServices.map(item => <SingleServicePrice key={item._id} service={item}/>)}
+                        {barberServices.map(item => <SingleServicePrice key={item._id} service={item.service}
+                                                                        _id={item._id} services={item.services}
+                                                                        price={item.price} duration={item.duration}
+                                                                        additionals={item.additionals}/>)}
                     </div>
                     <div>
                         {filteredAdd.length > 0 && filteredAdd.map(item => <UnactiveAdditional key={item._id}

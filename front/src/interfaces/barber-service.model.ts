@@ -40,5 +40,12 @@ export interface IAdminBarberService {
         duration: string;
 
     }];
-
+}
+export interface IUpdateBarberService {
+    _id?: string;
+    barber?: string;
+    service?: string;
+    price: number;
+    duration: number;
+    additionals: string[];
 }

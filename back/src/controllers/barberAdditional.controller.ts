@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from 'express';
 import BarberAdditional from '../models/barberAdditional.js';
 import ApiError from '../errors/api.error.js';
 import BarberService from '../models/barberService.js';
-import Additional from '../models/additional.js';
 
 export const barberAdditionalController = {
     createBarberAdditional: async (req: Request, res: Response, next: NextFunction) => {
@@ -89,16 +88,17 @@ export const barberAdditionalController = {
         }
     },
 
-    getFilteredAdditionals: async (req: Request, res: Response, next: NextFunction) => {
-        const { barber } = req.query;
-        const arr1 = await Additional.find();
-        const arr2 = await BarberAdditional.find({ barber });
-        // @ts-ignore
-        const filteredArr = arr1.filter(item1 =>
-            //@ts-ignore
-            !arr2.some(item2 => item2.additional.equals(item1._id))
-        );
-
-        res.json(filteredArr).status(200);
-    }
-};
+//     getFilteredAdditionals: async (req: Request, res: Response, next: NextFunction) => {
+//         const { barber } = req.query;
+//         const arr1 = await Additional.find();
+//         const arr2 = await BarberAdditional.find({ barber });
+//         // @ts-ignore
+//         const filteredArr = arr1.filter(item1 =>
+//             //@ts-ignore
+//             !arr2.some(item2 => item2.additional.equals(item1._id))
+//         );
+//
+//         res.json(filteredArr).status(200);
+//     }
+// };
+}
