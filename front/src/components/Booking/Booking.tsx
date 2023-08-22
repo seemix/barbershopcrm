@@ -24,8 +24,8 @@ const Booking: FC = () => {
         <FinalStep/>
     ];
     const order = useAppSelector(state => state.orderStore);
-   console.log(order);
-   // console.log(i18n.language);
+    console.log(order);
+    // console.log(i18n.language);
 
     const { activeStep } = useAppSelector(state => state.stepperStore);
     const maxSteps = steps.length;
@@ -55,7 +55,7 @@ const Booking: FC = () => {
                     flexDirection: 'row',
                     backgroundColor: '#fcf9f5'
                 }}>
-                    <div style={{marginTop: '-30px'}}>
+                    <div style={{ marginTop: '-30px' }}>
                         <div style={{ minWidth: 400, maxWidth: 1100 }}>
                             <Box sx={{ height: 'auto', p: 0 }}>
                                 {steps[activeStep]}

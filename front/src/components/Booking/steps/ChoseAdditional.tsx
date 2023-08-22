@@ -8,16 +8,23 @@ import { handleBack, handleNext } from '../../../store/stepper';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useTranslation } from 'react-i18next';
+import { resetAdditionals } from '../../../store/order';
 
 const ChoseAdditional = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const { serviceId, barberId } = useAppSelector(state => state.orderStore);
+
     useEffect(() => {
         dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, dispatch, serviceId]);
-     const { additionals, status } = useAppSelector(state => state.additionalStore);
+
+    const { additionals, status } = useAppSelector(state => state.additionalStore);
     // if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
+    const handleBackButton = () => {
+        dispatch(resetAdditionals());
+        dispatch(handleBack());
+    };
     return (
         <div>
             <h3>{t('Выберите дополнительные услуги')}</h3>
@@ -37,8 +44,9 @@ const ChoseAdditional = () => {
                 <div>
                     {
                         <Button variant={'contained'}
-                                onClick={() => dispatch(handleBack())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> {t('назад')}
+                                onClick={handleBackButton}
+                                style={{ marginBottom: '20px', padding: '10px 15px' }}>
+                            <KeyboardArrowLeft/> {t('назад')}
                         </Button>
                     }
                 </div>
@@ -47,7 +55,8 @@ const ChoseAdditional = () => {
                         serviceId &&
                         <Button variant={'contained'}
                                 onClick={() => dispatch(handleNext())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>
+                                style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
+                            <KeyboardArrowRight/>
                         </Button>
                     }
                 </div>

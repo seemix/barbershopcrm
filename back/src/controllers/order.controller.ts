@@ -6,7 +6,6 @@ import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
 import { sendMail } from '../services/send-email.service.js';
 import { IOrderRecord } from '../interfaces/order-record.js';
-import barber from '../models/barber.js';
 import moment from 'moment/moment.js';
 
 export const orderController = {
@@ -75,7 +74,8 @@ export const orderController = {
             });
             res.json(newOrder).status(201);
         } catch (e) {
-            next(new ApiError('Error creating order', 500));
+            next(e);
+            //next(new ApiError('Error creating order', 500));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {

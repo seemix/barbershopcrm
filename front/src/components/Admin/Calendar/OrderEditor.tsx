@@ -34,9 +34,10 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
     const event = scheduler.edited;
     const order = useAppSelector(state => state.orderStore);
     const { services } = useAppSelector(state => state.serviceStore);
-    const { additionals } = useAppSelector(state1 => state1.additionalStore);
+  //  const { additionals } = useAppSelector(state1 => state1.additionalStore);
     const { duration, barberId, serviceId } = useAppSelector(state1 => state1.orderStore);
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (event) dispatch(setOrderForEdit(event));
     }, []);
@@ -45,7 +46,7 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         start: String(scheduler.state.start.value),
         newUserForm: false
     });
-    console.log(order);
+   // console.log(order);
     const admin_id = scheduler.state.admin_id.value;
     const handleChange = (value: any, name: string) => {
         setState((prev) => {

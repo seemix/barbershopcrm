@@ -104,6 +104,9 @@ export const orderSlice = createSlice({
             state.duration = state.duration - action.payload.duration;
             state.additionalServices = state.additionalServices.filter(item => item !== action.payload._id);
         },
+        resetAdditionals(state) {
+            state.additionalServices = [];
+        },
         setDateTime(state, action) {
             state.startTime = action.payload.startTime;
             state.endTime = action.payload.endTime;
@@ -116,10 +119,10 @@ export const orderSlice = createSlice({
             state.endTime = null;
         },
         setCustomer(state, action) {
-            state.customerEmail = action.payload.email;
-            state.customerId = action.payload?._id;
-            state.customerName = action.payload.name;
-            state.customerPhone = action.payload.phone;
+            state.customerEmail = action.payload.customerEmail;
+            state.customerId = action.payload._id;
+            state.customerName = action.payload.customerName;
+            state.customerPhone = action.payload.customerPhone;
         },
         setCustomerPhone(state, action) {
             state.customerPhone = action.payload;
@@ -183,11 +186,8 @@ export const orderSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(createOrder.pending, state => {
-
-            })
             .addCase(createOrder.fulfilled, (state, action) => {
-
+                state.orderId = action.payload._id;
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
@@ -198,7 +198,7 @@ export const orderSlice = createSlice({
                         event_id: item._id,
                         title: item.service.name,
                         start: dayjs(item.startTime),
-                        end:  dayjs(item.endTime),
+                        end: dayjs(item.endTime),
                         service: item.service._id,
                         //barber: item.barber,
                         admin_id: String(item.barber),
@@ -215,7 +215,7 @@ export const orderSlice = createSlice({
                         customerId: item.customer._id
                     };
                 });
-               // state.orders = action.payload;
+                // state.orders = action.payload;
             });
     }
 });
@@ -225,6 +225,7 @@ export const {
     resetService,
     addAdditional,
     removeAdditional,
+    resetAdditionals,
     setDateTime,
     setEndTime,
     removeDateTime,

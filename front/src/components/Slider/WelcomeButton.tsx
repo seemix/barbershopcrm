@@ -28,7 +28,7 @@ const WelcomeButton = () => {
                         <Link to={'booking'} smooth={true} spy={false} offset={-40}>
                             <button
                                 onClick={handleBooking}
-                                className={'button-5 booking'}>{t('ЗАПИСАТЬСЯ')}
+                                className={'button-5'}>{t('ЗАПИСАТЬСЯ')}
                             </button>
                         </Link>
                     </motion.div>

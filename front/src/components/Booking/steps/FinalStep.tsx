@@ -17,6 +17,7 @@ const FinalStep = () => {
     useEffect(() => {
         if (order.orderId) dispatch(getRecordById(String(order.orderId)));
     }, [dispatch, order.orderId]);
+
     const {
         customer,
         barber,

@@ -33,7 +33,7 @@ const CustomerForm = () => {
     };
     const handleNextButton = (data: any) => {
         if (!customer._id) dispatch(setCustomer(data));
-        dispatch(handleNext());
+         dispatch(handleNext());
     };
     useEffect(() => {
         if (phone) dispatch(getCustomerByPhone(phone));
