@@ -18,7 +18,7 @@ import {
 } from '../../../store/order';
 import SelectService from './SelectService/SelectService';
 import { getAdditionalsByBarberAndService } from '../../../store/additional';
-import SelectAdditional from './SelectAdditional/SelectAdditional';
+//import SelectAdditional from './SelectAdditional/SelectAdditional';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddIcon from '@mui/icons-material/Add';
@@ -126,11 +126,11 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                     <div>
                         <div style={{ boxSizing: 'border-box', width: '370px' }}>
                             <h5>Дополнительные услуги</h5>
-                            {serviceId &&
-                                additionals.map(item => <SelectAdditional _id={item._id} barber={item.barber}
-                                                                          additional={item.additional}
-                                                                          price={item.price} duration={item.duration}/>)
-                            }
+                            {/*{serviceId &&*/}
+                            {/*    additionals.map(item => <SelectAdditional _id={item._id} barber={item.barber}*/}
+                            {/*                                              additional={item.additional}*/}
+                            {/*                                              price={item.price} duration={item.duration}/>)*/}
+                            {/*}*/}
                         </div>
                     </div>
                 </div>

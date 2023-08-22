@@ -11,6 +11,9 @@
     box-sizing: border-box;
 }
 
+.service_card h4 {
+    margin: 5px;
+}
 @media screen and (max-width: 767px) {
     .service_card {
         column-gap: 10px;

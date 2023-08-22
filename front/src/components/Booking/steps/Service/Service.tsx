@@ -26,15 +26,13 @@ const Service = (item: IService) => {
                 <div style={{ marginLeft: '10px' }}>
                     <h4><i className={'bs bs-scissors-1'}/> {t(`${item.service.name}`)} </h4>
                     <div className={'time_wrapper section_caption'}>
-                        <div className={'time_icon'}><AccessTimeIcon fontSize={'small'}/>
-                        </div>
+                        <div className={'time_icon'}><AccessTimeIcon fontSize={'small'}/></div>
                         <div>{item.duration} {t('минут')}</div>
                     </div>
                 </div>
                 <div>
-                    <h3><b><big>{item.price} </big> <small>MDL</small></b></h3>
+                    <h3><b><big>{item.price} </big><small>MDL</small></b></h3>
                 </div>
-
             </Card>
         </>
     );
