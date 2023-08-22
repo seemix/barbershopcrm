@@ -26,6 +26,7 @@ const Barbers: FC = () => {
                 <h3>LevelUP Barbershop</h3>
                 <h2>{t('Наши барберы')}</h2>
                 <Swiper
+                    // @ts-ignore
                     autoHeight={true}
                     slidesPerView={1}
                     spaceBetween={10}

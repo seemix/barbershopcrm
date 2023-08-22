@@ -5,20 +5,12 @@ import moment from 'moment';
 
 export const barberScheduleController = {
     getAllSchedules: async (req: Request, res: Response, next: NextFunction) => {
-      try {
-          const allSchedules = await Schedule.find();
-          const result = allSchedules.map(item => {
-              return {
-                  event_id: item._id,
-                  start: item.startTime,
-                  end: item.endTime,
-                  admin_id: item.barber
-              };
-          });
-          res.json(result);
-      }catch (e) {
-          next(new ApiError('Error retrieving data', 500));
-      }
+        try {
+            const allSchedules = await Schedule.find();
+            res.json(allSchedules);
+        } catch (e) {
+            next(new ApiError('Error retrieving data', 500));
+        }
     },
     createBarberScheduler: async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -29,14 +21,16 @@ export const barberScheduleController = {
                     startTime: moment(data.start).add(i, 'days'),
                     endTime: moment(data.end).add(i, 'days'),
                     barber: data.barber,
-                    title: ''
                 });
             }
-            await Schedule.insertMany(arr);
-            const newRes = await Schedule.find({ barber: data.barber });
-            res.json(newRes).status(200);
+            const responseArray = [];
+            for (const arrElement of arr) {
+                const res = await Schedule.create(arrElement);
+                responseArray.push(res);
+            }
+            res.json(responseArray).status(201);
         } catch (e) {
-             next(new ApiError('Error creating schedule', 500));
+            next(new ApiError('Error creating schedule', 500));
         }
     },
     getScheduleByBarber: async (req: Request, res: Response, next: NextFunction) => {
@@ -62,7 +56,7 @@ export const barberScheduleController = {
                 endTime: String(new Date(data.end)),
                 barber: data.barber
             });
-           res.json(updatedSchedule).status(200);
+            res.json(updatedSchedule).status(200);
 
         } catch (e) {
             next(new ApiError('Error during update element', 500));
@@ -71,8 +65,8 @@ export const barberScheduleController = {
     deleteSchedule: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            const deletedSchedule = await Schedule.deleteOne({ _id: id });
-            res.json(deletedSchedule).status(203);
+            await Schedule.deleteOne({ _id: id });
+            res.json(id).status(200);
         } catch (e) {
             next(new ApiError('Error deleting item', 500));
         }

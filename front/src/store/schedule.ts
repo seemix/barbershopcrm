@@ -18,6 +18,18 @@ const initialState: IInitialState = {
     status: null,
     loading: false
 };
+
+const processData = (data: any) => {
+    //@ts-ignore
+    return data.map(item => {
+        return {
+            event_id: item._id,
+            start: new Date(item.startTime),
+            end: new Date(item.endTime),
+            admin_id: item.barber
+        };
+    });
+};
 export const getAllSchedules = createAsyncThunk(
     'scheduleSlice/getAllSchedules',
     async (_, thunkAPI) => {
@@ -87,17 +99,7 @@ const scheduleSlice = createSlice({
                 state.status = 'fulfilled';
                 state.loading = false;
                 state.error = null;
-               // console.log(action.payload);
-                // @ts-ignore
-                state.result = action.payload.map(item => {
-                    return {
-                        event_id: item.event_id,
-                        title: 'Jazz',
-                        start: new Date(item.start),
-                        end: new Date(item.end),
-                        color: item.color || '',
-                    };
-                });
+                state.result = processData(action.payload);
             })
             .addCase(getScheduleByBarber.rejected, (state, action) => {
                 state.status = 'error';
@@ -111,27 +113,20 @@ const scheduleSlice = createSlice({
             .addCase(createSchedule.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                state.schedule = action.payload;
+                const resp = processData(action.payload);
+                state.result = [...state.result, ...resp];
             })
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
             })
+            .addCase(deleteSchedule.fulfilled, (state, action) => {
+                state.result = state.result.filter(item => item.event_id !== action.payload);
+            })
             .addCase(getAllSchedules.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                // @ts-ignore
-               // state.result = action.payload;
-                state.result = action.payload.map(item => {
-                    return {
-                       event_id: item.event_id,
-                       title: 'Jazz',
-                       start: new Date(item.start),
-                       end: new Date(item.end),
-                       color: item.color || '',
-                       admin_id: item.admin_id
-                    };
-                });
+                state.result = processData(action.payload);
             });
     }
 });

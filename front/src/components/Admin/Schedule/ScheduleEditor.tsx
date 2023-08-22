@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { DateTimeField } from '@mui/x-date-pickers';
 import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useAppDispatch } from '../../../hooks/redux';
-import { createSchedule, getAllSchedules, updateSchedule } from '../../../store/schedule';
+import { createSchedule, updateSchedule } from '../../../store/schedule';
 
 interface CustomEditorProps {
     scheduler: SchedulerHelpers;
@@ -37,7 +37,7 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
                 count: state.count
             }));
         }
-        dispatch(getAllSchedules());
+      //  dispatch(getAllSchedules());
         // @ts-ignore
        // calendarRef.current.scheduler.handleState(result,'events')
         scheduler.close();

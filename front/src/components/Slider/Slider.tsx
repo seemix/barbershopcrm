@@ -16,6 +16,7 @@ const Slider: FC = () => {
         <div>
             <div className={'overlay_container'}>
                 <Swiper
+                    // @ts-ignore
                     speed={2500}
                     spaceBetween={30}
                     slidesPerView={1}
