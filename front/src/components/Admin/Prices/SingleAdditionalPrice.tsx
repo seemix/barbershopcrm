@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IBarberAdditional } from '../../../interfaces/additional.model';
 
 import './SingleServicePrice.css';
@@ -8,15 +8,24 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useAppDispatch } from '../../../hooks/redux';
-import { openBarberAddModal, setBarberAddForUpdate } from '../../../store/barberAdditional';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { deleteBarberAdditionalById, openBarberAddModal, setBarberAddForUpdate } from '../../../store/barberAdditional';
+import { filterDeletedAdditionals } from '../../../store/barberService';
 
 const SingleAdditionalPrice = (item: IBarberAdditional) => {
     const { additional, price, duration } = item;
     const dispatch = useAppDispatch();
+    const { deletedAdd } = useAppSelector(state => state.barberAdditionalStore);
+    const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
     const handleEdit = () => {
         dispatch(setBarberAddForUpdate(item));
         dispatch(openBarberAddModal());
+    };
+    useEffect(() => {
+        if (deletedAdd !== '') dispatch(filterDeletedAdditionals(deletedAdd));
+    }, [deletedAdd]);
+    const handleDelete = () => {
+        dispatch(deleteBarberAdditionalById(String(item._id)));
     };
     return (
         <Card className={'single_service_card'}>
@@ -26,8 +35,14 @@ const SingleAdditionalPrice = (item: IBarberAdditional) => {
                 <div className={'single_service_int_wrap'}><LocalAtmIcon/>{price} MDL</div>
             </div>
             <div className={'single_service_bottom'}>
-                <Button><EditIcon onClick={handleEdit}/></Button>
-                <Button><DeleteForeverIcon/></Button>
+                {!confirmDelete && <>
+                    <Button><EditIcon onClick={handleEdit}/></Button>
+                    <Button onClick={() => setConfirmDelete(true)}><DeleteForeverIcon/></Button>
+                </>}
+                {confirmDelete && <>
+                    <Button onClick={() => setConfirmDelete(false)}>отмена</Button>
+                    <Button onClick={handleDelete}>удалить</Button>
+                </>}
             </div>
         </Card>
     );

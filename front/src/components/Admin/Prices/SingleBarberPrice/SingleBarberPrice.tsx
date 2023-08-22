@@ -28,10 +28,11 @@ const SingleBarberPrice = () => {
     const { barberId } = useParams();
 
     useEffect(() => {
-        dispatch(getServicesByBarber(String(barberId)));
         dispatch(getAdditionalsByBarber(String(barberId)));
         dispatch(getBarberById(String(barberId)));
+        dispatch(getServicesByBarber(String(barberId)));
     }, [barberId, dispatch]);
+
 
     const { allServices } = useAppSelector(state => state.serviceStore);
     const { barberServices, barberServiceModal } = useAppSelector(state => state.barberServiceStore);
@@ -41,6 +42,7 @@ const SingleBarberPrice = () => {
 
     const [filteredAdd, setFilteredAdd] = useState<IAdd[]>([]);
     const [filteredServices, setFilteredServices] = useState<IAllService[]>([]);
+
     useEffect(() => {
         const filteredArr = allAdditionals.filter(item1 =>
             //@ts-ignore
@@ -53,6 +55,7 @@ const SingleBarberPrice = () => {
         const filteredServices = allServices.filter(item1 => !barberServices.some(item2 => item2.service._id === item1._id));
         setFilteredServices(filteredServices);
     }, [barberServices]);
+
     return (
         <div className={'content'}>
             {currentBarber &&

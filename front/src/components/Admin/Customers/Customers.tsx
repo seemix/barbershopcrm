@@ -203,6 +203,10 @@ function Customers() {
         calendarRef.current?.scheduler.handleState(EVENTS, 'events');
     };
 
+    const hvr = (e: any) => {
+        console.log(e);
+
+    };
     const [mode, setMode] = useState<'default' | 'tabs'>('default');
     const calendarRef = useRef<SchedulerRef>(null);
     return (
@@ -267,18 +271,22 @@ function Customers() {
                     }
                 ]}
                 eventRenderer={(props: EventRendererProps) => {
-                    return (<div {...props} style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        color: 'black',
-                        justifyContent: 'space-between',
-                        fontSize: '12px',
-                        // padding: '5px',
-                        alignItems: 'center',
-                        backgroundColor: '#ccc'
-                    }}>
+                    return (<div
+                        // onClick={() => openeEditModal(props.event)}
+                        {...props}
+                        onMouseOver={() => hvr(props.event)}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            color: 'black',
+                            justifyContent: 'space-between',
+                            fontSize: '12px',
+                            // padding: '5px',
+                            alignItems: 'center',
+                            backgroundColor: '#ccc'
+                        }}>
                         <div>
                             {props.event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                         </div>
@@ -288,7 +296,7 @@ function Customers() {
                         </div>
                     </div>);
                 }}
-
+                // onEventClick={(event:ProcessedEvent)=>{console.log(event.title)}}
 
             />;
         </Fragment>

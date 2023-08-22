@@ -105,6 +105,15 @@ export const barberServiceSlice = createSlice({
         setBarberServiceForCreate(state, action) {
             state.barberServiceForCreate = action.payload;
         },
+        filterDeletedAdditionals(state, action) {
+            // @ts-ignore
+            state.barberServices = state.barberServices.map(item => {
+                return {
+                    ...item,
+                    additionals: item.additionals.filter(add => add._id !== action.payload)
+                };
+            });
+        }
     },
     extraReducers: builder => {
         builder
@@ -150,6 +159,7 @@ export const {
     setBarberServiceForEdit,
     resetBarberServiceForEdit,
     setBarberServiceForCreate,
+    filterDeletedAdditionals
 } = barberServiceSlice.actions;
 const barberServiceStore = barberServiceSlice.reducer;
 export default barberServiceStore;

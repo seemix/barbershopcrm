@@ -12,7 +12,7 @@ export const barberAdditionalController = {
                 path: 'additional',
                 strictPopulate: false,
                 select: 'name'
-            })
+            });
 
             res.json(response).status(201);
         } catch (e) {
@@ -20,20 +20,25 @@ export const barberAdditionalController = {
         }
     },
     getAdditionalForBooking: async (req: Request, res: Response, next: NextFunction) => {
-        const { serviceId, barberId } = req.query;
-        const byServiceBarber = await BarberAdditional.find({ barber: barberId, services: serviceId })
-            .select(['barber', 'price', 'duration'])
-            .populate({
-                path: 'barber',
-                select: 'name',
-                strictPopulate: false
-            })
-            .populate({
-                path: 'additional',
-                select: ['name'],
-                strictPopulate: false
-            });
-        res.json(byServiceBarber);
+        try {
+            const { serviceId, barberId } = req.query;
+            const byServiceBarber = await BarberAdditional.find({ barber: barberId, services: serviceId })
+                .select(['barber', 'price', 'duration'])
+                .populate({
+                    path: 'barber',
+                    select: 'name',
+                    strictPopulate: false
+                })
+                .populate({
+                    path: 'additional',
+                    select: ['name'],
+                    strictPopulate: false
+                });
+            res.json(byServiceBarber);
+        } catch (e) {
+            next(e);
+        }
+
 
     },
     getAdditionalByBarber: async (req: Request, res: Response, next: NextFunction) => {
@@ -75,7 +80,6 @@ export const barberAdditionalController = {
         } catch (e) {
             next(e);
         }
-
     },
 
     updateBarberAdditional: async (req: Request, res: Response, next: NextFunction) => {
@@ -88,17 +92,18 @@ export const barberAdditionalController = {
         }
     },
 
-//     getFilteredAdditionals: async (req: Request, res: Response, next: NextFunction) => {
-//         const { barber } = req.query;
-//         const arr1 = await Additional.find();
-//         const arr2 = await BarberAdditional.find({ barber });
-//         // @ts-ignore
-//         const filteredArr = arr1.filter(item1 =>
-//             //@ts-ignore
-//             !arr2.some(item2 => item2.additional.equals(item1._id))
-//         );
-//
-//         res.json(filteredArr).status(200);
-//     }
-// };
-}
+    deleteBarberAdditionalById: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { _id } = req.params;
+            await BarberService.updateMany(
+                { additionals: _id },
+                { $pull: { additionals: _id } });
+            await BarberAdditional.deleteOne({ _id });
+            res.json(_id).status(200);
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+};

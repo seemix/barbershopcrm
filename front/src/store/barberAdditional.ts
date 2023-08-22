@@ -10,7 +10,8 @@ interface IInitialState {
     barberAdditionals: IBarberAdditional[],
     barberAddEditModal: boolean;
     barberAddForUpdate: IBarberAdditional | null;
-    create: boolean;
+    createAdd: boolean;
+    deletedAdd: string;
 }
 
 const initialState: IInitialState = {
@@ -19,7 +20,8 @@ const initialState: IInitialState = {
     barberAdditionals: [],
     barberAddEditModal: false,
     barberAddForUpdate: null,
-    create: false
+    createAdd: false,
+    deletedAdd: ''
 };
 
 export const createBarberAdditional = createAsyncThunk(
@@ -52,7 +54,16 @@ export const updateBarberAdditional = createAsyncThunk(
         }
     }
 );
-
+export const deleteBarberAdditionalById = createAsyncThunk(
+    'barberAdditionalsSlice/deleteById',
+    async (_id:string, thunkAPI) => {
+        try {
+            return barberAdditionalService.deleteById(_id);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 export const barberAdditionalsSlice = createSlice({
     name: 'barberAdditionalsSlice',
     initialState,
@@ -67,10 +78,10 @@ export const barberAdditionalsSlice = createSlice({
             state.barberAddForUpdate = action.payload;
         },
         setCreateBarberAdd(state) {
-            state.create = true;
+            state.createAdd = true;
         },
         resetCreateBarberAdd(state) {
-            state.create = false;
+            state.createAdd = false;
         }
     },
     extraReducers: builder => {
@@ -87,8 +98,14 @@ export const barberAdditionalsSlice = createSlice({
             })
             .addCase(createBarberAdditional.fulfilled, (state, action) => {
                 state.barberAdditionals = [...state.barberAdditionals, action.payload];
-                state.create = false;
+                state.createAdd = false;
                 state.barberAddEditModal = false;
+            })
+            .addCase(deleteBarberAdditionalById.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.error = null;
+                state.barberAdditionals = state.barberAdditionals.filter(item => item._id!== action.payload);
+                state.deletedAdd = action.payload;
             });
     }
 });

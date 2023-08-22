@@ -8,5 +8,6 @@ barberAdditionalRouter.post('/', barberAdditionalController.createBarberAddition
 // barberAdditionalRouter.get('/filter', barberAdditionalController.getFilteredAdditionals);
 barberAdditionalRouter.get('/:barberId', barberAdditionalController.getAdditionalByBarber);
 barberAdditionalRouter.put('/', barberAdditionalController.updateBarberAdditional);
+barberAdditionalRouter.delete('/:_id',barberAdditionalController.deleteBarberAdditionalById);
 
 export default barberAdditionalRouter;

@@ -36,7 +36,7 @@ const SingleServicePrice = (service: IAdminBarberService) => {
                     key={item._id}>{item.additional?.name}</li>)}
             </ul>
             <div className={'single_service_bottom'}>
-                <Button><EditIcon onClick={handleEdit}/></Button>
+                {!confirmDelete && <Button><EditIcon onClick={handleEdit}/></Button>}
                 {!confirmDelete && <Button><DeleteForeverIcon onClick={() => setConfirmDelete(true)}/></Button>}
                 {confirmDelete && <>
                     <Button onClick={() => setConfirmDelete(false)}>отмена</Button>

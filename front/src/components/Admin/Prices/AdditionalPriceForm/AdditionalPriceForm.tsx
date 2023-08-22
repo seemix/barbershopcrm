@@ -22,10 +22,10 @@ const AdditionalPriceForm = () => {
     };
 
     const dispatch = useAppDispatch();
-    const { barberAddForUpdate, create } = useAppSelector(state => state.barberAdditionalStore);
+    const { barberAddForUpdate, createAdd } = useAppSelector(state => state.barberAdditionalStore);
 
     const submitForm = (data: any) => {
-        if (create) {
+        if (createAdd) {
             dispatch(createBarberAdditional(data));
         } else {
             dispatch(updateBarberAdditional(data));
