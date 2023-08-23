@@ -6,10 +6,11 @@ import { EventRendererProps, SchedulerRef } from '@aldabil/react-scheduler/types
 import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { deleteSchedule, getAllSchedules } from '../../../store/schedule';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Dialog } from '@mui/material';
 import { getAllBarbers } from '../../../store/barbers';
 
 const Schedule = () => {
+
     const calendarRef = useRef<SchedulerRef>(null);
     const dispatch = useAppDispatch();
     const { result, status, loading } = useAppSelector(state => state.scheduleStore);
@@ -23,11 +24,14 @@ const Schedule = () => {
             avatar: item.picture,
         };
     });
+    const [openEdit, setOpenEdit] = useState(false);
+
     useEffect(() => {
         dispatch(getAllSchedules());
         dispatch(getAllBarbers());
         calendarRef.current?.scheduler?.handleState(result, 'events');
     }, [dispatch]);
+
     useEffect(() => {
         calendarRef.current?.scheduler?.handleState(result, 'events');
     }, [calendarRef.current, result]);
@@ -38,9 +42,16 @@ const Schedule = () => {
         });
     };
     // const [mode, setMode] = useState<'default' | 'tabs'>('tabs');
+    // const [editEvent, setEditEvent] = useState<CustomEditorProps>();
+    const handleClick = (event: any) => {
+       // setEditEvent(event);
+        setOpenEdit(true);
+        console.log(event);
+    };
+    // @ts-ignore
     return (
         <div>
-            <h4 style={{textAlign: 'center'}}>Расписание</h4>
+            <h4 style={{ textAlign: 'center' }}>Расписание</h4>
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             {/*<div style={{ textAlign: 'center' }}>*/}
             {/*    <span> Переключатель вида: </span>*/}
@@ -119,7 +130,7 @@ const Schedule = () => {
                     onDelete={(id) => handleDelete(id)}
                     eventRenderer={(props: EventRendererProps) => {
                         return (<div
-                            {...props}
+                            onClick={() => handleClick(props.event)}
                             style={{
                                 width: '100%',
                                 height: '100%',
@@ -132,11 +143,13 @@ const Schedule = () => {
                                 alignItems: 'center',
                                 backgroundColor: '#ccc'
                             }}>
-                            <div style={{backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center'}}>
+                            <div
+                                style={{ backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center' }}>
                                 {props.event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                             <div></div>
-                            <div style={{backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center'}}>
+                            <div
+                                style={{ backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center' }}>
                                 {props.event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                         </div>);
@@ -151,6 +164,9 @@ const Schedule = () => {
                     // }}
                 />
             }
+            <Dialog open={openEdit}>
+                //ts-ignore {/*<ScheduleEditor scheduler={editEvent}/>*/}
+            </Dialog>
         </div>
     );
 };

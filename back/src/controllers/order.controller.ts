@@ -104,9 +104,19 @@ export const orderController = {
                     strictPopulate: false
                 });
             if (order) {
-                const originalDate = moment(order.startTime);
-                moment.locale('ru'); // Set the locale to Russian
-                const formattedDate = originalDate.format('ddd DD MMMM, HH:mm');
+                //@ts-ignore
+                const originalDate = new Date(order.startTime);
+                const options = {
+                    weekday: 'short', // "ddd"
+                    day: '2-digit',   // "DD"
+                    month: 'long',    // "MMMM"
+                    hour: '2-digit',  // "HH"
+                    minute: '2-digit' // "mm"
+                };
+                //@ts-ignore
+                const formatter = new Intl.DateTimeFormat('ru-RU', options);
+                const formattedDate = formatter.format(originalDate);
+
                 await sendMail(order.customer.email, {
                     customerName: order.customer.name,
                     orderId: order._id,
