@@ -50,8 +50,9 @@ const FinalStep = () => {
                     </div>
                     <hr/>
                     <p style={{ textAlign: 'right' }}>{t('Общая сумма')} {price} MDL</p>
-                    <p>{t('cancelOrderEmail')} <big>{customer.email} </big>
-                        {t('cancelOrderPhone')} <big> +37360233555 </big></p>
+                    <p>{t('cancelOrderEmail')} <big>📧 {customer.email} </big></p>
+                    <p>{t('cancelOrderPhone')} <big>☎️ +37360233555 </big></p>
+                
                 </div>
                 }
             </Card>
