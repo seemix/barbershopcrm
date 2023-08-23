@@ -96,6 +96,7 @@
 @media screen and (max-width: 767px) {
     .services {
         padding: 15px 0;
+        height: auto;
     }
 
     .price {

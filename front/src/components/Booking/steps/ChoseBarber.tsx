@@ -26,7 +26,7 @@ const ChoseBarber = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' &&
                     <div>
-                        {
+                        {activeBarbers &&
                             activeBarbers.map(barber => <Barber
                                 key={barber._id}
                                 description={barber.description}

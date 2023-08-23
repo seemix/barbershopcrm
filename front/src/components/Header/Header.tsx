@@ -71,18 +71,21 @@ const Header: FC = () => {
                 <div className={'menu_icon'} onClick={handleMenuButton}>
                     <MenuIcon fontSize={'large'} style={{
                         display: !openMenu ? 'block' : 'none',
-                        position: 'absolute',
-                        top: 30,
-                        right: 30
+                        marginRight: '20px',
+
+                      //  position: 'absolute',
+                      //  top: 30,
+                      //  right: 30
                     }}/>
                 </div>
                 <div className={'menu_icon'} onClick={handleMenuButton}>
                     <CloseIcon fontSize={'large'}
                                style={{
                                    display: openMenu ? 'block' : 'none',
-                                   position: 'absolute',
-                                   top: 30,
-                                   right: 30
+                                   marginRight: '20px',
+                                  // position: 'absolute',
+                                  // top: 30,
+                                  // right: 30
                                }}
                     />
                 </div>

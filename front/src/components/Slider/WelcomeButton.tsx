@@ -13,6 +13,7 @@ const WelcomeButton = () => {
     const handleBooking = () => {
         dispatch(openBooking());
     };
+
     return (
         <>
             <div className={'overlay'}>
@@ -25,7 +26,7 @@ const WelcomeButton = () => {
                         initial={'hidden'}
                         whileInView={'visible'}
                         variants={buttonAnimation}>
-                        <Link to={'booking'} smooth={true} spy={false} offset={-40}>
+                        <Link to={'booking'} smooth={true} spy={false} offset={-80}>
                             <button
                                 onClick={handleBooking}
                                 className={'button-5'}>{t('ЗАПИСАТЬСЯ')}

@@ -48,7 +48,7 @@ export const updateBarberAdditional = createAsyncThunk(
     'barberAdditionalsSlice/update',
     async (data: IBarberAdditional, thunkAPI) => {
         try {
-            return additionalService.updateBarberAdditional(data);
+            return await additionalService.updateBarberAdditional(data);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }

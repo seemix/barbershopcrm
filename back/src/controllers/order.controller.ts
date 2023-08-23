@@ -8,6 +8,7 @@ import { sendMail } from '../services/send-email.service.js';
 import { IOrderRecord } from '../interfaces/order-record.js';
 import moment from 'moment/moment.js';
 
+
 export const orderController = {
     getOrders: async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -39,7 +40,6 @@ export const orderController = {
 
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // console.log(req.body);
             const {
                 customerName,
                 customerPhone,
@@ -74,8 +74,8 @@ export const orderController = {
             });
             res.json(newOrder).status(201);
         } catch (e) {
-            next(e);
-            //next(new ApiError('Error creating order', 500));
+            //next(e);
+            next(new ApiError('Error creating order', 500));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
@@ -103,15 +103,21 @@ export const orderController = {
                     select: ['name'],
                     strictPopulate: false
                 });
-            if (order)
+            if (order) {
+                const originalDate = moment(order.startTime);
+                moment.locale('ru'); // Set the locale to Russian
+                const formattedDate = originalDate.format('ddd DD MMMM, HH:mm');
                 await sendMail(order.customer.email, {
                     customerName: order.customer.name,
                     orderId: order._id,
-                    startTime: order.startTime,
+                    startTime: formattedDate,
                     barberName: order.barber.name
                 });
+                res.json(order);
 
-            res.json(order);
+            }
+
+
         } catch (e) {
             next(new ApiError('Error getting order', 500));
         }
