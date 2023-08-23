@@ -11,9 +11,11 @@ const FinalStep = () => {
     const { t } = useTranslation();
     const order = useAppSelector(state => state.orderStore);
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         dispatch(createOrder(order));
     }, []);
+
     useEffect(() => {
         if (order.orderId) dispatch(getRecordById(String(order.orderId)));
     }, [dispatch, order.orderId]);

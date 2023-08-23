@@ -27,13 +27,13 @@ export const bottomAnimation: any = {
 // @ts-ignore
 export const headerAnimation: any = {
     hidden: {
-        x: -70,
+        x: -50,
         opacity: 0
     },
     visible: (custom: number) => ({
         x: 0,
         opacity: 1,
-        transition: { delay: custom * 0.3, duration: 0.3, ease: 'easeInOut' }
+        transition: { delay: custom * 0.3, duration: 0.5, ease: 'easeInOut' }
     })
 };
 

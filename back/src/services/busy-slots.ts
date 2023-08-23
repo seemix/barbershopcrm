@@ -6,6 +6,7 @@ import Schedule from '../models/schedule.model.js';
 export const busySlots = async (barberId: string | undefined) => {
     const start = Date.now();
     const end = moment(start).add(2, 'weeks').add(1, 'days');
+
     const timeTable = await Schedule.find({
         endTime: { $gte: moment(start).add(-1,'day'), $lte: end },
         barber: barberId
@@ -13,13 +14,14 @@ export const busySlots = async (barberId: string | undefined) => {
         .select('startTime')
         .select('endTime');
     if(timeTable.length === 0)  return;
+
     const order = await Order.find({
-        startTime: { $gte: start },
+        startTime: { $gte: start, $lte: end },
         barber: barberId
     })
         .select('startTime')
         .select('endTime');
-    // console.log(order);
+
     const timeSlots = [];
     const arr = timeTable.map(item => {
         return {
@@ -27,10 +29,11 @@ export const busySlots = async (barberId: string | undefined) => {
             endTime: item.endTime
         };
     }).sort((a, b) => Number(a['startTime']) > Number(b['startTime']) ? 1 : -1);
-    if(moment(start) < moment(arr[0].startTime)) {
+
+    if(moment(start) < moment(arr[0].startTime) && moment(start) < moment(arr[0].endTime)) {
         timeSlots.push({
-            startTime: arr[0].startTime,
-            endTime: moment(Date.now())
+            startTime: moment(Date.now()),
+            endTime: arr[0].startTime
         });
     }
 
