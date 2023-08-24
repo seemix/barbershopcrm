@@ -1,21 +1,26 @@
 import { Scheduler } from '@aldabil/react-scheduler';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ru } from 'date-fns/locale';
 import { EventRendererProps, SchedulerRef } from '@aldabil/react-scheduler/types';
 
-import ScheduleEditor from './ScheduleEditor';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { deleteSchedule, getAllSchedules } from '../../../store/schedule';
+import { deleteSchedule, getAllSchedules, openScheduleModal } from '../../../store/schedule';
 import { CircularProgress, Dialog } from '@mui/material';
 import { getAllBarbers } from '../../../store/barbers';
+import Button from '@mui/material/Button';
+import ScheduleEditor from './ScheduleEditor';
+import { closeScheduleModal } from '../../../store/schedule';
+import { dayAsset, resourceFieldsAsset, weekAsset } from './scheduleAssets';
+import './Schedule.css';
+
 
 const Schedule = () => {
-
     const calendarRef = useRef<SchedulerRef>(null);
     const dispatch = useAppDispatch();
-    const { result, status, loading } = useAppSelector(state => state.scheduleStore);
+    const { result, status, loading, scheduleModal } = useAppSelector(state => state.scheduleStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
+
     const resources = activeBarbers.map(item => {
         return {
             admin_id: item._id,
@@ -24,7 +29,6 @@ const Schedule = () => {
             avatar: item.picture,
         };
     });
-    const [openEdit, setOpenEdit] = useState(false);
 
     useEffect(() => {
         dispatch(getAllSchedules());
@@ -34,7 +38,7 @@ const Schedule = () => {
 
     useEffect(() => {
         calendarRef.current?.scheduler?.handleState(result, 'events');
-    }, [calendarRef.current, result]);
+    }, [result]);
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         return new Promise((res) => {
             dispatch(deleteSchedule(id));
@@ -44,11 +48,8 @@ const Schedule = () => {
     // const [mode, setMode] = useState<'default' | 'tabs'>('tabs');
     // const [editEvent, setEditEvent] = useState<CustomEditorProps>();
     const handleClick = (event: any) => {
-       // setEditEvent(event);
-        setOpenEdit(true);
-        console.log(event);
+        dispatch(openScheduleModal(event));
     };
-    // @ts-ignore
     return (
         <div>
             <h4 style={{ textAlign: 'center' }}>Расписание</h4>
@@ -84,33 +85,31 @@ const Schedule = () => {
             {/*        Tabs*/}
             {/*    </Button>*/}
             {/*</div>*/}
-            {resources[0] && result[0] &&
+            {resources.length > 0 && result.length > 0 &&
                 <Scheduler
                     loading={loading}
                     locale={ru}
                     ref={calendarRef}
                     events={result}
                     hourFormat={'24'}
-                    customEditor={(scheduler) => <ScheduleEditor scheduler={scheduler}/>}
-                    day={{ startHour: 8, endHour: 19, step: 30, navigation: true }}
+                    //@ts-ignore
+                    day={{...dayAsset,
+                        cellRenderer: ({ ...props }) => {
+                            return (<Button className={'cell_render_button'}
+                                            onClick={() => dispatch(openScheduleModal(props))}></Button>);
+                        }
+                    }}
+                    //@ts-ignore
                     week={{
-                        weekDays: [0, 1, 2, 3, 4, 5, 6],
-                        weekStartOn: 1,
-                        startHour: 8,
-                        endHour: 19,
-                        step: 60,
-                        navigation: true,
-                        disableGoToDay: false
+                        ...weekAsset,
+                        cellRenderer: ({ ...props }) => {
+                            return (<Button className={'cell_render_button'}
+                                            onClick={() => dispatch(openScheduleModal(props))}></Button>);
+                        }
                     }}
                     resources={resources}
                     resourceViewMode={'default'}
-                    resourceFields={{
-                        idField: 'admin_id',
-                        textField: 'title',
-                        subTextField: 'mobile',
-                        avatarField: 'avatar',
-                        colorField: 'color'
-                    }}
+                    resourceFields={resourceFieldsAsset}
                     fields={[
                         {
                             name: 'admin_id',
@@ -129,43 +128,21 @@ const Schedule = () => {
                     ]}
                     onDelete={(id) => handleDelete(id)}
                     eventRenderer={(props: EventRendererProps) => {
-                        return (<div
-                            onClick={() => handleClick(props.event)}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                color: 'black',
-                                justifyContent: 'space-between',
-                                fontSize: '12px',
-                                // padding: '5px',
-                                alignItems: 'center',
-                                backgroundColor: '#ccc'
-                            }}>
-                            <div
-                                style={{ backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center' }}>
+                        return (<div className={'schedule_custom_event'}
+                            onClick={() => handleClick(props.event)}>
+                            <div className={'schedule_event_time'}>
                                 {props.event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                             <div></div>
-                            <div
-                                style={{ backgroundColor: '#eee', width: '100%', padding: '5px', textAlign: 'center' }}>
+                            <div className={'schedule_event_time'}>
                                 {props.event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                         </div>);
                     }}
-                    // viewerExtraComponent={(fields, event) => {
-                    //     return (
-                    //         <div>
-                    //             <p>Useful to render custom fields...</p>
-                    //             <p>Description: {event.description || 'Nothing...'}</p>
-                    //         </div>
-                    //     );
-                    // }}
                 />
             }
-            <Dialog open={openEdit}>
-                //ts-ignore {/*<ScheduleEditor scheduler={editEvent}/>*/}
+            <Dialog open={scheduleModal} onClose={() => dispatch(closeScheduleModal())}>
+                <ScheduleEditor/>
             </Dialog>
         </div>
     );

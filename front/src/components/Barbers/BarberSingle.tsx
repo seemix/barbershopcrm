@@ -14,7 +14,7 @@ const BarberSingle = (barber: IBarber) => {
                     width="300"
                     image={barber.picture}
                 />
-                <h3>{barber.name}</h3>
+                <h3 style={{ marginTop: '20px' }}>{barber.name}</h3>
                 <h4>{barber.description}</h4>
             </Card>
         </div>

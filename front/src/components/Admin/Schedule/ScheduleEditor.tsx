@@ -1,57 +1,46 @@
 import React, { useState } from 'react';
-import { SchedulerHelpers } from '@aldabil/react-scheduler/types';
+import { DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import Button from '@mui/material/Button';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { closeScheduleModal, createSchedule, deleteSchedule, updateSchedule } from '../../../store/schedule';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs from 'dayjs';
 import { DateTimeField } from '@mui/x-date-pickers';
-import { Button, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useAppDispatch } from '../../../hooks/redux';
-import { createSchedule, updateSchedule } from '../../../store/schedule';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useForm } from 'react-hook-form';
 
-interface CustomEditorProps {
-    scheduler: SchedulerHelpers;
-}
-
-const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
-    const event = scheduler.edited;
+const ScheduleEditor = () => {
+    const { editEvent } = useAppSelector(state => state.scheduleStore);
     const dispatch = useAppDispatch();
-    const [state, setState] = useState({
-        event_id: scheduler?.state.event_id.value,
-        start: scheduler?.state.start.value || '',
-        end: event?.end || scheduler.state.end.value,
-        count: 1
-    });
-    const handleSubmit = async () => {
-        if (event) {
-            await dispatch(updateSchedule({
-                start: dayjs(scheduler.state.start.value).toJSON(),
-                end: dayjs(state.end).toJSON(),
-                barber: scheduler.state.admin_id.value,
-                id: event.event_id
-            },));
-        } else {
-            await dispatch(createSchedule({
-                start: dayjs(scheduler.state.start.value).toJSON(),
-                end: dayjs(state.end).toJSON(),
-                barber: scheduler.state.admin_id.value,
-                count: state.count
-            }));
-        }
-      //  dispatch(getAllSchedules());
-        // @ts-ignore
-       // calendarRef.current.scheduler.handleState(result,'events')
-        scheduler.close();
-    };
-    const start = String(scheduler.state.start.value);
-
+    const { register, handleSubmit } = useForm();
+    const [date, setDate] = useState({ start: editEvent.start, end: editEvent.end });
     const handleChange = (value: any, name: string) => {
-        setState((prev) => {
+        setDate((prev) => {
             return {
                 ...prev,
                 [name]: value
             };
         });
     };
+    const submitForm = (data: any) => {
+        if (!data.start) data.start = editEvent.start;
+        if (editEvent.event_id) {
+            dispatch(updateSchedule({
+                start: dayjs(date.start).toJSON(),
+                end: dayjs(date.end).toJSON(),
+                barber: editEvent.admin_id,
+                id: editEvent.event_id
+            }));
+        } else {
+            dispatch(createSchedule({
+                start: data.start,
+                end: dayjs(date.end).toJSON(),
+                barber: editEvent.admin_id,
+                count: data.days
+            }));
+        }
+    };
+
     return (
         <div style={{
             display: 'flex',
@@ -60,38 +49,44 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
             rowGap: '15px',
             padding: '20px'
         }}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <div><p style={{ textAlign: 'center' }}>Добавить/редактировать промежуток</p></div>
-                <div>
-                    <DateTimeField
-                        fullWidth
-                        label={'start'}
-                        defaultValue={dayjs(start)}
-                        ampm={false}
-                        disabled
-                        onChange={(e) => handleChange(String(e), 'start')}
-                    />
-                </div>
-                <div>
-                    <DateTimeField
-                        fullWidth
-                        ampm={false}
-                        defaultValue={dayjs(state.end)}
-                        label={'end'}
-                        onChange={(e) => handleChange(String(dayjs(e)), 'end')}
-                    />
-                </div>
-                <div className={!event ? 'show_item' : 'hide_item'}>
+            {editEvent.event_id &&
+                <Button onClick={() => dispatch(deleteSchedule(editEvent.event_id))}>Удалить промежуток</Button>}
+            <form onSubmit={handleSubmit(submitForm)}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <div>
+                        <DateTimeField
+                            fullWidth
+                            label={'start'}
+                            //@ts-ignore
+                            defaultValue={dayjs(editEvent.start)}
+                            ampm={false}
+                            disabled={!editEvent.event_id}
+                            onChange={(e) => handleChange(String(e), 'start')}
+                        />
+                    </div>
+                    <div style={{ marginTop: '20px' }}>
+                        <DateTimeField
+                            fullWidth
+                            ampm={false}
+                            //@ts-ignore
+                            defaultValue={dayjs(editEvent.end)}
+                            label={'end'}
+                            onChange={(e) => handleChange(String(dayjs(e)), 'end')}
+
+                        />
+                    </div>
+                </LocalizationProvider>
+                <div className={!editEvent.event_id ? 'show_item' : 'hide_item'}>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <p>повторить промежуток:</p>
                         <br/><br/>
                         <FormControl fullWidth>
                             <InputLabel id="days">Дней</InputLabel>
                             <Select
+                                {...register('days')}
                                 id="days"
                                 label="Дней"
                                 defaultValue={1}
-                                onChange={(e) => handleChange(e.target.value, 'count')}
                             >
                                 <MenuItem value={1}>1</MenuItem>
                                 <MenuItem value={2}>2</MenuItem>
@@ -104,13 +99,11 @@ const ScheduleEditor = ({ scheduler }: CustomEditorProps) => {
                         </FormControl>
                     </div>
                 </div>
-                <div style={{ margin: '0 auto' }}>
-                    <DialogActions>
-                        <Button onClick={handleSubmit}>ОК</Button>
-                        <Button onClick={scheduler.close}>Отмена</Button>
-                    </DialogActions>
-                </div>
-            </LocalizationProvider>
+                <DialogActions>
+                    <Button onClick={() => dispatch(closeScheduleModal())}>Отмена</Button>
+                    <Button type={'submit'}>ОК</Button>
+                </DialogActions>
+            </form>
         </div>
     );
 };

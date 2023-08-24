@@ -79,15 +79,18 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
         dispatch(resetState());
         scheduler.close();
     };
+
     useEffect(() => {
         dispatch(getServicesByBarber(String(admin_id)));
         dispatch(setBarber(admin_id));
     }, [dispatch, admin_id]);
+
     useEffect(() => {
         const startTime = dayjs(start).toDate();
         const endTime = dayjs(startTime).add(duration, 'minutes').toDate();
         dispatch(setDateTime({ startTime, endTime }));
     }, [start, dispatch, duration]);
+
     useEffect(() => {
         if (barberId && serviceId) dispatch(getAdditionalsByBarberAndService({ barberId, serviceId }));
     }, [barberId, serviceId, dispatch]);
@@ -167,8 +170,8 @@ const OrderEditor = ({ scheduler }: CustomEditorProps) => {
                 </div>
                 <div>
                     <DialogActions>
-                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>}
                         <Button onClick={handleCancel} variant={'contained'}>Отмена</Button>
+                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>}
                     </DialogActions>
                 </div>
             </div>

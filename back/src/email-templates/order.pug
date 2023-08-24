@@ -1,8 +1,10 @@
 extends container
 
 block content
-    div.card
+    div
         h3 #{customerName}!
-            p Вы успешно оформили запись в LevelUp Barbershop. #{barberName} будет ждать вас в #{startTime}.
+            p Вы успешно оформили запись в LevelUp Barbershop. #{barberName} будет ждать вас в
+                u
+                span &nbsp; #{startTime}.
             p Для отмены записи пройдите по
                 a(href=orderId)  ссылке

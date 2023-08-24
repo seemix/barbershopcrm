@@ -27,8 +27,8 @@ app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-
 app.listen(config.PORT, () => {
     mongoose.set('strictQuery', true)
         .connect(process.env.MONGO_URL as string).then(() => console.log('db connected')).catch((e) => console.log(e));
 });
+

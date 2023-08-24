@@ -9,6 +9,9 @@ interface IInitialState {
     error: null | string;
     status: string | null;
     loading: boolean;
+    scheduleModal: boolean;
+    editEvent: any;
+    eventCreate: any;
 }
 
 const initialState: IInitialState = {
@@ -16,7 +19,10 @@ const initialState: IInitialState = {
     result: [],
     error: null,
     status: null,
-    loading: false
+    loading: false,
+    scheduleModal: false,
+    editEvent: null,
+    eventCreate: null
 };
 
 const processData = (data: any) => {
@@ -86,7 +92,16 @@ export const deleteSchedule = createAsyncThunk(
 const scheduleSlice = createSlice({
     name: 'scheduleSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        closeScheduleModal(state) {
+            state.scheduleModal = false;
+            // state.editEvent = null;
+        },
+        openScheduleModal(state, action) {
+            state.editEvent = action.payload;
+            state.scheduleModal = true;
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(getScheduleByBarber.pending, state => {
@@ -115,13 +130,26 @@ const scheduleSlice = createSlice({
                 state.error = null;
                 const resp = processData(action.payload);
                 state.result = [...state.result, ...resp];
+                state.scheduleModal = false;
             })
             .addCase(createSchedule.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
             })
+            .addCase(updateSchedule.fulfilled, (state, action) => {
+                const index = state.result.findIndex(item => item.event_id === action.payload._id);
+                state.result[index] = {
+                    title: '',
+                    event_id: action.payload._id,
+                    start: new Date(action.payload.startTime),
+                    end: new Date(action.payload.endTime),
+                    admin_id: action.payload.barber
+                };
+                state.scheduleModal = false;
+            })
             .addCase(deleteSchedule.fulfilled, (state, action) => {
                 state.result = state.result.filter(item => item.event_id !== action.payload);
+                state.scheduleModal = false;
             })
             .addCase(getAllSchedules.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
@@ -130,6 +158,6 @@ const scheduleSlice = createSlice({
             });
     }
 });
-
+export const { openScheduleModal, closeScheduleModal } = scheduleSlice.actions;
 const scheduleStore = scheduleSlice.reducer;
 export default scheduleStore;

@@ -1,4 +1,5 @@
 export interface ISchedule {
+    event_id?: string;
     start: string | null;
     end: string | null;
     barber: string | null;
