@@ -1,13 +1,13 @@
 import { Scheduler } from '@aldabil/react-scheduler';
 import React, { useEffect, useRef } from 'react';
 import { ru } from 'date-fns/locale';
+import Button from '@mui/material/Button';
+import { CircularProgress, Dialog } from '@mui/material';
 import { EventRendererProps, SchedulerRef } from '@aldabil/react-scheduler/types';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { deleteSchedule, getAllSchedules, openScheduleModal } from '../../../store/schedule';
-import { CircularProgress, Dialog } from '@mui/material';
+import { getAllSchedules, openScheduleModal } from '../../../store/schedule';
 import { getAllBarbers } from '../../../store/barbers';
-import Button from '@mui/material/Button';
 import ScheduleEditor from './ScheduleEditor';
 import { closeScheduleModal } from '../../../store/schedule';
 import { dayAsset, resourceFieldsAsset, weekAsset } from './scheduleAssets';
@@ -39,12 +39,12 @@ const Schedule = () => {
     useEffect(() => {
         calendarRef.current?.scheduler?.handleState(result, 'events');
     }, [result]);
-    const handleDelete = (id: string | number): Promise<string | number | void> => {
-        return new Promise((res) => {
-            dispatch(deleteSchedule(id));
-            res('ok');
-        });
-    };
+    // const handleDelete = (id: string | number): Promise<string | number | void> => {
+    //     return new Promise((res) => {
+    //         dispatch(deleteSchedule(id));
+    //         res('ok');
+    //     });
+    // };
     // const [mode, setMode] = useState<'default' | 'tabs'>('tabs');
     // const [editEvent, setEditEvent] = useState<CustomEditorProps>();
     const handleClick = (event: any) => {
@@ -52,7 +52,6 @@ const Schedule = () => {
     };
     return (
         <div>
-            <h4 style={{ textAlign: 'center' }}>Расписание</h4>
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             {/*<div style={{ textAlign: 'center' }}>*/}
             {/*    <span> Переключатель вида: </span>*/}
@@ -126,7 +125,7 @@ const Schedule = () => {
                             config: { label: 'Assignee', required: true }
                         }
                     ]}
-                    onDelete={(id) => handleDelete(id)}
+                    // onDelete={(id) => handleDelete(id)}
                     eventRenderer={(props: EventRendererProps) => {
                         return (<div className={'schedule_custom_event'}
                             onClick={() => handleClick(props.event)}>

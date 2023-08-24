@@ -10,14 +10,14 @@ a:hover {
 .navbar {
     background-color: rgba(30,30,30,1) ;
     width: 100%;
-    height: 80px;
+    height: 65px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     padding: 0 10px;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
-    position: sticky;
+    /*position: fixed;*/
     top: 0;
     transition: all 0.4s ease-in-out;
     z-index: 2;
@@ -30,15 +30,13 @@ a:hover {
     padding: 0 20px;
     letter-spacing: 0;
     font-size: 0.8rem;
-    font-weight: 600;
     text-transform: uppercase;
     line-height: 70px;
 }
-
 .menu_wrap {
     display: flex;
     justify-content: center;
-    column-gap: 20px;
+    column-gap: 10px;
     list-style: none;
     text-align: center;
     transition: all 0.4s ease-in-out;
@@ -46,11 +44,12 @@ a:hover {
 .nav_link_admin {
     text-decoration: none;
     cursor: pointer;
-    padding: 32px 20px;
+    padding: 25px 10px;
     text-align: center;
+    font-weight: normal;
 }
 
 .nav_link_admin:hover, .active {
     box-shadow: 0 -3px 0 whitesmoke inset,
-    500px 0 0 rgba(255, 255, 255, 0.03) inset;
+    500px 50px 0 rgba(255, 255, 255, 0.2) inset;
 }

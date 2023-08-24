@@ -1,5 +1,5 @@
 export const dayAsset = {
-    startHour: 8, endHour: 19, step: 30, navigation: true
+    startHour: 8, endHour: 19, step: 60, navigation: true
 };
 
 export const weekAsset = {
@@ -19,4 +19,3 @@ export const resourceFieldsAsset = {
     avatarField: 'avatar',
     colorField: 'color'
 };
-

@@ -84,6 +84,7 @@ const Calendar = () => {
                 <Scheduler
                     ref={calendarRef}
                     locale={ru}
+                    view={'day'}
                     events={orders}
                     hourFormat={'24'}
                     onDelete={handleDelete}
@@ -108,7 +109,7 @@ const Calendar = () => {
                         weekStartOn: 1,
                         startHour: 8,
                         endHour: 19,
-                        step: 30,
+                        step: 60,
                         navigation: true,
                         disableGoToDay: true
                     }}

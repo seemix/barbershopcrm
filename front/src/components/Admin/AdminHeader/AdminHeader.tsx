@@ -6,6 +6,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../../../store/auth';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
+import './AdminHeader.css';
 const AdminHeader = () => {
     const { user } = useAppSelector(state => state.authStore);
     const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ const AdminHeader = () => {
                     <Avatar style={{ backgroundColor: '#9e8a78' }}>
                         {user?.name[0]}
                     </Avatar>
-                    <span style={{ color: '#ddd' }}><small>Welcome, {user.name}</small></span>
+                    <span style={{ color: '#ddd' }}><small>Welcome, {user.name.slice(0,3)}</small></span>
                     <span><LogoutIcon style={{ color: '#ddd', marginTop: '5px', cursor: 'pointer' }}
                                       onClick={() => dispatch(logout())}/></span>
                 </div>
