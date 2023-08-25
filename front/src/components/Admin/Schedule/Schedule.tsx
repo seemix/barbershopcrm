@@ -150,7 +150,7 @@ const Schedule = () => {
                             </div>
                         </div>);
                     }}
-                    onEventDrop={(date, ev1, ev2) => handleDrop(date, ev1, ev2)}
+                    onEventDrop={(date, ev1) => handleDrop(date, ev1)}
                 />
             }
             <Dialog open={scheduleModal} onClose={() => dispatch(closeScheduleModal())}>
