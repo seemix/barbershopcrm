@@ -51,12 +51,12 @@ export const barberScheduleController = {
     updateSchedule: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { data } = req.body;
-            await Schedule.updateOne({ _id: data.id }, {
+            await Schedule.updateOne({ _id: data.event_id }, {
                 startTime: String(new Date(data.start)),
                 endTime: String(new Date(data.end)),
-                barber: data.barber
+                barber: data.admin_id
             });
-            const updatedSchedule  = await Schedule.findById({_id: data.id});
+            const updatedSchedule = await Schedule.findById({ _id: data.event_id });
             res.json(updatedSchedule).status(200);
         } catch (e) {
             next(new ApiError('Error during update element', 500));

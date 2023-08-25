@@ -100,7 +100,7 @@ const scheduleSlice = createSlice({
         openScheduleModal(state, action) {
             state.editEvent = action.payload;
             state.scheduleModal = true;
-        }
+        },
     },
     extraReducers: builder => {
         builder

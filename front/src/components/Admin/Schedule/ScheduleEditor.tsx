@@ -28,8 +28,8 @@ const ScheduleEditor = () => {
             dispatch(updateSchedule({
                 start: dayjs(date.start).toJSON(),
                 end: dayjs(date.end).toJSON(),
-                barber: editEvent.admin_id,
-                id: editEvent.event_id
+                admin_id: editEvent.admin_id,
+                event_id: editEvent.event_id
             }));
         } else {
             dispatch(createSchedule({

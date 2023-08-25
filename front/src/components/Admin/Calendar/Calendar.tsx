@@ -3,9 +3,7 @@ import { Scheduler } from '@aldabil/react-scheduler';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
 import { Button, CircularProgress } from '@mui/material';
-import { ExtraComponents } from './ExtraComponents';
 import { ru } from 'date-fns/locale';
-import OrderEditor from './OrderEditor';
 import { deleteOrderById, getOrdersForCalendar } from '../../../store/order';
 import { SchedulerRef } from '@aldabil/react-scheduler/types';
 
@@ -16,6 +14,9 @@ const Calendar = () => {
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
     const [mode, setMode] = useState<"default" | "tabs">("default");
+
+    calendarRef.current?.scheduler.handleState('default', 'resourceViewMode')
+
     const resources = activeBarbers.map(item => {
         return {
             admin_id: item._id,
@@ -24,7 +25,7 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
-    console.log(orders);
+    // console.log(orders);
     const handleDelete = (id: string | number): Promise<string | number | void> => {
         dispatch(deleteOrderById(id));
         return new Promise((res) => {
@@ -44,7 +45,7 @@ const Calendar = () => {
 
     return (
         <div>
-            <h2>Календарь</h2>
+            {/*<h2>Календарь</h2>*/}
             <h2> {status === 'loading' && <CircularProgress/>}</h2>
             <div style={{ textAlign: 'center' }}>
                 <span>Переключатель вида: </span>
@@ -75,8 +76,7 @@ const Calendar = () => {
                                 "resourceViewMode"
                             );
                         }}
-                    >
-                        Tabs
+                    >Tabs
                     </Button>
                 </div>
             </div>
@@ -88,7 +88,7 @@ const Calendar = () => {
                     events={orders}
                     hourFormat={'24'}
                     onDelete={handleDelete}
-                    customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
+                   // customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     fields={[
                         {
                             name: 'admin_id',
@@ -114,7 +114,7 @@ const Calendar = () => {
                         disableGoToDay: true
                     }}
                     resources={resources}
-                    resourceViewMode={'tabs'}
+                    resourceViewMode={'default'}
                     resourceFields={{
                         idField: 'admin_id',
                         textField: 'title',
@@ -124,7 +124,7 @@ const Calendar = () => {
                     }}
                     day={{ step: 60, startHour: 8, endHour: 20 }}
                     //eventRenderer={}
-                    viewerExtraComponent={ExtraComponents}
+                  //  viewerExtraComponent={ExtraComponents}
                 />
             }
         </div>

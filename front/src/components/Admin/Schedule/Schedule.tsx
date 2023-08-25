@@ -3,10 +3,10 @@ import React, { useEffect, useRef } from 'react';
 import { ru } from 'date-fns/locale';
 import Button from '@mui/material/Button';
 import { CircularProgress, Dialog } from '@mui/material';
-import { EventRendererProps, SchedulerRef } from '@aldabil/react-scheduler/types';
+import { SchedulerRef } from '@aldabil/react-scheduler/types';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { getAllSchedules, openScheduleModal } from '../../../store/schedule';
+import { getAllSchedules, openScheduleModal, updateSchedule } from '../../../store/schedule';
 import { getAllBarbers } from '../../../store/barbers';
 import ScheduleEditor from './ScheduleEditor';
 import { closeScheduleModal } from '../../../store/schedule';
@@ -29,6 +29,11 @@ const Schedule = () => {
             avatar: item.picture,
         };
     });
+
+    const handleDrop = (date:Date, ev1:any ) => {
+        dispatch(updateSchedule(ev1));
+        return ev1;
+    }
 
     useEffect(() => {
         dispatch(getAllSchedules());
@@ -92,9 +97,11 @@ const Schedule = () => {
                     events={result}
                     hourFormat={'24'}
                     //@ts-ignore
-                    day={{...dayAsset,
+                    day={{
+                        ...dayAsset,
                         cellRenderer: ({ ...props }) => {
                             return (<Button className={'cell_render_button'}
+                                            {...props}
                                             onClick={() => dispatch(openScheduleModal(props))}></Button>);
                         }
                     }}
@@ -102,8 +109,11 @@ const Schedule = () => {
                     week={{
                         ...weekAsset,
                         cellRenderer: ({ ...props }) => {
-                            return (<Button className={'cell_render_button'}
-                                            onClick={() => dispatch(openScheduleModal(props))}></Button>);
+                            return (<Button
+                                {...props}
+                                className={'cell_render_button'}
+                                onClick={() => dispatch(openScheduleModal(props))}>
+                            </Button>);
                         }
                     }}
                     resources={resources}
@@ -125,19 +135,22 @@ const Schedule = () => {
                             config: { label: 'Assignee', required: true }
                         }
                     ]}
-                    // onDelete={(id) => handleDelete(id)}
-                    eventRenderer={(props: EventRendererProps) => {
+                    eventRenderer={(props) => {
+                        const { event } = props;
                         return (<div className={'schedule_custom_event'}
-                            onClick={() => handleClick(props.event)}>
+                                     {...props}
+                                     onClick={() => handleClick(event)}
+                        >
                             <div className={'schedule_event_time'}>
-                                {props.event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                                {event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                             <div></div>
                             <div className={'schedule_event_time'}>
-                                {props.event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                                {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                         </div>);
                     }}
+                    onEventDrop={(date, ev1, ev2) => handleDrop(date, ev1, ev2)}
                 />
             }
             <Dialog open={scheduleModal} onClose={() => dispatch(closeScheduleModal())}>
