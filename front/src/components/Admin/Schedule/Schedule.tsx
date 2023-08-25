@@ -2,7 +2,7 @@ import { Scheduler } from '@aldabil/react-scheduler';
 import React, { useEffect, useRef } from 'react';
 import { ru } from 'date-fns/locale';
 import Button from '@mui/material/Button';
-import { CircularProgress, Dialog } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { SchedulerRef } from '@aldabil/react-scheduler/types';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -17,7 +17,7 @@ import './Schedule.css';
 const Schedule = () => {
     const calendarRef = useRef<SchedulerRef>(null);
     const dispatch = useAppDispatch();
-    const { result, status, loading, scheduleModal } = useAppSelector(state => state.scheduleStore);
+    const { result, loading, scheduleModal } = useAppSelector(state => state.scheduleStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
 
@@ -50,14 +50,13 @@ const Schedule = () => {
     //         res('ok');
     //     });
     // };
-    // const [mode, setMode] = useState<'default' | 'tabs'>('tabs');
     // const [editEvent, setEditEvent] = useState<CustomEditorProps>();
     const handleClick = (event: any) => {
         dispatch(openScheduleModal(event));
     };
     return (
-        <div>
-            <h2> {status === 'loading' && <CircularProgress/>}</h2>
+        <div style={{backgroundColor:'#fcf9f5'}}>
+            {/*<h2> {status === 'loading' && <CircularProgress/>}</h2>*/}
             {/*<div style={{ textAlign: 'center' }}>*/}
             {/*    <span> Переключатель вида: </span>*/}
             {/*    <Button*/}
@@ -89,6 +88,12 @@ const Schedule = () => {
             {/*        Tabs*/}
             {/*    </Button>*/}
             {/*</div>*/}
+            <div style={{position: 'absolute', top: '62px', right: '50px', zIndex: '20'}}>
+            <h3> период:
+                <Button onClick={() => calendarRef.current?.scheduler.handleState('day', 'view')}>день</Button>
+                <Button onClick={() => calendarRef.current?.scheduler.handleState('week', 'view')}>неделя</Button>
+            </h3>
+            </div>
             {resources.length > 0 && result.length > 0 &&
                 <Scheduler
                     loading={loading}
@@ -151,6 +156,7 @@ const Schedule = () => {
                         </div>);
                     }}
                     onEventDrop={(date, ev1) => handleDrop(date, ev1)}
+                    disableViewNavigator={true}
                 />
             }
             <Dialog open={scheduleModal} onClose={() => dispatch(closeScheduleModal())}>
