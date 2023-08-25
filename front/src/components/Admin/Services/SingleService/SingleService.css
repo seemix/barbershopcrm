@@ -5,7 +5,7 @@
 }
 
 .service_card {
-    min-width: 380px;
+    min-width: 390px;
     padding: 10px;
     margin: 10px;
 }
@@ -19,4 +19,8 @@
 
 li {
     list-style-type: none;
+}
+
+.card_service_name {
+    margin-left: 15px;
 }

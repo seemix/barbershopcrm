@@ -14,7 +14,7 @@ const SingleService = (item: IAllService) => {
         <div className={'container'}>
             <Card className={'service_card'}>
                 <div className={'card_inside_wrapper'}>
-                    <div>
+                    <div className={'card_service_name'}>
                         <p>{item.name}</p>
                         <small><i>{item.description}</i></small>
                     </div>

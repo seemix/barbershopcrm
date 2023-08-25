@@ -1,9 +1,10 @@
 import React from 'react';
-import { useAppDispatch } from '../../../../hooks/redux';
 import { Button, Card } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { IAdd } from '../../../../interfaces/additional.model';
+import { useAppDispatch } from '../../../../hooks/redux';
 import { setAddForUpdate, setAddToDelete } from '../../../../store/additional';
 
 const SingleAdditional = (item: IAdd) => {
@@ -12,7 +13,7 @@ const SingleAdditional = (item: IAdd) => {
         <div className={'container'}>
             <Card className={'service_card'}>
                 <div className={'card_inside_wrapper'}>
-                    <div>
+                    <div className={'card_service_name'}>
                         <p>{item.name}</p>
                     </div>
                     <div>

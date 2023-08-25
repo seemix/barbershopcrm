@@ -2,7 +2,7 @@ import React from 'react';
 
 const Customers = () => {
     return (
-        <div>
+        <div className={'admin_content'}>
             <h2>Customers</h2>
         </div>
     );

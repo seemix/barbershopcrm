@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Avatar, Card } from '@mui/material';
+
+import { getAllBarbers } from '../../../store/barbers';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import './Prices.css';
-import { getAllBarbers } from '../../../store/barbers';
-import { Avatar, Card } from '@mui/material';
-import { Link } from 'react-router-dom';
 
 const Prices = () => {
-
     const dispatch = useAppDispatch();
     const { barbers } = useAppSelector(state => state.barberStore);
 
@@ -15,9 +15,9 @@ const Prices = () => {
     }, [dispatch]);
 
     return (
-        <div className={'content'} >
+        <div className={'admin_content'} >
             <h4 style={{margin: '0 auto'}}>Цены</h4>
-            <h3>Choose the barber</h3>
+            <h3>Выберите барбера</h3>
             {barbers && barbers.map(barber =>
                 <div key={barber._id} style={{display: 'flex', justifyContent: 'center'}}>
                     <Link to={barber._id}>

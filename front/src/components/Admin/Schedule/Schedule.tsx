@@ -55,7 +55,7 @@ const Schedule = () => {
         dispatch(openScheduleModal(event));
     };
     return (
-        <div style={{backgroundColor:'#fcf9f5'}}>
+        <div className={'admin_content'}>
             {/*<h2> {status === 'loading' && <CircularProgress/>}</h2>*/}
             {/*<div style={{ textAlign: 'center' }}>*/}
             {/*    <span> Переключатель вида: </span>*/}

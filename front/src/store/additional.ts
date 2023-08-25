@@ -11,6 +11,7 @@ interface IInitState {
     deleteDialogOpen: boolean;
     additionalToDelete: string | null;
     additionalToUpdate: IAdd;
+    reorderButton: boolean;
 }
 
 interface IParams {
@@ -26,7 +27,8 @@ const initialState: IInitState = {
     additionalToDelete: null,
     additionalToUpdate: { _id: '', name: '', order: 0 },
     deleteDialogOpen: false,
-    addDialogOpen: false
+    addDialogOpen: false,
+    reorderButton: false
 };
 
 export const getAdditionalsByBarberAndService = createAsyncThunk(
@@ -101,6 +103,7 @@ const additionalSlice = createSlice({
     reducers: {
         additionalsReorder(state, action) {
             state.allAdditionals = action.payload;
+            state.reorderButton = true;
             return state;
         },
         closeAddDialog(state) {
@@ -195,6 +198,7 @@ const additionalSlice = createSlice({
             .addCase(saveAdditionalOrder.fulfilled, state => {
                 state.status = 'fulfilled';
                 state.error = null;
+                state.reorderButton = false;
             })
             .addCase(saveAdditionalOrder.pending, state => {
                 state.status = 'loading';

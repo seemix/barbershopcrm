@@ -11,6 +11,7 @@ interface Iinitstate {
     deleteDialogOpen: boolean;
     serviceToDelete: string;
     serviceToUpdate: IAllService;
+    reorderButton: boolean;
 }
 
 const initialState: Iinitstate = {
@@ -21,7 +22,8 @@ const initialState: Iinitstate = {
     dialogOpen: false,
     deleteDialogOpen: false,
     serviceToDelete: '',
-    serviceToUpdate: { name: '', description: '' }
+    serviceToUpdate: { name: '', description: '' },
+    reorderButton: false
 };
 
 export const getServicesByBarber = createAsyncThunk(
@@ -92,6 +94,7 @@ const serviceSlice = createSlice({
     reducers: {
         servicesReorder(state, action) {
             state.allServices = action.payload;
+            state.reorderButton = true;
             return state;
         },
         closeDialog(state) {
@@ -143,6 +146,7 @@ const serviceSlice = createSlice({
             .addCase(saveOrder.fulfilled, state => {
                 state.status = 'fulfilled';
                 state.error = null;
+                state.reorderButton = false;
             })
             .addCase(saveOrder.pending, state => {
                 state.status = 'loading';
