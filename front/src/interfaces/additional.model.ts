@@ -1,6 +1,6 @@
 export interface IAdditional {
     _id: string;
-    barber: {
+    barber?: {
         _id: string;
         name: string;
     },

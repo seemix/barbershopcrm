@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IOrder } from '../interfaces/order.model';
+import { IOrder, IOrderState } from '../interfaces/order.model';
 import { orderService } from '../services/order.service';
 import dayjs from 'dayjs';
 
-const initialState: IOrder = {
+
+const initialState: IOrderState = {
     orders: [],
     error: null,
     showBooking: false,
@@ -23,7 +24,9 @@ const initialState: IOrder = {
     status: 'new',
     color: '#9e8a78',
     comment: '',
-    createdBy: ''
+    createdBy: '',
+    orderEditModal: false,
+    orderForEdit: null,
 };
 
 interface IAdditional {
@@ -32,6 +35,30 @@ interface IAdditional {
     duration: number;
 }
 
+const remapData = (data: any) => {
+    //@ts-ignore
+    return data.map(item => {
+        return {
+            event_id: item._id,
+            title: item.service.name,
+            start: dayjs(item.startTime).toDate(),
+            end: dayjs(item.endTime).toDate(),
+            service: item.service._id,
+            admin_id: String(item.barber),
+            color: item.color || '',
+            customer: item.customer.name,
+            phone: item.customer.phone,
+            price: item.price,
+            additional: item.additional.map((add: { _id: any; }) => {
+                return add._id;
+            }),
+            add_names: item.additional,
+            comment: item.comment,
+            duration: dayjs(item.endTime).diff(dayjs(item.startTime), 'minutes'),
+            customerId: item.customer._id
+        };
+    });
+};
 export const createOrder = createAsyncThunk(
     'orderSlice/createOrder',
     async (order: IOrder, thunkAPI) => {
@@ -55,7 +82,7 @@ export const getOrdersForCalendar = createAsyncThunk(
 
 export const deleteOrderById = createAsyncThunk(
     'order/DeleteById',
-    async (orderId: string | number, thunkAPI) => {
+    async (orderId: string, thunkAPI) => {
         try {
             return orderService.deleteOrderById(orderId);
         } catch (e) {
@@ -66,10 +93,21 @@ export const deleteOrderById = createAsyncThunk(
 
 export const updateOrderById = createAsyncThunk(
     'order/UpdateById',
-    async (order: IOrder, thunkAPI) => {
+    async (order: any, thunkAPI) => {
         try {
             return orderService.updateOrderById(order);
 
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const updateDateTime = createAsyncThunk(
+    'order/UpdateDateTime',
+    async (data: any, thunkAPI) => {
+        try {
+            return orderService.updateDateTime(data);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -94,7 +132,6 @@ export const orderSlice = createSlice({
             state.price = 0;
         },
         addAdditional(state, action: PayloadAction<IAdditional>) {
-            console.log(action.payload);
             state.additionalServices.push(action.payload._id);
             state.price = state.price + action.payload.price;
             state.duration = state.duration + action.payload.duration;
@@ -174,8 +211,8 @@ export const orderSlice = createSlice({
             state.customerEmail = action.payload.email;
             state.serviceId = action.payload.service;
             state.additionalServices = action.payload.additional;
-            state.startTime = action.payload.start;
-            state.endTime = action.payload.end;
+            state.startTime = dayjs(action.payload.start).toJSON();
+            state.endTime = dayjs(action.payload.end).toJSON();
             state.price = action.payload.price;
             state.duration = action.payload.duration;
             state.orderId = action.payload.event_id;
@@ -183,39 +220,46 @@ export const orderSlice = createSlice({
             state.comment = action.payload.comment;
             state.createdBy = '';
         },
+        openOrderEditModal(state, action) {
+            if (action.payload) {
+                state.barberId = action.payload.admin_id;
+                state.startTime = action.payload.start;
+            }
+            state.orderEditModal = true;
+        },
+        closeOrderEditModal(state) {
+            state.orderEditModal = false;
+            // state.orderForEdit = null;
+        }
     },
     extraReducers: builder => {
         builder
             .addCase(createOrder.fulfilled, (state, action) => {
-                state.orderId = action.payload._id;
+                const newOrder = remapData([action.payload]);
+                state.orders.push(newOrder[0]);
+                state.orderEditModal = false;
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                // @ts-ignore
-                state.orders = action.payload.map(item => {
-                    return {
-                        event_id: item._id,
-                        title: item.service.name,
-                        start: dayjs(item.startTime),
-                        end: dayjs(item.endTime),
-                        service: item.service._id,
-                        //barber: item.barber,
-                        admin_id: String(item.barber),
-                        color: item.color || '',
-                        customer: item.customer.name,
-                        phone: item.customer.phone,
-                        price: item.price,
-                        additional: item.additional.map((add: { _id: any; }) => {
-                            return add._id;
-                        }),
-                        add_names: item.additional,
-                        comment: item.comment,
-                        duration: dayjs(item.endTime).diff(dayjs(item.startTime), 'minutes'),
-                        customerId: item.customer._id
-                    };
-                });
-                // state.orders = action.payload;
+                state.orders = remapData(action.payload);
+            })
+            .addCase(updateOrderById.fulfilled, (state, action) => {
+                const updatedOrder = remapData([action.payload]);
+                const index = state.orders.findIndex(item => item.event_id === updatedOrder[0].event_id);
+                state.orders[index] = updatedOrder[0];
+                state.orderEditModal = false;
+            })
+            .addCase(deleteOrderById.fulfilled, (state, action) => {
+                state.orders = state.orders.filter(order => order.event_id !== action.payload);
+            })
+            .addCase(updateDateTime.fulfilled, (state, action) => {
+                const index = state.orders.findIndex(order => order.event_id === action.payload._id);
+                state.orders[index] = {
+                    ...state.orders[index],
+                    start: dayjs(action.payload.startTime).toDate(),
+                    end: dayjs(action.payload.endTime).toDate()
+                };
             });
     }
 });
@@ -238,7 +282,9 @@ export const {
     openBooking,
     setColor,
     setOrderForEdit,
-    resetState
+    resetState,
+    openOrderEditModal,
+    closeOrderEditModal
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;
 export default orderStore;

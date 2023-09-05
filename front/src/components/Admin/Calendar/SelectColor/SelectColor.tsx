@@ -8,7 +8,7 @@ const SelectColor = () => {
     return (
         <div style={{ display: 'flex', gap: '10px', marginTop:'20px' }}>
             {
-                  colors.map(item => <SingleColor currentColor={item} />)
+                  colors.map(item => <SingleColor key={item} currentColor={item} />)
             }
         </div>
     );

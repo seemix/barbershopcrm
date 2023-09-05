@@ -30,10 +30,10 @@ const Schedule = () => {
         };
     });
 
-    const handleDrop = (date:Date, ev1:any ) => {
+    const handleDrop = (date: Date, ev1: any) => {
         dispatch(updateSchedule(ev1));
         return ev1;
-    }
+    };
 
     useEffect(() => {
         dispatch(getAllSchedules());
@@ -88,11 +88,11 @@ const Schedule = () => {
             {/*        Tabs*/}
             {/*    </Button>*/}
             {/*</div>*/}
-            <div style={{position: 'absolute', top: '62px', right: '50px', zIndex: '20'}}>
-            <h3> период:
-                <Button onClick={() => calendarRef.current?.scheduler.handleState('day', 'view')}>день</Button>
-                <Button onClick={() => calendarRef.current?.scheduler.handleState('week', 'view')}>неделя</Button>
-            </h3>
+            <div style={{ position: 'absolute', top: '62px', right: '50px', zIndex: '20' }}>
+                <h3> период:
+                    <Button onClick={() => calendarRef.current?.scheduler.handleState('day', 'view')}>день</Button>
+                    <Button onClick={() => calendarRef.current?.scheduler.handleState('week', 'view')}>неделя</Button>
+                </h3>
             </div>
             {resources.length > 0 && result.length > 0 &&
                 <Scheduler
@@ -107,7 +107,8 @@ const Schedule = () => {
                         cellRenderer: ({ ...props }) => {
                             return (<Button className={'cell_render_button'}
                                             {...props}
-                                            onClick={() => dispatch(openScheduleModal(props))}></Button>);
+                                            onClick={() => dispatch(openScheduleModal(props))}>
+                            </Button>);
                         }
                     }}
                     //@ts-ignore

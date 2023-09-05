@@ -40,42 +40,33 @@ export const orderController = {
 
     createOrder: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const {
-                customerName,
-                customerPhone,
-                barberId,
-                serviceId,
-                additionalServices,
-                startTime,
-                endTime,
-                price,
-                color,
-                comment
-            } = req.body;
-            let { customerId, customerEmail } = req.body;
-            if (!customerId) {
-                const newCustomer = await Customer.create({
-                    name: customerName,
-                    phone: customerPhone,
-                    email: customerEmail
+            let objToCreate = req.body;
+            if (!objToCreate.customer) {
+                const customer = await Customer.create({
+                    name: req.body.customerName,
+                    phone: req.body.customerPhone,
+                    email: req.body.customerEmail
                 });
-                customerId = newCustomer._id;
+                objToCreate = { ...objToCreate, customer };
             }
-            const newOrder = await Order.create({
-                barber: barberId,
-                customer: customerId,
-                service: serviceId,
-                additional: additionalServices,
-                startTime: startTime,
-                endTime: endTime,
-                price: price,
-                color: color,
-                comment: comment
-            });
+            const { _id } = await Order.create(objToCreate);
+            const newOrder = await Order.findById(_id)
+                .populate({
+                    path: 'customer',
+                    select: ['name', 'phone'],
+                })
+                .populate({
+                    path: 'service',
+                    select: 'name',
+                })
+                .populate({
+                    path: 'additional',
+                    select: 'name',
+                    strictPopulate: false
+                });
             res.json(newOrder).status(201);
         } catch (e) {
-            //next(e);
-            next(new ApiError('Error creating order', 500));
+            next(new ApiError('Error creating order', 400));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
@@ -124,10 +115,7 @@ export const orderController = {
                     barberName: order.barber.name
                 });
                 res.json(order);
-
             }
-
-
         } catch (e) {
             next(new ApiError('Error getting order', 500));
         }
@@ -149,8 +137,8 @@ export const orderController = {
     deleteOrderById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            const item = await Order.deleteOne({ _id: id });
-            res.json(item).status(203);
+            await Order.deleteOne({ _id: id });
+            res.json(id).status(200);
         } catch (e) {
             next(new ApiError('Error deleting item', 500));
         }
@@ -158,10 +146,34 @@ export const orderController = {
     updateOrderById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
-            const updatedItem = await Order.findByIdAndUpdate(id, req.body);
+            await Order.findByIdAndUpdate(id, req.body);
+            const updatedItem = await Order.findById(id)
+                .populate({
+                    path: 'customer',
+                    select: ['name', 'phone'],
+                })
+                .populate({
+                    path: 'service',
+                    select: 'name',
+                })
+                .populate({
+                    path: 'additional',
+                    select: 'name',
+                    strictPopulate: false
+                });
             res.json(updatedItem).status(200);
         } catch (e) {
-            next(new ApiError('Error updating item', 500));
+            next(e);
+            // next(new ApiError('Error updating item', 500));
+        }
+    },
+    updateOrderTime: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { _id, startTime, endTime } = req.body;
+            await Order.findByIdAndUpdate({ _id, startTime, endTime });
+            res.status(200).json({ _id, startTime, endTime });
+        } catch (e) {
+            next(new ApiError('Error updating time', 400));
         }
     }
 };

@@ -6,5 +6,6 @@ export const orderService = {
     createOrder: (order: IOrder) => axiosService.post('/order', { ...order }).then(value => value.data),
     getOrderById: (orderId: string) => axiosService.get('/order/new/' + orderId).then(value => value.data),
     deleteOrderById: (orderId: string | number) => axiosService.delete('/order/' + orderId).then(value => value.data),
-    updateOrderById: (order: IOrder) => axiosService.put('/order/' + order.orderId, order).then(value => value.data)
+    updateOrderById: (order:any) => axiosService.put('/order/' + order.orderId, order).then(value => value.data),
+    updateDateTime: (data: any) => axiosService.patch('/order', data).then(value => value.data)
 };

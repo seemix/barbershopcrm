@@ -22,27 +22,7 @@ export interface IOrder {
     color: string | null;
 }
 
-interface IAdditional {
-    _id: string | null;
-    name: string | null;
-}
-
-export interface IShowCalendarOrder {
-    _id: string | null;
-    barber: string | null;
-    customer: {
-        _id: string | null;
-        name: string | null;
-        phone: string | null;
-    };
-    service: {
-        _id: string | null;
-        name: string | null;
-    };
-    additional: IAdditional[];
-    startTime: string | null;
-    endTime: string | null;
-    price: number | null;
-    createdAt: string | null;
-    updatedAt: string | null;
+export interface IOrderState extends IOrder {
+    orderForEdit: any;
+    orderEditModal: boolean;
 }

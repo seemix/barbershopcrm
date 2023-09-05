@@ -1,0 +1,21 @@
+.event_render_main {
+    text-align: center;
+    height: 100%;
+    font-size: 12px;
+}
+
+.event_render_time {
+    padding: 3px;
+}
+
+.event_render_wrap {
+    background: rgba(255,255,255,0.5);
+    height: 100%;
+    text-align: left;
+    padding-left: 8px;
+    color: #333333;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}

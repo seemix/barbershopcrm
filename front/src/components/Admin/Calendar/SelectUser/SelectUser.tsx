@@ -10,6 +10,7 @@ const SelectUser = () => {
     const order = useAppSelector(state => state.orderStore);
     const [value, setValue] = React.useState<string | null>(null);
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (q.length > 2) dispatch(searchCustomers(q));
         if(order.customerName) {setValue(order.customerName+' ('+order.customerPhone+')')}

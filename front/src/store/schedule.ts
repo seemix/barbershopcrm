@@ -11,7 +11,6 @@ interface IInitialState {
     loading: boolean;
     scheduleModal: boolean;
     editEvent: any;
-    eventCreate: any;
 }
 
 const initialState: IInitialState = {
@@ -22,7 +21,6 @@ const initialState: IInitialState = {
     loading: false,
     scheduleModal: false,
     editEvent: null,
-    eventCreate: null
 };
 
 const processData = (data: any) => {
@@ -95,7 +93,6 @@ const scheduleSlice = createSlice({
     reducers: {
         closeScheduleModal(state) {
             state.scheduleModal = false;
-            // state.editEvent = null;
         },
         openScheduleModal(state, action) {
             state.editEvent = action.payload;

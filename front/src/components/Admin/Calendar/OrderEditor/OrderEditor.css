@@ -1,0 +1,50 @@
+.order_editor_wrapper {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.oe_second_wrapper {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.oe_third_wrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+.date_field {
+    background-color: white;
+    width: 200px;
+}
+
+.oe_time_price_wrap {
+    display: flex;
+    gap: 20px;
+}
+
+.oe_time_price {
+    display: flex;
+    align-items: center;
+}
+
+.oe_services_wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.oe_bottom_wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.oe_user_wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
