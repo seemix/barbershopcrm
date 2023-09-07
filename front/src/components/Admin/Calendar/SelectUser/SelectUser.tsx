@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { searchCustomers } from '../../../../store/customer';
 import { resetCustomer, setCustomer } from '../../../../store/order';
 
 const SelectUser = () => {
-    const [q, setQ] = useState('');
+    const [query, setQuery] = useState('');
     const { customers } = useAppSelector(state => state.customersStore);
-    const order = useAppSelector(state => state.orderStore);
+    const {customerPhone, customerName} = useAppSelector(state => state.orderStore);
     const [value, setValue] = React.useState<string | null>(null);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (q.length > 2) dispatch(searchCustomers(q));
-        if(order.customerName) {setValue(order.customerName+' ('+order.customerPhone+')')}
-        else { setValue('')}
-    }, [q, order.customerName, order.customerPhone]);
+        if(customerPhone && customerName) setValue(customerName + '(' + customerPhone + ')');
+    }, [customerPhone, customerPhone]);
 
+    useEffect(() => {
+        if (query.length > 2) dispatch(searchCustomers(query));
+    }, [query, customerName, customerPhone, dispatch]);
     return (
         <>{
-            //order.customerName &&
             <Autocomplete
-               // defaultValue={order.customerName}
-                value={String(value)}
+                value={value || ''}
                 onChange={(event: any, newValue: string | null) => {
                     setValue(newValue);
                     if (newValue) {
@@ -31,9 +31,9 @@ const SelectUser = () => {
                         dispatch(resetCustomer());
                     }
                 }}
-                inputValue={q}
-                onInputChange={(event, q) => {
-                    setQ(q);
+                inputValue={query}
+                onInputChange={(event, query) => {
+                    setQuery(query);
                 }}
                 id="controllable-states-demo"
                 options={customers}

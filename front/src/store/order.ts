@@ -156,10 +156,10 @@ export const orderSlice = createSlice({
             state.endTime = null;
         },
         setCustomer(state, action) {
-            state.customerEmail = action.payload.customerEmail;
+            state.customerEmail = action.payload.email;
             state.customerId = action.payload._id;
-            state.customerName = action.payload.customerName;
-            state.customerPhone = action.payload.customerPhone;
+            state.customerName = action.payload.name;
+            state.customerPhone = action.payload.phone;
         },
         setCustomerPhone(state, action) {
             state.customerPhone = action.payload;
@@ -238,6 +238,7 @@ export const orderSlice = createSlice({
                 const newOrder = remapData([action.payload]);
                 state.orders.push(newOrder[0]);
                 state.orderEditModal = false;
+                resetState();
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
                 state.status = 'fulfilled';

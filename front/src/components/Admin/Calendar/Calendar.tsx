@@ -1,19 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Scheduler } from '@aldabil/react-scheduler';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
-import { Button, CircularProgress, Dialog } from '@mui/material';
+import { Button, Dialog } from '@mui/material';
 import { ru } from 'date-fns/locale';
 import {
     closeOrderEditModal,
     getOrdersForCalendar,
-    openOrderEditModal,
+    openOrderEditModal, resetState,
     setOrderForEdit, updateDateTime
 } from '../../../store/order';
 import { ProcessedEvent, SchedulerRef } from '@aldabil/react-scheduler/types';
 import OrderEditor from './OrderEditor/OrderEditor';
-import { dayAsset, weekAsset, resourceFieldsAsset } from './assets';
+import { dayAsset, weekAsset, resourceFieldsAsset } from './calendarAssets';
 import './Calendar.css';
+import CellRenderer from './CellRenderer';
 
 const Calendar = () => {
     const calendarRef = useRef<SchedulerRef>(null);
@@ -21,8 +22,6 @@ const Calendar = () => {
     const { orders, status, orderEditModal } = useAppSelector(state => state.orderStore);
     const { barbers } = useAppSelector(state => state.barberStore);
     const activeBarbers = barbers.filter(barber => barber.isActive);
-    // const [mode, setMode] = useState<'default' | 'tabs'>('default');
-    // calendarRefC.current?.scheduler.handleState('default', 'resourceViewMode');
 
     useEffect(() => {
         calendarRef.current?.scheduler.handleState(orders, 'events');
@@ -36,79 +35,63 @@ const Calendar = () => {
             avatar: item.picture,
         };
     });
-    // const handleDelete = (id: string | number): Promise<string | number | void> => {
-    //     dispatch(deleteOrderById(String(id)));
-    //     return new Promise((res) => {
-    //         dispatch(getOrdersForCalendar());
-    //         calendarRef.current?.scheduler.handleState(orders, 'events');
-    //         res('ok');
-    //     });
-    // };
+
+    type ITiming = 15 | 30 | 60;
+    type IView = 'day' | 'week';
+    const [timing, setTiming] = useState<ITiming>(30);
+    const [view, setView] = useState<IView>('day');
 
     useEffect(() => {
         dispatch(getAllBarbers());
         dispatch(getOrdersForCalendar());
     }, []);
+    //
+    useEffect(() => {
+        const commonProperties = {
+            ...weekAsset,
+            step: timing,
+            cellRenderer: ({ ...props }) => <CellRenderer {...props}/>
+        };
+        ['week', 'day'].forEach((view) => {
+            //@ts-ignore
+            calendarRef.current?.scheduler.handleState(commonProperties, view);
+        });
+    }, [timing]);
 
+    useEffect(() => {
+        if (view === 'day') {
+            calendarRef.current?.scheduler.handleState('day', 'view');
+            calendarRef.current?.scheduler.handleState('default', 'resourceViewMode');
+        } else if (view === 'week') {
+            calendarRef.current?.scheduler.handleState('week', 'view');
+            calendarRef.current?.scheduler.handleState('tabs', 'resourceViewMode');
+        }
+    }, [view]);
     const handleEdit = (event: any) => {
         dispatch(setOrderForEdit(event));
         dispatch(openOrderEditModal(null));
     };
-
     const handleDrop = (date: Date, event1: ProcessedEvent) => {
         dispatch(updateDateTime({ _id: event1.event_id, startTime: event1.start, endTime: event1.end }));
         return event1;
     };
     return (
-        <div>
-            <h2> {status === 'loading' && <CircularProgress/>}</h2>
-            {/*<div style={{ textAlign: 'center' }}>*/}
-            {/*    <span>Переключатель вида: </span>*/}
-            {/*    <div style={{ textAlign: 'center' }}>*/}
-            {/*        <span>Resource View Mode: </span>*/}
-            {/*        <Button*/}
-            {/*            color={mode === 'default' ? 'primary' : 'inherit'}*/}
-            {/*            variant={mode === 'default' ? 'contained' : 'text'}*/}
-            {/*            size="small"*/}
-            {/*            onClick={() => {*/}
-            {/*                setMode('default');*/}
-            {/*                calendarRefC.current?.scheduler?.handleState(*/}
-            {/*                    'default',*/}
-            {/*                    'resourceViewMode'*/}
-            {/*                );*/}
-            {/*                // calendarRefC.current?.scheduler.handleState('day', 'day')*/}
-            {/*            }}*/}
-            {/*        >*/}
-            {/*            Default*/}
-            {/*        </Button>*/}
-            {/*        <Button*/}
-            {/*            color={mode === 'tabs' ? 'primary' : 'inherit'}*/}
-            {/*            variant={mode === 'tabs' ? 'contained' : 'text'}*/}
-            {/*            size="small"*/}
-            {/*            onClick={() => {*/}
-            {/*                setMode('tabs');*/}
-            {/*                calendarRefC.current?.scheduler?.handleState(*/}
-            {/*                    'tabs',*/}
-            {/*                    'resourceViewMode'*/}
-            {/*                );*/}
-            {/*            }}*/}
-            {/*        >Tabs*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            <div style={{ position: 'absolute', top: '62px', right: '50px', zIndex: '20' }}>
-                <h3> период:
-                    <Button onClick={() => {
-                        calendarRef.current?.scheduler.handleState('day', 'view');
-                        calendarRef.current?.scheduler.handleState('default', 'resourceViewMode');
+        <div style={{ marginTop: '10px' }}>
+            <div className={'view_buttons_wrapper'}>
+                <div>период:</div>
+                <div><Button variant={view === 'day' ? 'contained' : 'text'}
+                             onClick={() => setView('day')}>день</Button>
+                    <Button variant={view === 'week' ? 'contained' : 'text'}
+                            onClick={() => setView('week')}>неделя</Button></div>
 
-                    }}>день</Button>
-                    <Button onClick={() => {
-                        calendarRef.current?.scheduler.handleState('tabs', 'resourceViewMode');
-                        calendarRef.current?.scheduler.handleState('week', 'view');
-
-                    }}>неделя</Button>
-                </h3>
+                <div>интервал:</div>
+                <div><Button variant={timing === 15 ? 'contained' : 'text'}
+                             onClick={() => setTiming(15)}>15min</Button>
+                    <Button variant={timing === 30 ? 'contained' : 'text'}
+                            onClick={() => setTiming(30)}>30 min</Button>
+                    <Button variant={timing === 60 ? 'contained' : 'text'}
+                            onClick={() => setTiming(60)}>60 min</Button>
+                </div>
             </div>
             {(status === null || status === 'fulfilled') &&
                 <Scheduler
@@ -117,8 +100,6 @@ const Calendar = () => {
                     view={'day'}
                     events={orders}
                     hourFormat={'24'}
-                    //onDelete={handleDelete}
-                    // customEditor={(scheduler) => <OrderEditor scheduler={scheduler}/>}
                     fields={[
                         {
                             name: 'admin_id',
@@ -137,24 +118,14 @@ const Calendar = () => {
                     //@ts-ignore
                     week={{
                         ...weekAsset,
-                        cellRenderer: ({ ...props }) => {
-                            return (<Button
-                                {...props}
-                                onClick={() => dispatch(openOrderEditModal(props))}>
-                            </Button>);
-                        }
+                        cellRenderer: ({ ...props }) => <CellRenderer {...props}/>
                     }}
                     resources={resources}
                     resourceViewMode={'default'}
                     resourceFields={resourceFieldsAsset}
                     //@ts-ignore
                     day={{
-                        ...dayAsset, cellRenderer: ({ ...props }) => {
-                            return (<Button
-                                {...props}
-                                onClick={() => dispatch(openOrderEditModal(props))}>
-                            </Button>);
-                        }
+                        ...dayAsset, cellRenderer: ({ ...props }) => <CellRenderer {...props}/>
                     }}
                     eventRenderer={(props) => {
                         const { event } = props;
@@ -163,7 +134,8 @@ const Calendar = () => {
                                      style={{ backgroundColor: event.color }}
                                      className={'event_render_main'}>
                             <div
-                                className={'event_render_time'}>{event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })} - {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                                className={'event_render_time'}>{event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })} -
+                                {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
                             </div>
                             <div className={'event_render_wrap'}>
                                 <div>✂️ {event.title}</div>
@@ -177,7 +149,10 @@ const Calendar = () => {
                     disableViewNavigator={true}
                 />
             }
-            <Dialog open={orderEditModal} onClose={() => dispatch(closeOrderEditModal())} maxWidth={'md'}>
+            <Dialog open={orderEditModal} onClose={() => {
+                dispatch(closeOrderEditModal());
+                dispatch(resetState());
+            }} maxWidth={'md'}>
                 <OrderEditor/>
             </Dialog>
         </div>

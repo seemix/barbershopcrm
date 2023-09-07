@@ -8,6 +8,8 @@ customerRouter.post('/', async (req, res, next) => {
     const newCustomer = await Customer.create(req.body);
     res.json(newCustomer);
 });
+customerRouter.get('/all', customerController.getAllCustomers);
+
 customerRouter.get('/:customerPhone', async (req, res, next) => {
     const { customerPhone } = req.params;
     try {
@@ -17,7 +19,6 @@ customerRouter.get('/:customerPhone', async (req, res, next) => {
         next(new ApiError('Error retrieving customer', 400));
     }
 });
-
 customerRouter.get('/', customerController.searchCustomers);
 
 export default customerRouter;

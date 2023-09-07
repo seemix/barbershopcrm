@@ -69,7 +69,7 @@ const OrderEditor = () => {
     const handleDelete = () => {
         dispatch(closeOrderEditModal());
         dispatch(deleteOrderById(String(order.orderId)));
-    }
+    };
     const handleSubmit = () => {
         if (order.orderId) {
             const orderToUpdate = new OrderDto(order);
@@ -78,9 +78,10 @@ const OrderEditor = () => {
             dispatch(updateOrderById(orderToUpdate));
         } else {
             const orderToCreate = new OrderDto(order);
-             // @ts-ignore
+            // @ts-ignore
             dispatch(createOrder(orderToCreate));
         }
+       // dispatch(resetState());
     };
     const handleCancel = () => {
         dispatch(closeOrderEditModal());
@@ -206,8 +207,7 @@ const OrderEditor = () => {
                                        style={{ width: '240px' }}
                                        defaultValue={order?.comment}
                                        label={'комментарий к заказу'}
-                            />
-                        }
+                            />}
                     </div>
                     <div>Цвет:
                         <SelectColor/>
@@ -215,7 +215,8 @@ const OrderEditor = () => {
                 </div>
                 <div>
                     <DialogActions>
-                        {!deleteOrder && <Button onClick={() => setDeleteOrder(true)}>Отменить запись</Button>}
+                        {!deleteOrder && order.orderId &&
+                            <Button onClick={() => setDeleteOrder(true)}>Отменить запись</Button>}
                         {deleteOrder && <>
                             <Button onClick={() => setDeleteOrder(false)}>не отменять</Button>
                             <Button onClick={handleDelete}>Подтвердить отмену</Button>

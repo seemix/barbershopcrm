@@ -3,9 +3,9 @@ export const weekAsset = {
     weekStartOn: 1,
     startHour: 8,
     endHour: 19,
-    step: 60,
+    step: 30,
     navigation: true,
-    disableGoToDay: true
+    disableGoToDay: true,
 };
 
 export const resourceFieldsAsset = {
