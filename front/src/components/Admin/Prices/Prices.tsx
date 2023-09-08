@@ -16,7 +16,6 @@ const Prices = () => {
 
     return (
         <div className={'admin_content'} >
-            <h4 style={{margin: '0 auto'}}>Цены</h4>
             <h3>Выберите барбера</h3>
             {barbers && barbers.map(barber =>
                 <div key={barber._id} style={{display: 'flex', justifyContent: 'center'}}>

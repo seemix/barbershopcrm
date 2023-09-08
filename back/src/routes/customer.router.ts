@@ -4,11 +4,10 @@ import ApiError from '../errors/api.error.js';
 import { customerController } from '../controllers/customer.controller.js';
 
 const customerRouter = Router();
-customerRouter.post('/', async (req, res, next) => {
-    const newCustomer = await Customer.create(req.body);
-    res.json(newCustomer);
-});
+customerRouter.post('/', customerController.createCustomer);
 customerRouter.get('/all', customerController.getAllCustomers);
+customerRouter.put('/:_id', customerController.updateCustomer);
+customerRouter.delete('/:_id', customerController.deleteCustomer);
 
 customerRouter.get('/:customerPhone', async (req, res, next) => {
     const { customerPhone } = req.params;

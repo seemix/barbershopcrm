@@ -6,7 +6,7 @@ import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import userValidator from '../../../validators/user.validator';
+import customerValidator from '../../../validators/customer.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setCustomer } from '../../../store/order';
 import { getCustomerByPhone } from '../../../store/customer';
@@ -20,7 +20,7 @@ const CustomerForm = () => {
         handleSubmit,
         setValue,
         formState: { errors }
-    } = useForm({ resolver: joiResolver(userValidator) });
+    } = useForm({ resolver: joiResolver(customerValidator) });
     const dispatch = useAppDispatch();
     const { customer, status } = useAppSelector(state => state.customersStore);
     const [phone, setPhone] = useState(null);
