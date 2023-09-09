@@ -19,6 +19,7 @@
 .date_field {
     background-color: white;
     width: 200px;
+    z-index: 0;
 }
 
 .oe_time_price_wrap {

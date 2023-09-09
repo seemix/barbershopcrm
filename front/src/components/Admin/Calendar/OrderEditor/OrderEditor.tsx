@@ -6,28 +6,29 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeField } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import {
+    Backdrop,
     Button,
-    Checkbox,
-    DialogActions,
+    Checkbox, CircularProgress,
     FormControl,
     FormControlLabel,
     Radio,
-    RadioGroup,
+    RadioGroup, Switch,
     TextField
 } from '@mui/material';
 import { getServicesByBarber } from '../../../../store/services';
 import {
     addAdditional,
+    changePayed,
     closeOrderEditModal,
     createOrder, deleteOrderById,
     removeAdditional, resetAdditionals,
     resetState,
     setBarber, setComment,
+    setCompletedOrder,
     setDateTime,
-    setService, updateOrderById
+    setService, setUncompletedOrder, updateOrderById
 } from '../../../../store/order';
 import { getAdditionalsByBarberAndService } from '../../../../store/additional';
-//import SelectAdditional from './SelectAdditional/SelectAdditional';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddIcon from '@mui/icons-material/Add';
@@ -40,10 +41,11 @@ import { OrderDto } from '../../../../dtos/order.dto';
 
 const OrderEditor = () => {
     const order = useAppSelector(state => state.orderStore);
-    // const { orderForEdit } = useAppSelector(state1 => state1.orderStore);
-    const { services } = useAppSelector(state => state.serviceStore);
-    const { additionals } = useAppSelector(state1 => state1.additionalStore);
-    const { duration, barberId, serviceId } = useAppSelector(state1 => state1.orderStore);
+    const { barbers } = useAppSelector(state => state.barberStore);
+    const { services, status } = useAppSelector(state => state.serviceStore);
+    const { additionals } = useAppSelector(state => state.additionalStore);
+    const add = useAppSelector(state => state.additionalStore);
+    const { duration, barberId, serviceId } = useAppSelector(state => state.orderStore);
     const dispatch = useAppDispatch();
     const [state, setState] = useState({
         start: order.startTime,
@@ -64,24 +66,27 @@ const OrderEditor = () => {
     const changeComment = (e: any) => {
         dispatch(setComment(e.target.value));
     };
-
+    const changePayedSum = (e: any) => {
+        dispatch(changePayed(e.target.value));
+    }
     const [deleteOrder, setDeleteOrder] = useState(false);
     const handleDelete = () => {
         dispatch(closeOrderEditModal());
         dispatch(deleteOrderById(String(order.orderId)));
+        dispatch(resetState());
     };
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (order.orderId) {
             const orderToUpdate = new OrderDto(order);
             orderToUpdate.orderId = order.orderId;
             // @ts-ignore
-            dispatch(updateOrderById(orderToUpdate));
+            await dispatch(updateOrderById(orderToUpdate));
         } else {
             const orderToCreate = new OrderDto(order);
             // @ts-ignore
-            dispatch(createOrder(orderToCreate));
+            await dispatch(createOrder(orderToCreate));
         }
-       // dispatch(resetState());
+        dispatch(resetState());
     };
     const handleCancel = () => {
         dispatch(closeOrderEditModal());
@@ -128,8 +133,11 @@ const OrderEditor = () => {
     };
     return (
         <div className={'order_editor_wrapper'}>
+            <Backdrop style={{ zIndex: '10' }}
+                      open={status === 'loading' || add.status === 'loading'}><CircularProgress/></Backdrop>
             <div className={'oe_second_wrapper'}>
                 <div className={'oe_third_wrapper'}>
+                    <h4>{barbers?.filter(barber => barber._id === barberId)[0]?.name}</h4>
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimeField
@@ -214,17 +222,43 @@ const OrderEditor = () => {
                     </div>
                 </div>
                 <div>
-                    <DialogActions>
-                        {!deleteOrder && order.orderId &&
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div>{!deleteOrder && order.orderId &&
                             <Button onClick={() => setDeleteOrder(true)}>Отменить запись</Button>}
-                        {deleteOrder && <>
-                            <Button onClick={() => setDeleteOrder(false)}>не отменять</Button>
-                            <Button onClick={handleDelete}>Подтвердить отмену</Button>
-                        </>}
+                            {deleteOrder && <>
+                                <Button onClick={() => setDeleteOrder(false)}>не отменять</Button>
+                                <Button onClick={handleDelete}>отменить</Button>
+                            </>}
+                        </div>
 
-                        <Button onClick={handleCancel} variant={'contained'}>Отмена</Button>
-                        {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>}
-                    </DialogActions>
+                        {order.orderId &&
+                            <div>
+                                <Switch
+                                    checked={order.completed}
+                                    onChange={(event, checked) => {
+                                        if (checked) {
+                                            dispatch(setCompletedOrder());
+                                        } else {
+                                            dispatch(setUncompletedOrder());
+                                        }
+                                    }}/>
+                                {order.completed &&
+                                    <TextField label={'оплачено'} style={{ width: '80px' }} size={'small'}
+                                               onChange={changePayedSum}
+                                               inputProps={{
+                                                   inputMode: 'numeric',
+                                                   pattern: '[0-9]*', // This also helps with mobile keyboard input
+                                               }}
+                                               defaultValue={order.payed || order.price}/>
+                                }
+                            </div>
+                        }
+
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <Button onClick={handleCancel} variant={'contained'}>Отмена</Button>
+                            {serviceId && <Button onClick={handleSubmit} variant={'contained'}>ОК</Button>}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

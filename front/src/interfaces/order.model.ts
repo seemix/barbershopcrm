@@ -20,6 +20,8 @@ export interface IOrder {
     createdBy: string | null;
     comment: string | null;
     color: string | null;
+    completed: boolean;
+    payed: number | null;
 }
 
 export interface IOrderState extends IOrder {

@@ -3,6 +3,7 @@ import { Scheduler } from '@aldabil/react-scheduler';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getAllBarbers } from '../../../store/barbers';
 import { Button, Dialog } from '@mui/material';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import { ru } from 'date-fns/locale';
 import {
     closeOrderEditModal,
@@ -100,21 +101,6 @@ const Calendar = () => {
                     view={'day'}
                     events={orders}
                     hourFormat={'24'}
-                    fields={[
-                        {
-                            name: 'admin_id',
-                            type: 'select',
-                            default: resources[0].admin_id,
-                            options: resources.map((res) => {
-                                return {
-                                    id: res.admin_id,
-                                    text: `${res.title} (${res.mobile})`,
-                                    value: res.admin_id //Should match "name" property
-                                };
-                            }),
-                            config: { label: 'Assignee', required: true }
-                        }
-                    ]}
                     //@ts-ignore
                     week={{
                         ...weekAsset,
@@ -134,8 +120,11 @@ const Calendar = () => {
                                      style={{ backgroundColor: event.color }}
                                      className={'event_render_main'}>
                             <div
-                                className={'event_render_time'}>{event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })} -
+                                className={'event_render_time'}>
+
+                                {event.start.toLocaleTimeString('ru-RU', { timeStyle: 'short' })} -
                                 {event.end.toLocaleTimeString('ru-RU', { timeStyle: 'short' })}
+                                {event?.completed && <PriceCheckIcon className={'event_render_payed'}/>}
                             </div>
                             <div className={'event_render_wrap'}>
                                 <div>✂️ {event.title}</div>

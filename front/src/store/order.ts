@@ -27,6 +27,8 @@ const initialState: IOrderState = {
     createdBy: '',
     orderEditModal: false,
     orderForEdit: null,
+    completed: false,
+    payed: null
 };
 
 interface IAdditional {
@@ -55,7 +57,9 @@ const remapData = (data: any) => {
             add_names: item.additional,
             comment: item.comment,
             duration: dayjs(item.endTime).diff(dayjs(item.startTime), 'minutes'),
-            customerId: item.customer._id
+            customerId: item.customer._id,
+            completed: item.completed,
+            payed: item.payed
         };
     });
 };
@@ -201,6 +205,8 @@ export const orderSlice = createSlice({
             state.orderId = null;
             state.color = '#9e8a78';
             state.comment = '';
+            state.completed = false;
+            state.payed = null;
             state.createdBy = '';
         },
         setOrderForEdit(state, action) {
@@ -218,6 +224,8 @@ export const orderSlice = createSlice({
             state.orderId = action.payload.event_id;
             state.color = action.payload.color;
             state.comment = action.payload.comment;
+            state.completed = action.payload.completed;
+            state.payed = action.payload.payed;
             state.createdBy = '';
         },
         openOrderEditModal(state, action) {
@@ -229,7 +237,17 @@ export const orderSlice = createSlice({
         },
         closeOrderEditModal(state) {
             state.orderEditModal = false;
-            // state.orderForEdit = null;
+        },
+        setCompletedOrder(state) {
+            state.completed = true;
+            state.payed = state.price;
+        },
+        setUncompletedOrder(state) {
+            state.completed = false;
+            state.payed = null;
+        },
+        changePayed(state, action) {
+            state.payed = Number(action.payload);
         }
     },
     extraReducers: builder => {
@@ -238,7 +256,6 @@ export const orderSlice = createSlice({
                 const newOrder = remapData([action.payload]);
                 state.orders.push(newOrder[0]);
                 state.orderEditModal = false;
-                resetState();
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
@@ -285,7 +302,10 @@ export const {
     setOrderForEdit,
     resetState,
     openOrderEditModal,
-    closeOrderEditModal
+    closeOrderEditModal,
+    setCompletedOrder,
+    setUncompletedOrder,
+    changePayed
 } = orderSlice.actions;
 export const orderStore = orderSlice.reducer;
 export default orderStore;

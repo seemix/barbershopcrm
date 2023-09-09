@@ -12,6 +12,8 @@ export class OrderDto {
     customerName;
     customerPhone;
     customerEmail;
+    completed;
+    payed;
 
     constructor(order: any) {
         this.orderId = order.orderId;
@@ -27,5 +29,7 @@ export class OrderDto {
         this.customerName = order.customerName;
         this.customerPhone = order.customerPhone;
         this.customerEmail = order.customerEmail;
+        this.completed = order.completed;
+        this.payed = order.payed;
     }
 }
