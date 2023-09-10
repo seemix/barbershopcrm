@@ -8,6 +8,7 @@ import './Header.css';
 import { Link } from 'react-scroll';
 import logo from '../../images/logo.png';
 import LangSwitch from '../LangSwitch/LangSwitch';
+import { useOutsideClick } from '../../hooks/outside-click';
 
 const Header: FC = () => {
     const [openMenu, setOpenMenu] = useState(false);
@@ -18,7 +19,9 @@ const Header: FC = () => {
     };
     window.addEventListener('scroll', handleScroll);
     const handleMenuButton = () => setOpenMenu(!openMenu);
+    const menuRef = useOutsideClick(() => setOpenMenu(false));
     const { t } = useTranslation();
+
     return (
         <nav className={scroll ? 'navbar_items navbar_scroll' : 'navbar_items'} id={'menu'}>
             <h1>
@@ -32,7 +35,7 @@ const Header: FC = () => {
             </div>
             <LangSwitch/>
             <div className={'navigation'}>
-                <ul className={openMenu ? 'menu_wrapper show_burger_menu' : 'menu_wrapper'}>
+                <ul className={openMenu ? 'menu_wrapper show_burger_menu' : 'menu_wrapper'} ref={menuRef}>
                     <Link
                         onClick={handleMenuButton}
                         className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
@@ -70,23 +73,11 @@ const Header: FC = () => {
             <div>
                 <div className={'menu_icon'} onClick={handleMenuButton}>
                     <MenuIcon fontSize={'large'} style={{
-                        display: !openMenu ? 'block' : 'none',
-                        marginRight: '20px',
-
-                      //  position: 'absolute',
-                      //  top: 30,
-                      //  right: 30
-                    }}/>
+                        display: !openMenu ? 'block' : 'none' }}/>
                 </div>
-                <div className={'menu_icon'} onClick={handleMenuButton}>
+                <div className={'menu_icon'} onClick={() => setOpenMenu(false)}>
                     <CloseIcon fontSize={'large'}
-                               style={{
-                                   display: openMenu ? 'block' : 'none',
-                                   marginRight: '20px',
-                                  // position: 'absolute',
-                                  // top: 30,
-                                  // right: 30
-                               }}
+                               style={{display: openMenu ? 'block' : 'none' }}
                     />
                 </div>
             </div>

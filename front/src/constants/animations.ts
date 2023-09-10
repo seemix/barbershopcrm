@@ -27,7 +27,7 @@ export const bottomAnimation: any = {
 // @ts-ignore
 export const headerAnimation: any = {
     hidden: {
-        x: -50,
+        x: -40,
         opacity: 0
     },
     visible: (custom: number) => ({
@@ -40,7 +40,7 @@ export const headerAnimation: any = {
 // @ts-ignore
 export const buttonAnimation: any = {
     hidden: {
-        x: 100,
+        x: 80,
         opacity: 0
     },
     visible: (custom: number) => ({

@@ -32,19 +32,19 @@ const CustomerInfo = () => {
                         <TableCell>добавлен</TableCell>
                         <TableCell>{dayjs(customerInfo.createdAt).toDate().toLocaleDateString('ru-RU')}</TableCell>
                     </TableRow>
-                    <TableRow>
+                    {customerInfo.lastOrderDate && <TableRow>
                         <TableCell>последний визит</TableCell>
                         <TableCell>{dayjs(customerInfo?.lastOrderDate).toDate().toLocaleDateString('ru-RU')}</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </TableRow>}
+                    {customerInfo.allOrdersPayed && <TableRow>
                         <TableCell>последняя оплата</TableCell><TableCell>{customerInfo.lastOrderPayed} MDL</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </TableRow>}
+                    {customerInfo.allOrdersPayed && <TableRow>
                         <TableCell>всего оплачено</TableCell><TableCell>{customerInfo.allOrdersPayed} MDL</TableCell>
-                    </TableRow>
-                    <TableRow>
+                    </TableRow>}
+                    {customerInfo.averageBill && <TableRow>
                         <TableCell>средний чек</TableCell><TableCell>{customerInfo.averageBill} MDL</TableCell>
-                    </TableRow>
+                    </TableRow>}
                 </TableBody>
             </Table>
             <Button variant={'contained'} onClick={() => {

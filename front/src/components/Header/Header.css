@@ -90,7 +90,7 @@
         flex-direction: column;
         justify-content: start;
         position: fixed;
-        right: -800px;
+        right: calc(100vw + 20px);
         width: 100%;
         background: rgba(30, 30, 30, .9);
         top: 67px;
@@ -125,6 +125,8 @@
 
     .menu_icon {
         display: block;
+        margin-right: 20px;
+        cursor: pointer;
     }
 
     .show_menu {
