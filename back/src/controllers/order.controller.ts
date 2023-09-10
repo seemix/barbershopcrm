@@ -14,7 +14,7 @@ export const orderController = {
         try {
             const orders = await Order.find({
                 startTime: {
-                    $gte: moment(Date.now()).add(-1, 'day'),
+                    $gte: moment(Date.now()).add(-3, 'week'),
                     $lt: moment(Date.now()).add(1, 'week')
                 }
             })
@@ -65,8 +65,9 @@ export const orderController = {
                     strictPopulate: false
                 });
             res.json(newOrder).status(201);
+            res.status(200);
         } catch (e) {
-            next(new ApiError('Error creating order', 400));
+           next(new ApiError('Error creating order', 400));
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {

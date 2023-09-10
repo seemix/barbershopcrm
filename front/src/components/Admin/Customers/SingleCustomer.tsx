@@ -4,7 +4,12 @@ import { ISingleCustomer } from '../../../interfaces/customer.model';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppDispatch } from '../../../hooks/redux';
-import { deleteCustomer, setCustomerForEdit } from '../../../store/customer';
+import {
+    deleteCustomer,
+    getCustomerInfo,
+    setCustomer,
+    setCustomerForEdit
+} from '../../../store/customer';
 
 const SingleCustomer = (customer: ISingleCustomer) => {
     const [deleteState, setDeleteState] = useState<boolean>(false);
@@ -25,7 +30,10 @@ const SingleCustomer = (customer: ISingleCustomer) => {
                     {!deleteState && <>
                         <Button onClick={() => setDeleteState(true)}><DeleteForeverIcon/></Button>
                         <Button onClick={() => dispatch(setCustomerForEdit(customer))}><EditIcon/></Button>
-                        <Button>info</Button>
+                        <Button onClick={() => {
+                            dispatch(getCustomerInfo(String(customer._id)));
+                            dispatch(setCustomer(customer));
+                        }}>info</Button>
                     </>}
                     {deleteState &&
                     <>

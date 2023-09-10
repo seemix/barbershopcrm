@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
-    closeCustomerEditModal,
+    closeCustomerEditModal, closeCustomerInfoModal,
     getAllCustomers,
-    openCustomerEditModal,
+    openCustomerEditModal, resetCustomer,
     setCustomerForEdit
 } from '../../../store/customer';
 import { Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@mui/material';
@@ -14,10 +14,11 @@ import Pagination from '@mui/material/Pagination';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import './Customers.css';
 import CustomerFullForm from './CustomerFullForm';
+import CustomerInfo from './CustomerInfo/CustomerInfo';
 
 const Customers = () => {
     const { customers, pages } = useAppSelector(state => state.customersStore).getCustomers;
-    const { customerEditModal } = useAppSelector(state => state.customersStore);
+    const { customerEditModal, customerInfoModal } = useAppSelector(state => state.customersStore);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [search, setSearch] = useState<string | null>(null);
@@ -34,6 +35,11 @@ const Customers = () => {
         searchParams.set('page', String(selectedPage));
         setSearchParams(searchParams);
     };
+
+    const   handleCloseInfo = () => {
+        dispatch(closeCustomerInfoModal());
+        dispatch(resetCustomer());
+    }
 
     useEffect(() => {
         if ((search && search?.length > 2) || search?.length === 0) {
@@ -67,7 +73,7 @@ const Customers = () => {
                             <TableCell><b>phone number</b></TableCell>
                             <TableCell align={'center'}><b>email</b></TableCell>
                             <TableCell><b>tag</b><LocalOfferOutlinedIcon/></TableCell>
-                            <TableCell align={'center'} style={{minWidth: '200px'}}><b>actions</b></TableCell>
+                            <TableCell align={'center'} style={{ minWidth: '200px' }}><b>actions</b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -86,6 +92,9 @@ const Customers = () => {
                 dispatch(setCustomerForEdit(null));
             }}>
                 <CustomerFullForm/>
+            </Dialog>
+            <Dialog open={customerInfoModal} onClose={handleCloseInfo}>
+                <CustomerInfo/>
             </Dialog>
         </div>
     );

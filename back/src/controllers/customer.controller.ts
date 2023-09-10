@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
 import config from '../config.js';
+import { calculateCustomerStats } from '../services/customer-info.service.js';
 
 export const customerController = {
     searchCustomers: async (req: Request, res: Response, next: NextFunction) => {
@@ -62,6 +63,15 @@ export const customerController = {
             const { _id } = req.params;
             await Customer.deleteOne({ _id });
             res.json(_id).status(200);
+        } catch (e) {
+            next(e);
+        }
+    },
+    getCustomerInfo: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const customerId = req.params.customerId;
+            const customerStats = await calculateCustomerStats(customerId);
+            res.json(customerStats[0]).status(200);
         } catch (e) {
             next(e);
         }

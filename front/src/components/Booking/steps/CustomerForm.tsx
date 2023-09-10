@@ -32,25 +32,29 @@ const CustomerForm = () => {
         if (phoneLength.length === 10) setPhone(e.target.value);
     };
     const handleNextButton = (data: any) => {
-        if (!customer._id) dispatch(setCustomer(data));
+        if (!customer) dispatch(setCustomer({
+            email: data.customerEmail,
+            name: data.customerName,
+            phone: data.customerPhone
+        }));
          dispatch(handleNext());
     };
     useEffect(() => {
         if (phone) dispatch(getCustomerByPhone(phone));
 
-        if (customer._id && status === 'fulfilled') {
+        if (customer && status === 'fulfilled') {
             setValue('customerName', customer.name);
             setValue('customerEmail', customer.email);
             setValue('customerPhone', customer.phone);
         }
-        dispatch(setCustomer({
-            _id: customer._id,
-            phone: customer.phone,
-            name: customer.name,
-            email: customer.email
-        }));
+        // dispatch(setCustomer({
+        //     _id: customer._id,
+        //     phone: customer.phone,
+        //     name: customer.name,
+        //     email: customer.email
+        // }));
 
-    }, [phone, customer._id, setValue]);
+    }, [phone, customer, setValue]);
 
     return (
         <div>

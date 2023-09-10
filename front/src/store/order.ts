@@ -255,6 +255,7 @@ export const orderSlice = createSlice({
             .addCase(createOrder.fulfilled, (state, action) => {
                 const newOrder = remapData([action.payload]);
                 state.orders.push(newOrder[0]);
+                state.orderId = action.payload._id;
                 state.orderEditModal = false;
             })
             .addCase(getOrdersForCalendar.fulfilled, (state, action) => {

@@ -6,6 +6,7 @@ import i18n from 'i18next';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { getRecordById } from '../../../store/record';
 import { createOrder } from '../../../store/order';
+import { OrderDto } from '../../../dtos/order.dto';
 
 const FinalStep = () => {
     const { t } = useTranslation();
@@ -13,7 +14,8 @@ const FinalStep = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(createOrder(order));
+        // @ts-ignore
+        dispatch(createOrder(new OrderDto(order)));
     }, []);
 
     useEffect(() => {
@@ -43,7 +45,8 @@ const FinalStep = () => {
                 </div>
                 {status === 'fulfilled' && <div>
                     <p style={{ fontSize: '22px', textAlign: 'center' }}>{customer.name} !</p>
-                    <big><p style={{ textAlign: 'center' }}>{barber.name} {t('будет ждать вас')} <u> {dateOut},  {time} </u>
+                    <big><p style={{ textAlign: 'center' }}>{barber.name} {t('будет ждать вас')}
+                        <u> {dateOut}, {time} </u>
                     </p></big>
                     <p>{t('Ваш заказ')}:</p>
                     <div style={{ marginLeft: '15px' }}>
@@ -54,7 +57,7 @@ const FinalStep = () => {
                     <p style={{ textAlign: 'right' }}>{t('Общая сумма')} {price} MDL</p>
                     <p>{t('cancelOrderEmail')} <big>📧 {customer.email} </big></p>
                     <p>{t('cancelOrderPhone')} <big>☎️ +37360233555 </big></p>
-                
+
                 </div>
                 }
             </Card>

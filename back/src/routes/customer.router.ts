@@ -6,6 +6,7 @@ import { customerController } from '../controllers/customer.controller.js';
 const customerRouter = Router();
 customerRouter.post('/', customerController.createCustomer);
 customerRouter.get('/all', customerController.getAllCustomers);
+customerRouter.get('/info/:customerId', customerController.getCustomerInfo);
 customerRouter.put('/:_id', customerController.updateCustomer);
 customerRouter.delete('/:_id', customerController.deleteCustomer);
 

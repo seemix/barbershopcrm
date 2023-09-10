@@ -1,0 +1,14 @@
+.customer_info_main_wrap {
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.customer_info_second_wrap {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

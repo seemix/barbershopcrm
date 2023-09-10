@@ -13,10 +13,19 @@ interface IInitialState {
     customer: ISingleCustomer,
     customerForEdit: ISingleCustomer | null;
     customerEditModal: boolean;
+    customerInfo: {
+        _id?: string | null;
+        createdAt: string | null;
+        lastOrderPayed: number | null;
+        lastOrderDate: string | null;
+        allOrdersPayed: number | null;
+        averageBill: number | null;
+    },
+    customerInfoModal: boolean;
 }
 
 const initialState: IInitialState = {
-    customer: { _id: null, name: null, email: null, phone: null, tag: null },
+    customer: { _id: null, email: null, phone: null, name: null, tag: null },
     getCustomers: {
         customers: [],
         pages: null,
@@ -26,6 +35,15 @@ const initialState: IInitialState = {
     status: null,
     customerEditModal: false,
     customerForEdit: null,
+    customerInfoModal: false,
+    customerInfo: {
+        _id: null,
+        lastOrderDate: null,
+        allOrdersPayed: null,
+        averageBill: null,
+        createdAt: null,
+        lastOrderPayed: null
+    }
 };
 
 export const searchCustomers = createAsyncThunk(
@@ -47,6 +65,17 @@ export const getCustomerByPhone = createAsyncThunk(
             return thunkAPI.rejectWithValue(e);
         }
     });
+
+export const getCustomerInfo = createAsyncThunk(
+    'customerSlice/getCustomerInfo',
+    async (_id: string, thunkAPI) => {
+        try {
+            return customerService.getCustomerInfo(_id);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 
 export const getAllCustomers = createAsyncThunk(
     'customerSlice/GetAll',
@@ -107,6 +136,18 @@ export const customers = createSlice({
         setCustomerForEdit(state, action) {
             state.customerForEdit = action.payload;
             state.customerEditModal = true;
+        },
+        openCustomerInfoModal(state) {
+            state.customerInfoModal = true;
+        },
+        closeCustomerInfoModal(state) {
+            state.customerInfoModal = false;
+        },
+        setCustomer(state, action) {
+            state.customer = action.payload;
+        },
+        resetCustomer(state) {
+            state.customer = { _id: null, tag: null, email: null, name: null, phone: null };
         }
     },
     extraReducers: builder => {
@@ -122,13 +163,14 @@ export const customers = createSlice({
                 });
             })
             .addCase(getCustomerByPhone.fulfilled, (state, action) => {
-                state.customer.email = action.payload.email;
-                state.customer.name = action.payload.name;
-                state.customer.phone = action.payload.phone;
-                state.customer._id = action.payload._id;
+                // state.customer.email = action.payload.email;
+                // state.customer.name = action.payload.name;
+                // state.customer.phone = action.payload.phone;
+                // state.customer._id = action.payload._id;
+                state.customer = action.payload;
                 state.status = 'fulfilled';
             })
-           .addCase(getAllCustomers.fulfilled, (state, action) => {
+            .addCase(getAllCustomers.fulfilled, (state, action) => {
                 state.getCustomers.customers = action.payload.customers;
                 state.getCustomers.page = action.payload.page;
                 state.getCustomers.pages = action.payload.pages;
@@ -144,10 +186,22 @@ export const customers = createSlice({
             })
             .addCase(deleteCustomer.fulfilled, (state, action) => {
                 state.getCustomers.customers = state.getCustomers.customers.filter(customer => customer._id !== action.payload);
+            })
+            .addCase(getCustomerInfo.fulfilled, (state, action) => {
+                state.customerInfo = action.payload;
+                state.customerInfoModal = true;
             });
     }
 });
 
 export const customersStore = customers.reducer;
-export const { openCustomerEditModal, setCustomerForEdit, closeCustomerEditModal } = customers.actions;
+export const {
+    openCustomerEditModal,
+    openCustomerInfoModal,
+    setCustomerForEdit,
+    closeCustomerEditModal,
+    resetCustomer,
+    setCustomer,
+    closeCustomerInfoModal
+} = customers.actions;
 export default customersStore;
