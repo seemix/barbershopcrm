@@ -23,8 +23,8 @@ const Booking: FC = () => {
         <CustomerForm/>,
         <FinalStep/>
     ];
-    const order = useAppSelector(state => state.orderStore);
-    console.log(order);
+   const order = useAppSelector(state => state.orderStore);
+    //console.log(order);
     // console.log(i18n.language);
 
     const { activeStep } = useAppSelector(state => state.stepperStore);
@@ -34,7 +34,7 @@ const Booking: FC = () => {
         <div id={'booking'}>
             <div>
                 <div style={{ minHeight: 'calc(100vh - 80px)' }}
-                     className={order.showBooking ? 'services show_item' : 'services hide_item'}>
+                      className={order.showBooking ? 'services show_item' : 'services hide_item'}>
                     <motion.h2
                         custom={3.5}
                         initial={'hidden'}

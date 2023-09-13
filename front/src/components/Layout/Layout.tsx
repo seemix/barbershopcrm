@@ -20,6 +20,7 @@ const Layout = () => {
             <Footer/>
             <ScrollToTop className={'top_scroll'} component={'↑'} smooth
                          style={{ backgroundColor: '#9e8a78', borderRadius: 3 }}/>
+
         </div>
     );
 };
