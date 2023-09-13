@@ -8,9 +8,9 @@ import { ISingleCustomer } from '../../../../interfaces/customer.model';
 
 const SelectUser = () => {
     const [query, setQuery] = useState('');
-    const { customers } = useAppSelector(state => state.customersStore).getCustomers;
+    const { searchResult } = useAppSelector(state => state.customersStore);
     const {customerPhone, customerName} = useAppSelector(state => state.orderStore);
-    const [value, setValue] = React.useState<ISingleCustomer | string | null>(null);
+    const [value, setValue] = React.useState<any>(null);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -25,6 +25,7 @@ const SelectUser = () => {
             <Autocomplete
                 // @ts-ignore
                 value={value || ''}
+               // defaultValue={''}
                 onChange={(event: any, newValue: string | null | ISingleCustomer) => {
                     setValue(newValue);
                     if (newValue) {
@@ -38,7 +39,7 @@ const SelectUser = () => {
                     setQuery(query);
                 }}
                 id="controllable-states-demo"
-                options={customers}
+                options={searchResult.map(customer => customer)}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params}
                                                     label={'клиент'}/>}/>

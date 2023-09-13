@@ -29,6 +29,24 @@ export const barbersController = {
         } catch (e) {
           next(e);
         }
+    },
+    updateOrder: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const arr = req.body;
+            for (let i = 0; i < arr.length; i++) {
+                arr[i].order = i;
+            }
+            const bulk = arr.map((item: any) => ({
+                updateOne: {
+                    filter: { _id: item._id },
+                    update: { order: item.order }
+                }
+            }));
+            const updatedArr = await Barber.bulkWrite(bulk);
+            res.json(updatedArr).status(200);
+        } catch (e) {
+            next(e);
+        }
     }
 };
 

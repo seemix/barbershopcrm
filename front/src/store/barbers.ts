@@ -6,14 +6,16 @@ interface IInitState {
     barbers: IBarber[],
     error: string | null,
     status: string | null,
-    currentBarber: IBarber | null
+    currentBarber: IBarber | null,
+    reorderButton: boolean
 }
 
 const initialState: IInitState = {
     barbers: [],
     error: null,
     status: '',
-    currentBarber: null
+    currentBarber: null,
+    reorderButton: false
 };
 export const getAllBarbers = createAsyncThunk(
     'barbersSlice/getAll',
@@ -36,10 +38,27 @@ export const getBarberById = createAsyncThunk(
         }
     }
 );
+
+export const saveBarberOrder = createAsyncThunk(
+    'barberSlice/SaveBarbersOrder',
+    async (arr: IBarber[], thunkAPI) => {
+        try {
+            return barbersService.saverOrder(arr);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 export const barbersSlice = createSlice({
     name: 'barbersSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        barbersReorder(state, action) {
+            state.barbers = action.payload;
+            state.reorderButton = true;
+            return state;
+        },
+    },
     extraReducers: builder => {
         builder
             .addCase(getAllBarbers.pending, state => {
@@ -57,8 +76,14 @@ export const barbersSlice = createSlice({
             })
             .addCase(getBarberById.fulfilled, (state, action) => {
                 state.currentBarber = action.payload;
+            })
+            .addCase(saveBarberOrder.fulfilled, (state) => {
+                state.status = 'fulfilled';
+                state.error = null;
+                state.reorderButton = false;
             });
     }
 });
 const barberStore = barbersSlice.reducer;
+export const { barbersReorder } = barbersSlice.actions;
 export default barberStore;

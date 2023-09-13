@@ -10,6 +10,7 @@ interface IInitialState {
         pages: number | null,
         page: number | null
     },
+    searchResult: string[],
     customer: ISingleCustomer,
     customerForEdit: ISingleCustomer | null;
     customerEditModal: boolean;
@@ -43,7 +44,8 @@ const initialState: IInitialState = {
         averageBill: null,
         createdAt: null,
         lastOrderPayed: null
-    }
+    },
+    searchResult: []
 };
 
 export const searchCustomers = createAsyncThunk(
@@ -155,7 +157,7 @@ export const customers = createSlice({
             .addCase(searchCustomers.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.error = null;
-                state.getCustomers.customers = action.payload.map((item: { name: string; phone: string; }) => {
+                state.searchResult = action.payload.map((item: { name: string; phone: string; }) => {
                     return {
                         ...item,
                         label: item.name + ' (' + item.phone + ')'

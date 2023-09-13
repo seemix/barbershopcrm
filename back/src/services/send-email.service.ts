@@ -6,7 +6,8 @@ export const sendMail = async (email: string, locals = {}) => {
 
     const templateParser = new emailTemplates({
         views: {
-            root: path.join(process.cwd(),'src', 'email-templates')
+           root: path.join(process.cwd(),'src', 'email-templates')
+          //  root: path.join(process.cwd(), 'email-templates')
         }
 
     });

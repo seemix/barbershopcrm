@@ -12,14 +12,17 @@ import { useOutsideClick } from '../../hooks/outside-click';
 
 const Header: FC = () => {
     const [openMenu, setOpenMenu] = useState(false);
-    const [scroll, setScroll]  = useState(false);
+    const [scroll, setScroll] = useState(false);
     const handleScroll = () => {
-        if (window.scrollY > 80) setScroll(true)
+        if (window.scrollY > 80) setScroll(true);
         else setScroll(false);
     };
     window.addEventListener('scroll', handleScroll);
     const handleMenuButton = () => setOpenMenu(!openMenu);
-    const menuRef = useOutsideClick(() => setOpenMenu(false));
+    const closeMenu = () => {
+        setOpenMenu(false);
+    };
+    const menuRef = useOutsideClick(closeMenu);
     const { t } = useTranslation();
 
     return (
@@ -38,7 +41,7 @@ const Header: FC = () => {
                 <ul className={openMenu ? 'menu_wrapper show_burger_menu' : 'menu_wrapper'} ref={menuRef}>
                     <Link
                         onClick={handleMenuButton}
-                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
+                        className={scroll ? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'top'}
                         smooth={true} spy={false}
                         duration={700}
@@ -46,7 +49,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
+                        className={scroll ? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'services'}
                         smooth={true} spy={false}
                         duration={700}
@@ -54,7 +57,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={scroll? 'nav_link' : 'nav_link  nav_link_scroll'}
+                        className={scroll ? 'nav_link' : 'nav_link  nav_link_scroll'}
                         to={'barbers'}
                         smooth={true} spy={false}
                         duration={700}
@@ -62,7 +65,7 @@ const Header: FC = () => {
                     </Link>
                     <Link
                         onClick={handleMenuButton}
-                        className={scroll? 'nav_link' : 'nav_link nav_link_scroll'}
+                        className={scroll ? 'nav_link' : 'nav_link nav_link_scroll'}
                         to={'contacts'}
                         smooth={true} spy={false}
                         duration={700}
@@ -73,11 +76,12 @@ const Header: FC = () => {
             <div>
                 <div className={'menu_icon'} onClick={handleMenuButton}>
                     <MenuIcon fontSize={'large'} style={{
-                        display: !openMenu ? 'block' : 'none' }}/>
+                        display: !openMenu ? 'block' : 'none'
+                    }}/>
                 </div>
                 <div className={'menu_icon'} onClick={() => setOpenMenu(false)}>
                     <CloseIcon fontSize={'large'}
-                               style={{display: openMenu ? 'block' : 'none' }}
+                               style={{ display: openMenu ? 'block' : 'none' }}
                     />
                 </div>
             </div>

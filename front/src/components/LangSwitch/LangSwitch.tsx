@@ -26,7 +26,7 @@ const LangSwitch = () => {
         i18n.changeLanguage(language);
     };
     return (
-        <div style={{marginLeft: '10px'}}>
+        <div style={{marginLeft: '15px'}}>
             <select className={back ? 'select_css select_active' : 'select_css'} onChange={handleChange}
                     onBlur={handleBlur} onFocus={handleFocus} defaultValue={currentLang}>
                 <option value={'RU'}>RU</option>

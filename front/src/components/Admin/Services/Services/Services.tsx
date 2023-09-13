@@ -65,8 +65,7 @@ const Services = () => {
                     <Reorder.Item key={item._id} value={item} whileDrag={{ scale: 1.05 }}>
                         <SingleService _id={item._id} name={item.name} description={item.description}
                                        order={item.order}/>
-                    </Reorder.Item>
-                ))}
+                    </Reorder.Item>))}
             </Reorder.Group>
         </div>
     );

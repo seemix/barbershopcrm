@@ -5,32 +5,13 @@ import { freeSlots } from '../services/generate-free-slots.service.js';
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
 import { sendMail } from '../services/send-email.service.js';
-import { IOrderRecord } from '../interfaces/order-record.js';
-import moment from 'moment/moment.js';
+import { getOrdersForCalendar, getSingleCustomer, orderForEmailSend } from '../services/order-services.js';
 
 
 export const orderController = {
     getOrders: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const orders = await Order.find({
-                startTime: {
-                    $gte: moment(Date.now()).add(-3, 'week'),
-                    $lt: moment(Date.now()).add(1, 'week')
-                }
-            })
-                .populate({
-                    path: 'customer',
-                    select: ['name', 'phone'],
-                })
-                .populate({
-                    path: 'service',
-                    select: 'name',
-                })
-                .populate({
-                    path: 'additional',
-                    select: 'name',
-                    strictPopulate: false
-                });
+            const orders = await getOrdersForCalendar();
             res.json(orders).status(200);
 
         } catch (e) {
@@ -50,51 +31,16 @@ export const orderController = {
                 objToCreate = { ...objToCreate, customer };
             }
             const { _id } = await Order.create(objToCreate);
-            const newOrder = await Order.findById(_id)
-                .populate({
-                    path: 'customer',
-                    select: ['name', 'phone'],
-                })
-                .populate({
-                    path: 'service',
-                    select: 'name',
-                })
-                .populate({
-                    path: 'additional',
-                    select: 'name',
-                    strictPopulate: false
-                });
+            const newOrder = await getSingleCustomer(_id);
             res.json(newOrder).status(201);
-            res.status(200);
         } catch (e) {
-           next(new ApiError('Error creating order', 400));
+            next(e);
         }
     },
     getOrderById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { orderId } = req.params;
-            const order: IOrderRecord | null = await Order.findOne({ _id: orderId })
-                .select(['startTime', 'price'])
-                .populate({
-                    path: 'customer',
-                    select: ['name', 'email'],
-                    strictPopulate: false
-                })
-                .populate({
-                    path: 'barber',
-                    select: ['name'],
-                    strictPopulate: false
-                })
-                .populate({
-                    path: 'service',
-                    select: ['name'],
-                    strictPopulate: false,
-                })
-                .populate({
-                    path: 'additional',
-                    select: ['name'],
-                    strictPopulate: false
-                });
+            const order: any = await orderForEmailSend(orderId);
             if (order) {
                 //@ts-ignore
                 const originalDate = new Date(order.startTime);
@@ -118,7 +64,7 @@ export const orderController = {
                 res.json(order);
             }
         } catch (e) {
-            next(new ApiError('Error getting order', 500));
+            next(new ApiError('Error getting order', 400));
         }
     },
     generateSlots: async (req: Request, res: Response, next: NextFunction) => {
@@ -148,24 +94,10 @@ export const orderController = {
         try {
             const { id } = req.params;
             await Order.findByIdAndUpdate(id, req.body);
-            const updatedItem = await Order.findById(id)
-                .populate({
-                    path: 'customer',
-                    select: ['name', 'phone'],
-                })
-                .populate({
-                    path: 'service',
-                    select: 'name',
-                })
-                .populate({
-                    path: 'additional',
-                    select: 'name',
-                    strictPopulate: false
-                });
+            const updatedItem = await getSingleCustomer(id);
             res.json(updatedItem).status(200);
         } catch (e) {
             next(e);
-            // next(new ApiError('Error updating item', 500));
         }
     },
     updateOrderTime: async (req: Request, res: Response, next: NextFunction) => {

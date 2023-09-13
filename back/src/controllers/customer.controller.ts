@@ -1,20 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
+
 import ApiError from '../errors/api.error.js';
 import Customer from '../models/customer.js';
 import config from '../config.js';
 import { calculateCustomerStats } from '../services/customer-info.service.js';
+import { searchCustomers, searchObject } from '../services/customer-service.js';
 
 export const customerController = {
     searchCustomers: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { q } = req.query;
             if (q) {
-                const customers = await Customer.find({
-                    $or: [
-                        { name: { $regex: '.*' + q + '.*', $options: 'i' } },
-                        { phone: { $regex: '.*' + q + '.*', $options: 'i' } },
-                    ],
-                });
+                const customers = await searchCustomers(String(q));
                 res.json(customers).status(200);
             }
         } catch (e) {
@@ -23,17 +20,9 @@ export const customerController = {
     },
     getAllCustomers: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // const pages = Math.ceil(await Customer.find().count() / config.CUSTOMERS_PER_PAGE);
-            const { page = 1, search, limit = config.CUSTOMERS_PER_PAGE } = req.query;
+           const { page = 1, search, limit = config.CUSTOMERS_PER_PAGE } = req.query;
             let searchObj = {};
-            if (search) searchObj = {
-                $or: [
-                    { name: { $regex: '.*' + search + '.*', $options: 'i' } },
-                    { phone: { $regex: '.*' + search + '.*', $options: 'i' } },
-                    { email: { $regex: '.*' + search + '.*', $options: 'i' } },
-                    { tag: { $regex: '.*' + search + '.*', $options: 'i' } },
-                ],
-            };
+            if (search) searchObj = searchObject(String(search));
             const customers = await Customer.find(searchObj).skip((+page - 1) * config.CUSTOMERS_PER_PAGE).limit(+limit);
             const pages = Math.ceil(await Customer.find(searchObj).count() / config.CUSTOMERS_PER_PAGE);
             res.json({ pages, page: +page, customers }).status(200);

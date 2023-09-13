@@ -4,69 +4,8 @@ import BarberService from '../models/barberService.js';
 import { getPrices } from '../services/get-prices.js';
 
 export const barberServiceController = {
-    // getAllBarberServices: async (req: Request, res: Response, next: NextFunction) => {
-    //     try {
-    //         const allBarberServices = await BarberService.aggregate([
-    //             {
-    //                 $lookup: {
-    //                     from: 'barbers',
-    //                     localField: 'barber',
-    //                     foreignField: '_id',
-    //                     as: 'barber'
-    //                 }
-    //             },
-    //             {
-    //                 $lookup: {
-    //                     from: 'services',
-    //                     localField: 'service',
-    //                     foreignField: '_id',
-    //                     as: 'service'
-    //                 }
-    //             },
-    //             {
-    //                 $unwind: '$barber'
-    //             },
-    //             {
-    //                 $unwind: '$service'
-    //             },
-    //             {
-    //                 $group: {
-    //                     _id: '$barber.name',
-    //                     barberId: { $first: '$barber._id' },
-    //                     services: {
-    //                         $push: {
-    //                             name: '$service.name',
-    //                             price: '$price',
-    //                             duration: '$duration',
-    //                             _id: '$_id'
-    //                         }
-    //                     }
-    //                 }
-    //             },
-    //             {
-    //                 $project: {
-    //                     barber: {
-    //                         _id: '$barberId',
-    //                         name: '$_id'
-    //                     },
-    //                     _id: 0,
-    //                     services: 1
-    //                 }
-    //             },
-    //             {
-    //                 $sort: {
-    //                     name: 1
-    //                 }
-    //             }
-    //         ]);
-    //         res.json(allBarberServices).status(200);
-    //     } catch (e) {
-    //         next(new ApiError('Error getting services', 400));
-    //     }
-    // },
     createBarberService: async (req: Request, res: Response, next: NextFunction) => {
         try {
-
             const newBarberService = await BarberService.create(req.body);
             const resNewBarberService = await BarberService.findById(newBarberService._id)
                 .populate({
@@ -81,10 +20,8 @@ export const barberServiceController = {
                     strictPopulate: false
                 });
             res.json(resNewBarberService);
-
         } catch (e) {
             next(e);
-            // next(new ApiError('Error creating BarberService', 400));
         }
     },
     getBarberServicesByBarber: async (req: Request, res: Response, next: NextFunction) => {
@@ -120,11 +57,6 @@ export const barberServiceController = {
     getAdminBarberServices: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const result = await getPrices();
-
-            // const { barber } = req.params;
-            // const adminBarberServices = await BarberService.find({barber})
-            //     .populate({path: 'service'})
-            //     .populate({path: 'additionals', select: ['additional']});
             res.json(result);
         } catch (e) {
             next(e);
@@ -157,7 +89,7 @@ export const barberServiceController = {
     deleteBarberServiceById: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { _id } = req.params;
-            await BarberService.findByIdAndDelete({_id});
+            await BarberService.findByIdAndDelete({ _id });
             res.json(_id).status(200);
         } catch (e) {
             next(e);

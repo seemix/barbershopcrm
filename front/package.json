@@ -2,6 +2,7 @@
   "name": "barbershopcrm",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dev.levelupbalti.com",
   "dependencies": {
     "@aldabil/react-scheduler": "^2.7.19",
     "@emotion/react": "^11.10.5",

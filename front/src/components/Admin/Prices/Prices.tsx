@@ -15,7 +15,7 @@ const Prices = () => {
     }, [dispatch]);
 
     return (
-        <div className={'admin_content'} >
+        <div className={'admin_content'} style={{paddingTop: '20px'}} >
             <h3>Выберите барбера</h3>
             {barbers && barbers.map(barber =>
                 <div key={barber._id} style={{display: 'flex', justifyContent: 'center'}}>

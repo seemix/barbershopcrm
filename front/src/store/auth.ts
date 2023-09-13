@@ -123,7 +123,11 @@ const authSlice = createSlice({
                 state.user = action.payload.data.user;
                 state.auth = true;
             })
-
+            .addCase(checkAuth.rejected, (state, action) => {
+                // @ts-ignore
+                state.error = action.payload.response.data.message;
+                state.status = 'error';
+            })
     }
 });
 

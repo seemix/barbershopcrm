@@ -36,7 +36,7 @@ const CustomerInfo = () => {
                         <TableCell>последний визит</TableCell>
                         <TableCell>{dayjs(customerInfo?.lastOrderDate).toDate().toLocaleDateString('ru-RU')}</TableCell>
                     </TableRow>}
-                    {customerInfo.allOrdersPayed && <TableRow>
+                    {customerInfo.lastOrderPayed && <TableRow>
                         <TableCell>последняя оплата</TableCell><TableCell>{customerInfo.lastOrderPayed} MDL</TableCell>
                     </TableRow>}
                     {customerInfo.allOrdersPayed && <TableRow>

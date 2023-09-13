@@ -10,13 +10,14 @@ const AdminLayout = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            dispatch(checkAuth());
+             dispatch(checkAuth());
         }
     }, [dispatch]);
     const { auth, status } = useAppSelector(state => state.authStore);
     return (
         <>
             {status === 'loading' && <Loader/>}
+            {/*{status === 'error' && <Navigate to={'/admin/login'}/>}*/}
             {status === 'fulfilled' && auth ? <Outlet/> : !localStorage.getItem('token') &&
                 <Navigate to={'/admin/login'}/>}
         </>

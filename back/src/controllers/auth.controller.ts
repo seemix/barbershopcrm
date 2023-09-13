@@ -3,7 +3,6 @@ import { validationResult } from 'express-validator';
 
 import ApiError from '../errors/api.error.js';
 import { userService } from '../services/user.service.js';
-import { tokenService } from '../services/token.service.js';
 
 export const authController = {
     register: async (req: Request, res: Response, next: NextFunction) => {
@@ -57,8 +56,8 @@ export const authController = {
             });
             return res.json(userData);
         } catch (e) {
-            console.log(e);
-            next(new ApiError('Error refresh', 500));
+            //next(new ApiError('Error refresh', 500));
+            next(e);
         }
     }
 };

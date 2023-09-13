@@ -10,12 +10,4 @@ orderRouter.get('/new/:orderId', orderController.getOrderById);
 orderRouter.get('/slots', orderController.generateSlots);
 orderRouter.patch('/', orderController.updateOrderTime);
 
-
-//1. Make 5 min offset
-//2. Make slots from now+offset to first busy start
-//3. Make loop for every finish-start slot
-//4. Make slots from last end to end day;
-//5. Make timezone offset
-
-
 export default orderRouter;

@@ -51,7 +51,8 @@ const FinalStep = () => {
                     <p>{t('Ваш заказ')}:</p>
                     <div style={{ marginLeft: '15px' }}>
                         <p><i className={'bs bs-scissors-1'}/> {t(`${service.name}`)}</p>
-                        {additional.map(item => <><p><i className="bs bs-hairbrush-1"></i> {t(`${item.name}`)}</p></>)}
+                        {additional.map((item, index) => <div key={index}><p><i
+                            className="bs bs-hairbrush-1"></i> {t(`${item.name}`)}</p></div>)}
                     </div>
                     <hr/>
                     <p style={{ textAlign: 'right' }}>{t('Общая сумма')} {price} MDL</p>

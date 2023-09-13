@@ -7,6 +7,6 @@ interface IConfig {
 const config: IConfig = {
     FRONTEND_URL: process.env.FRONTEND_URL || '',
     PORT: Number(process.env.PORT) || 6000,
-    CUSTOMERS_PER_PAGE: Number(process.env.CUSTOMERS_PER_PAGE) | 3
+    CUSTOMERS_PER_PAGE: Number(process.env.CUSTOMERS_PER_PAGE) | 5
 };
 export default config;

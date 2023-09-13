@@ -6,65 +6,71 @@ import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { joiResolver } from '@hookform/resolvers/joi';
 
+import { useTranslation } from 'react-i18next';
 import customerValidator from '../../../validators/customer.validator';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { setCustomer } from '../../../store/order';
 import { getCustomerByPhone } from '../../../store/customer';
 import { handleBack, handleNext } from '../../../store/stepper';
-import { useTranslation } from 'react-i18next';
 
 const CustomerForm = () => {
     const { t } = useTranslation();
     const {
         register,
+        watch,
         handleSubmit,
         setValue,
         formState: { errors }
     } = useForm({ resolver: joiResolver(customerValidator) });
     const dispatch = useAppDispatch();
     const { customer, status } = useAppSelector(state => state.customersStore);
-    const [phone, setPhone] = useState(null);
     const [disabled, setDisabled] = useState(true);
-    const handleChange = (e: any) => {
-        e.preventDefault();
-        setDisabled(false);
-        let phoneLength = e.target.value;
-        if (phoneLength.length === 10) setPhone(e.target.value);
-    };
+
+    useEffect(() => {
+        const myAnchor = document.getElementById('anchor');
+        if (myAnchor) {
+            const top = myAnchor.getBoundingClientRect().top + window.scrollY;
+            // myAnchor.scrollIntoView({ behavior: 'smooth' });        }
+            window.scrollTo({ top: top - 200, behavior: 'smooth' });
+        }
+    }, []);
+
+    const customerPhone = watch('customerPhone');
+    useEffect(() => {
+        if (customerPhone?.length === 9) dispatch(getCustomerByPhone(customerPhone));
+    }, [customerPhone]);
     const handleNextButton = (data: any) => {
         if (!customer) dispatch(setCustomer({
             email: data.customerEmail,
             name: data.customerName,
             phone: data.customerPhone
         }));
-         dispatch(handleNext());
+        dispatch(handleNext());
     };
     useEffect(() => {
-        if (phone) dispatch(getCustomerByPhone(phone));
-
-        if (customer && status === 'fulfilled') {
+        if (customer && customer._id && status === 'fulfilled') {
             setValue('customerName', customer.name);
             setValue('customerEmail', customer.email);
             setValue('customerPhone', customer.phone);
+            dispatch(setCustomer({
+                _id: customer._id,
+                name: customer.name,
+                phone: customer.phone,
+                email: customer.email
+            }))
+        } else {
+            setDisabled(false);
         }
-        // dispatch(setCustomer({
-        //     _id: customer._id,
-        //     phone: customer.phone,
-        //     name: customer.name,
-        //     email: customer.email
-        // }));
-
-    }, [phone, customer, setValue]);
+    }, [customer]);
 
     return (
-        <div>
+        <div id={'anchor'}>
             <h3>{t('Заполните форму')}</h3>
             <div className={'selector_wrapper'}>
                 <form onSubmit={handleSubmit(handleNextButton)}>
                     <Grid item xs={1} sm={1} paddingBottom={3}>
                         <TextField
-                            inputProps={{ maxLength: 11 }}
-                            onInput={(event) => handleChange(event)}
+                            inputProps={{ maxLength: 10 }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -138,7 +144,6 @@ const CustomerForm = () => {
                             {
                                 <Button variant={'contained'}
                                         type={'submit'}
-                                    // onClick={handleNextButton}
                                         style={{
                                             marginBottom: '20px',
                                             padding: '10px 15px'
