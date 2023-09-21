@@ -51,7 +51,7 @@ const OrderEditor = () => {
         start: order.startTime,
         newUserForm: false
     });
-    const handleChange = (value: any, name: string) => {
+    const handleChange = (value: string | null, name: string) => {
         setState((prev) => {
             return {
                 ...prev,
@@ -63,10 +63,10 @@ const OrderEditor = () => {
     const newForm = (action: boolean) => {
         setState({ ...state, newUserForm: action });
     };
-    const changeComment = (e: any) => {
+    const changeComment = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setComment(e.target.value));
     };
-    const changePayedSum = (e: any) => {
+    const changePayedSum = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(changePayed(e.target.value));
     }
     const [deleteOrder, setDeleteOrder] = useState(false);
@@ -75,9 +75,9 @@ const OrderEditor = () => {
         dispatch(deleteOrderById(String(order.orderId)));
         dispatch(resetState());
     };
-    const handleSubmit = async () => {
+    const handleSubmit = async (): Promise<void> => {
         if (order.orderId) {
-            const orderToUpdate = new OrderDto(order);
+            const orderToUpdate: OrderDto = new OrderDto(order);
             orderToUpdate.orderId = order.orderId;
             // @ts-ignore
             await dispatch(updateOrderById(orderToUpdate));

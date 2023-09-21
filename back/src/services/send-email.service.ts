@@ -7,24 +7,38 @@ export const sendMail = async (email: string, locals = {}) => {
     const templateParser = new emailTemplates({
         views: {
            root: path.join(process.cwd(),'src', 'email-templates')
-          //  root: path.join(process.cwd(), 'email-templates')
+           // root: path.join(process.cwd(), 'email-templates')
         }
 
     });
     const html = await templateParser.render('order', locals);
+
+    // const transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //         user: process.env.EMAIL_USER,
+    //         pass: process.env.EMAIL_PASSWORD
+    //     }
+    // });
+
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+       // service: 'mail.tobacco-dk.com',
+        host: 'mail.tobacco-dk.com',
+        port: 465,
+        secure: true,
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
-        }
+            user: 'mail@tobacco-dk.com',
+            pass: 'Sema6161'
+        },
+       // ignoreTLS: true,
+        //debug: true
     });
 
     const mailOptions = {
-        from: 'No-reply LevelUP Barbershop',
+        from: 'mail@tobacco-dk.com',
         to: email,
         subject: 'Запись в барбершоп',
-        text: 'This is a test email sent using Nodemailer with TypeScript!',
+     //   text: 'This is a test email sent using Nodemailer with TypeScript!',
         html
     };
 

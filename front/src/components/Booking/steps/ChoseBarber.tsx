@@ -43,8 +43,7 @@ const ChoseBarber = () => {
                 <div className={'buttons_wrapper'}>
                     <div></div>
                     <div>
-                        {
-                            barberId &&
+                        {barberId &&
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
                                     style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>

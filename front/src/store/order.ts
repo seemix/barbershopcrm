@@ -48,8 +48,8 @@ const remapData = (data: any) => {
             service: item.service._id,
             admin_id: String(item.barber),
             color: item.color || '',
-            customer: item.customer.name,
-            phone: item.customer.phone,
+            customer: item.customer?.name,
+            phone: item.customer?.phone,
             price: item.price,
             additional: item.additional.map((add: { _id: any; }) => {
                 return add._id;
@@ -57,7 +57,7 @@ const remapData = (data: any) => {
             add_names: item.additional,
             comment: item.comment,
             duration: dayjs(item.endTime).diff(dayjs(item.startTime), 'minutes'),
-            customerId: item.customer._id,
+            customerId: item.customer?._id,
             completed: item.completed,
             payed: item.payed
         };

@@ -30,6 +30,7 @@ const App: FC = () => {
                     <AdminLayout/>
                 </React.Suspense>}>
                     <Route path={'admin'} element={<MainAdmin/>}>
+                        <Route path={''} element={<Calendar/>}/>
                         <Route path={'calendar'} element={<Calendar/>}/>
                         <Route path={'schedule'} element={<Schedule/>}/>
                         <Route path={'services'} element={<ServicesWrapper/>}/>

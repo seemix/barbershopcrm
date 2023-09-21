@@ -30,28 +30,27 @@ const ChoseService = () => {
                 {status === 'loading' && <CircularProgress/>}
                 {status === 'fulfilled' && services && services.map(item =>
                     <Service
-                            key={item._id}
-                            _id={item._id}
-                             service={item.service}
-                             price={item.price}
-                             duration={item.duration}
+                        key={item._id}
+                        _id={item._id}
+                        service={item.service}
+                        price={item.price}
+                        duration={item.duration}
                     />)
                 }
                 <div className={'buttons_wrapper'}>
                     <div>
-                        {
-                            <Button variant={'contained'}
-                                    onClick={handleBackButton}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> <KeyboardArrowLeft/> {t('назад')}
-                            </Button>
-                        }
+                        <Button variant={'contained'}
+                                onClick={handleBackButton}
+                                style={{ marginBottom: '20px', padding: '10px 15px' }}>
+                            <KeyboardArrowLeft/> {t('назад')}
+                        </Button>
                     </div>
                     <div>
-                        {
-                            serviceId &&
+                        {serviceId &&
                             <Button variant={'contained'}
                                     onClick={() => dispatch(handleNext())}
-                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')} <KeyboardArrowRight/>
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
+                                <KeyboardArrowRight/>
                             </Button>
                         }
                     </div>

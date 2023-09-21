@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService } from '../services/auth.service';
 import { IAuthUser } from '../interfaces/auth-user';
 import { ILoginParams } from '../interfaces/login-params';
+import axios from 'axios';
+import { config } from '../configs/config';
 
 interface IInitialState {
     status: string;
@@ -59,7 +61,8 @@ export const checkAuth = createAsyncThunk(
     'authSlice/checkAuth',
     async (_, thunkAPI) => {
         try {
-            return  await authService.checkAuth();
+            // return await authService.checkAuth();
+            return await axios.get(config.baseURL + '/auth/refresh', { withCredentials: true }).then(value => value.data);
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -119,15 +122,15 @@ const authSlice = createSlice({
                 state.error = null;
                 state.status = 'fulfilled';
                 state.error = null;
-                localStorage.setItem('token', action.payload.data.accessToken);
-                state.user = action.payload.data.user;
+                localStorage.setItem('token', action.payload.accessToken);
+                state.user = action.payload.user;
                 state.auth = true;
             })
             .addCase(checkAuth.rejected, (state, action) => {
                 // @ts-ignore
                 state.error = action.payload.response.data.message;
                 state.status = 'error';
-            })
+            });
     }
 });
 

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import './LangSwitch.css';
 
 const LangSwitch = () => {
-    const [back, setBack] = useState(false);
+    const [back, setBack] = useState<boolean>(false);
     const { i18n } = useTranslation();
-    const [currentLang, setCurrentLang] = useState(i18n.language);
+    const [currentLang, setCurrentLang] = useState<string>(i18n.language);
 
     useEffect(() => {
         setCurrentLang(i18n.language);
@@ -24,6 +24,7 @@ const LangSwitch = () => {
     };
     const changeLanguage = (language: string) => {
         i18n.changeLanguage(language);
+        setBack(false);
     };
     return (
         <div style={{marginLeft: '15px'}}>

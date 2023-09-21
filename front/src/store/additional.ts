@@ -204,7 +204,7 @@ const additionalSlice = createSlice({
                 state.status = 'loading';
                 state.error = null;
             })
-            .addCase(saveAdditionalOrder.rejected, (state, action) => {
+            .addCase(saveAdditionalOrder.rejected, (state,action) => {
                 state.status = 'error';
                 state.error = action.payload as string;
             });

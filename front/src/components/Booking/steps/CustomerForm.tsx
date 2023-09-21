@@ -30,7 +30,6 @@ const CustomerForm = () => {
         const myAnchor = document.getElementById('anchor');
         if (myAnchor) {
             const top = myAnchor.getBoundingClientRect().top + window.scrollY;
-            // myAnchor.scrollIntoView({ behavior: 'smooth' });        }
             window.scrollTo({ top: top - 200, behavior: 'smooth' });
         }
     }, []);
@@ -57,7 +56,7 @@ const CustomerForm = () => {
                 name: customer.name,
                 phone: customer.phone,
                 email: customer.email
-            }))
+            }));
         } else {
             setDisabled(false);
         }
@@ -130,26 +129,24 @@ const CustomerForm = () => {
                         />
                     </Grid>
 
-                    <div className={'buttons_wrapper'}>
+                    <div className={'buttons_wrapper'} style={{ width: '100%'}}>
                         <div>
-                            {
-                                <Button variant={'contained'}
-                                        onClick={() => dispatch(handleBack())}
-                                        style={{ marginBottom: '20px', padding: '10px 15px' }}>
-                                    <KeyboardArrowLeft/> {t('назад')}
-                                </Button>
-                            }
+                            <Button variant={'contained'}
+                                    onClick={() => dispatch(handleBack())}
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}>
+                                <KeyboardArrowLeft/> {t('назад')}
+                            </Button>
+
                         </div>
+                        <div> </div>
                         <div>
-                            {
-                                <Button variant={'contained'}
-                                        type={'submit'}
-                                        style={{
-                                            marginBottom: '20px',
-                                            padding: '10px 15px'
-                                        }}> {t('далее')} <KeyboardArrowRight/>
-                                </Button>
-                            }
+                            <Button variant={'contained'}
+                                    type={'submit'}
+                                    style={{
+                                        marginBottom: '20px',
+                                        padding: '10px 15px'
+                                    }}> {t('далее')} <KeyboardArrowRight/>
+                            </Button>
                         </div>
                     </div>
                 </form>

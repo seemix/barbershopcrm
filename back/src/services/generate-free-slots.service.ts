@@ -32,6 +32,45 @@ export const freeSlots = async (barberId: string, duration: string) => {
             }
         }
     }
-
     return slots;
 };
+//
+// import moment from 'moment';
+//
+// import { busySlots } from './busy-slots.js';
+// interface IFreeSlot {
+//     id: number | string;
+//     startTime: moment.Moment;
+//     endTime: moment.Moment
+// }
+// export const freeSlots = async (barberId: string, duration: string) => {
+//     const busyTimeSlots = await busySlots(String(barberId));
+//     if (!busyTimeSlots || busyTimeSlots.length === 0) return [];
+//
+//     //const nowMinutes = Math.ceil(moment().minutes() / 5) * 5;
+//    // const start = moment().minutes(nowMinutes).seconds(0).milliseconds(0);
+//
+//     const freeSlots: IFreeSlot[] = busyTimeSlots.reduce((slots: IFreeSlot[], busySlot, index) => {
+//         if (index < busyTimeSlots.length - 1) {
+//             const busyEndTime = moment(busyTimeSlots[index].endTime);
+//             const nextBusyStartTime = moment(busyTimeSlots[index + 1].startTime);
+//
+//             const diff = nextBusyStartTime.diff(busyEndTime, 'minutes');
+//             const numberOfSlots = Math.floor(diff / +duration);
+//
+//             for (let i = 0; i < numberOfSlots; i++) {
+//                 const slotStartTime = busyEndTime.add(+duration * i, 'minutes');
+//                 const slotEndTime = slotStartTime.clone().add(+duration, 'minutes');
+//
+//                 slots.push({
+//                     id: slotStartTime.valueOf(),
+//                     startTime: slotStartTime,
+//                     endTime: slotEndTime
+//                 });
+//             }
+//         }
+//         return slots;
+//     }, []);
+//
+//     return freeSlots;
+// };

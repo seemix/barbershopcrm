@@ -6,6 +6,7 @@ export  const calculateCustomerStats = (customerId: string) => {
         {
             $match: {
                 customer: new Types.ObjectId(customerId),
+              //  completed: true
             },
         },
         {

@@ -89,7 +89,6 @@ const Login = () => {
                     <Alert severity="error">{response.error}: Incorrect login or password! </Alert> : ''}
                 {response.auth ? <Navigate to={'/admin'}/> : ''}
             </Container>
-
         </div>
     );
 };

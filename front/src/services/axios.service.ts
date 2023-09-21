@@ -3,7 +3,6 @@ import { config } from '../configs/config';
 
 const { baseURL } = config;
 const axiosService = axios.create({ baseURL, withCredentials: true });
-
 axiosService.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     return config;
@@ -27,5 +26,6 @@ axiosService.interceptors.response.use((config) => {
         throw error;
     }
 );
+
 
 export default axiosService;

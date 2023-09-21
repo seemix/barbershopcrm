@@ -46,7 +46,7 @@ const Calendar = () => {
         dispatch(getAllBarbers());
         dispatch(getOrdersForCalendar());
     }, []);
-    //
+
     useEffect(() => {
         const commonProperties = {
             ...weekAsset,
@@ -68,7 +68,7 @@ const Calendar = () => {
             calendarRef.current?.scheduler.handleState('tabs', 'resourceViewMode');
         }
     }, [view]);
-    const handleEdit = (event: any) => {
+    const handleEdit = (event: ProcessedEvent) => {
         dispatch(setOrderForEdit(event));
         dispatch(openOrderEditModal(null));
     };

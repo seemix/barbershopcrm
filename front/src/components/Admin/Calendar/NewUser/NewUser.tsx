@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { useAppDispatch } from '../../../../hooks/redux';
 import { setCustomerEmail, setCustomerName, setCustomerPhone } from '../../../../store/order';
 
 const NewUser = () => {

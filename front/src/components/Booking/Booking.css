@@ -9,6 +9,7 @@
 .buttons_wrapper {
     margin-top: 10px;
     display: flex;
+    gap: 20px;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 30px);
 }

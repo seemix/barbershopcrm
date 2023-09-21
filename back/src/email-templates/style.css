@@ -28,14 +28,14 @@ h3 {
     font-size: 25px;
 }
 
-h2 {
-    color: #fcf9f5;
-    text-align: center;
-    font-size: 30px;
-    margin-bottom: 15px;
-    color: rgba(30, 30, 30, 100);
-    display: none;
-}
+/*h2 {*/
+/*    color: #fcf9f5;*/
+/*    text-align: center;*/
+/*    font-size: 30px;*/
+/*    margin-bottom: 15px;*/
+/*    color: rgba(30, 30, 30, 100);*/
+/*    display: none;*/
+/*}*/
 
 div {
     background-color: rgb(252, 249, 245);

@@ -20,7 +20,6 @@ const ChoseAdditional = () => {
     }, [barberId, dispatch, serviceId]);
 
     const { additionals, status } = useAppSelector(state => state.additionalStore);
-    // if (status === 'fulfilled' && additionals.length === 0) dispatch(handleNext());
     const handleBackButton = () => {
         dispatch(resetAdditionals());
         dispatch(handleBack());
@@ -39,28 +38,24 @@ const ChoseAdditional = () => {
                         price={item.price}
                         duration={item.duration}/>)
                 }
-            </div>
-            <div className={'buttons_wrapper'}>
-                <div>
-                    {
+                <div className={'buttons_wrapper'}>
+                    <div>
                         <Button variant={'contained'}
                                 onClick={handleBackButton}
                                 style={{ marginBottom: '20px', padding: '10px 15px' }}>
                             <KeyboardArrowLeft/> {t('назад')}
                         </Button>
-                    }
+                    </div>
+                    <div>
+                        {serviceId &&
+                            <Button variant={'contained'}
+                                    onClick={() => dispatch(handleNext())}
+                                    style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
+                                <KeyboardArrowRight/>
+                            </Button>
+                        }
+                    </div>
                 </div>
-                <div>
-                    {
-                        serviceId &&
-                        <Button variant={'contained'}
-                                onClick={() => dispatch(handleNext())}
-                                style={{ marginBottom: '20px', padding: '10px 15px' }}> {t('далее')}
-                            <KeyboardArrowRight/>
-                        </Button>
-                    }
-                </div>
-
             </div>
         </div>
     );

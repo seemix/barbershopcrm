@@ -27,7 +27,7 @@ export const bottomAnimation: any = {
 // @ts-ignore
 export const headerAnimation: any = {
     hidden: {
-        x: -40,
+        x: -20,
         opacity: 0
     },
     visible: (custom: number) => ({
@@ -46,7 +46,7 @@ export const buttonAnimation: any = {
     visible: (custom: number) => ({
         x: 0,
         opacity: 1,
-        transition: { delay: custom * 0.2, duration: 0.3, ease: 'easeInOut' }
+        transition: { delay: custom * 0.2, duration: 0.4, ease: 'easeInOut' }
     })
 };
 // @ts-ignore
@@ -72,19 +72,5 @@ export const blockAnimation: any = {
         opacity: 1,
         y: 0,
         transition: { delay: custom * 0.2, duration: 0.3, ease: 'easeInOut' }
-    })
-};
-
-// @ts-ignore
-export const rightToLeftSlide: any = {
-    hidden: {
-        opacity: 0,
-        x: 100
-    },
-
-    visible: (custom: number) => ({
-        opacity: 1,
-        x: 0,
-        transition: { delay: custom * 0.2, duration: 0.5, ease: 'easeInOut' }
     })
 };

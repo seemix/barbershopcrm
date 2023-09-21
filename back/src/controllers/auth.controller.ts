@@ -26,7 +26,8 @@ export const authController = {
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 3600000,
                 httpOnly: true,
-                sameSite: true
+                sameSite: 'none',
+                //secure: false
             })
                 .status(201)
                 .json(userData);
@@ -38,7 +39,7 @@ export const authController = {
         try {
             const { refreshToken } = req.cookies;
             const token = await userService.logout(refreshToken);
-            res.clearCookie('refreshToken');
+            res.clearCookie('refreshToken', { sameSite: 'none' });
             res.json(token);
 
         } catch (e) {
@@ -52,7 +53,8 @@ export const authController = {
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                sameSite: true
+                sameSite: 'none',
+              //  secure: false
             });
             return res.json(userData);
         } catch (e) {
