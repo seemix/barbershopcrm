@@ -22,16 +22,13 @@ export const sendMail = async (email: string, locals = {}) => {
     // });
 
     const transporter = nodemailer.createTransport({
-       // service: 'mail.tobacco-dk.com',
         host: 'mail.tobacco-dk.com',
         port: 465,
         secure: true,
         auth: {
-            user: 'mail@tobacco-dk.com',
-            pass: 'Sema6161'
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD
         },
-       // ignoreTLS: true,
-        //debug: true
     });
 
     const mailOptions = {
